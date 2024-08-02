@@ -1,0 +1,108 @@
+/* AdminDashboard.css */
+body.admin-dashboard {
+    font-family: Arial, sans-serif;
+    background-color: rgb(237, 226, 226);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .admin-dashboard .main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .admin-dashboard .outer-container {
+    background-color: rgb(83, 52, 73);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+  }
+  
+  .admin-dashboard .container {
+    background-color: rgb(225, 197, 202);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .admin-dashboard h1 {
+    margin-bottom: 20px;
+    color: rgb(83, 52, 73);
+    text-decoration: underline;
+    text-decoration-color: rgb(83, 52, 73);
+  }
+  
+  .admin-dashboard .input-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .admin-dashboard input {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .admin-dashboard button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(83, 52, 73);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .admin-dashboard button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .admin-dashboard button:hover {
+    background-color: rgb(131, 102, 107);
+  }
+  
+  .admin-dashboard .logout-button {
+    background-color: #ccc;
+    color: black;
+    width: 100%; /* Full width for centering */
+  }
+  
+  .admin-dashboard .logout-button:hover {
+    background-color: #999;
+  }
+  
+  .admin-dashboard .add-client-button {
+    background-color: rgb(83, 52, 73);
+    color: white;
+    width: 100%; /* Full width for centering */
+  }
+  
+  .admin-dashboard .add-client-button:hover {
+    background-color: rgb(131, 102, 107);
+  }
+  
+  .admin-dashboard .error {
+    color: red;
+    margin-top: 10px;
+  }

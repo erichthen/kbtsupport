@@ -1,17 +1,25 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import RegistrationForm from './components/RegistrationForm';
-import SignInHandler from './components/SignInHandler';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import SignIn from './components/SignIn.jsx';
+import RegistrationForm from './components/RegistrationForm.jsx';
+import AdminDashboard from './components/AdminDashboard.jsx';
+import DashBoard from './components/DashBoard.jsx'; // Ensure this component exists
+import { AuthProvider } from './context/authContext.js';
 
 const App = () => {
-    return(
-        <Router>
-          <Switch>
-            <Route path="/finishSignUp" component={SignInHandler} />
-            <Route path="/" component={RegistrationForm} />
-          </Switch>
-        </Router>
-    );
+  return (
+    <AuthProvider>
+      <Router>
+        <Switch>
+          <Route path="/login" component={SignIn} />
+          <Route path="/register" component={RegistrationForm} />
+          <Route path="/dashboard" component={DashBoard} />
+          <Route path="/admin" component={AdminDashboard} />
+          <Route path="/" component={SignIn} exact /> {/* Redirect root to login */}
+        </Switch>
+      </Router>
+    </AuthProvider>
+  );
 };
 
 export default App;
