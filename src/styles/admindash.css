@@ -81,25 +81,26 @@ body.admin-dashboard {
   .admin-dashboard button:hover {
     background-color: rgb(131, 102, 107);
   }
+
   
   .admin-dashboard .logout-button {
-    background-color: #ccc;
-    color: black;
-    width: 100%; /* Full width for centering */
+    background-color: rgb(83, 52, 73);
+    color: white;
+    width: 65%; /* Full width for centering */
   }
   
   .admin-dashboard .logout-button:hover {
-    background-color: #999;
+    background-color: #3a1a28;
   }
   
   .admin-dashboard .add-client-button {
     background-color: rgb(83, 52, 73);
     color: white;
-    width: 100%; /* Full width for centering */
+    width: 65%; /* Full width for centering */
   }
   
   .admin-dashboard .add-client-button:hover {
-    background-color: rgb(131, 102, 107);
+    background-color: rgb(83, 52, 73);
   }
   
   .admin-dashboard .error {
