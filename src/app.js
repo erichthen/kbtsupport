@@ -17,7 +17,7 @@ const App = () => {
           <Route path="/dashboard" component={DashBoard} />
           <Route exact path="/admin" component={AdminDashboard} />
           <Route exact path="/admin/invoices" component={Invoices} />
-          <Route path="/" component={SignIn} exact /> {/* Redirect root to login */}
+          <Route path="/" component={SignIn} exact /> {/* redirect root to login */}
         </Switch>
       </Router>
     </AuthProvider>
