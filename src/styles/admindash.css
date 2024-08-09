@@ -1,109 +1,291 @@
-/* AdminDashboard.css */
 body.admin-dashboard {
-    font-family: Arial, sans-serif;
-    background-color: rgb(237, 226, 226);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  
-  .admin-dashboard .main-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .admin-dashboard .outer-container {
-    background-color: rgb(83, 52, 73);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 30px;
-  }
-  
-  .admin-dashboard .container {
-    background-color: rgb(225, 197, 202);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .admin-dashboard h1 {
-    margin-bottom: 20px;
-    color: rgb(83, 52, 73);
-    text-decoration: underline;
-    text-decoration-color: rgb(83, 52, 73);
-  }
-  
-  .admin-dashboard .input-group {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  .admin-dashboard input {
-    flex: 1;
-    padding: 10px;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .admin-dashboard button {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: rgb(83, 52, 73);
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .admin-dashboard button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .admin-dashboard button:hover {
-    background-color: rgb(131, 102, 107);
-  }
+  font-family: Arial, sans-serif;
+  background-color: rgb(237, 226, 226);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
 
-  
-  .admin-dashboard .logout-button {
-    background-color: rgb(83, 52, 73);
-    color: white;
-    width: 65%; /* Full width for centering */
-  }
-  
-  .admin-dashboard .logout-button:hover {
-    background-color: #3a1a28;
-  }
-  
-  .admin-dashboard .add-client-button {
-    background-color: rgb(83, 52, 73);
-    color: white;
-    width: 65%; /* Full width for centering */
-  }
-  
-  .admin-dashboard .add-client-button:hover {
-    background-color: rgb(83, 52, 73);
-  }
-  
-  .admin-dashboard .error {
-    color: red;
-    margin-top: 10px;
-  }
+.admin-dashboard .main-container {
+  background-color: rgba(255, 255, 255, 0.7); 
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+  padding: 60px;
+  padding-bottom: 100px;
+  padding-top: 40px;
+}
+
+.admin-dashboard .outer-container {
+  background-color: rgb(83, 52, 73);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+.admin-dashboard .container {
+  background-color: rgb(225, 197, 202);
+  margin-left: 10px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.admin-dashboard h1 {
+  margin-bottom: 20px;
+  color: rgb(83, 52, 73);
+  text-decoration: underline;
+  text-decoration-color: rgb(83, 52, 73);
+}
+
+.admin-dashboard .input-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.admin-dashboard input {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.admin-dashboard button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(83, 52, 73);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.admin-dashboard button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.admin-dashboard button:hover {
+  background-color: rgb(131, 102, 107);
+}
+
+.admin-dashboard .logout-button {
+  background-color: rgb(83, 52, 73);
+  color: white;
+  width: 65%; 
+}
+
+.admin-dashboard .logout-button:hover {
+  background-color: #3a1a28;
+}
+
+.admin-dashboard .add-client-button {
+  background-color: rgb(83, 52, 73);
+  color: white;
+  width: 65%; 
+}
+
+.admin-dashboard .add-client-button:hover {
+  background-color: rgb(83, 52, 73);
+}
+
+.admin-dashboard .invoices-button {
+  width: 65%;
+} 
+
+.admin-dashboard .invoices-button:hover {
+  background-color: rgb(83, 52, 73);
+}
+
+.admin-dashboard .error {
+  color: red;
+  margin-top: 10px;
+}
+
+.admin-dashboard .calendar-container {
+  margin-top: 0px;
+  margin-left: 40px;
+}
+
+.admin-dashboard .react-datepicker {
+  width: 100%;
+  height: auto;
+}
+
+.admin-dashboard .react-datepicker__day-name, 
+.admin-dashboard .react-datepicker__day, 
+.admin-dashboard .react-datepicker__time-name {
+  width: 3rem;
+  height: 3rem;
+}
+
+.admin-dashboard .react-datepicker__navigation {
+  width: 10px;
+  height: 10px;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: absolute;
+  top: -10px;
+  transform: translateY(15px);
+}
+
+.react-datepicker__navigation--previous {
+  border-right: 2px solid #590a6d;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  margin-left: 10px;
+  left: 0;
+}
+
+.react-datepicker__navigation--next {
+  border-left: 2px solid #590a6d;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  margin-right: 10px;
+  right: 0;
+}
+
+.session-day {
+  background-color: #e0bbf5;
+}
+
+.admin-dashboard .session-popup {
+  margin-left: 30px;
+  position: relative;
+  margin-top: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.session-popup p {
+  margin: 10px 0;
+}
+
+.session-separator {
+  border-top: 1px dashed #ccc;
+  margin: 10px 0;
+}
+
+.session-popup .close-button {
+  position: absolute;
+  top: -4px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: rgb(83, 52, 73);
+  width: auto;
+  height: auto;
+  line-height: normal;
+  padding: 1px;
+}
+
+.session-popup .close-button:hover {
+  background-color: white;
+}
+
+.invoices-container {
+  width: 40%;
+  margin-top: 20px;
+  padding: 40px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+.invoices-container h3 {
+  margin-top: -20px;
+  margin-bottom: -10px;
+  color: rgb(83, 52, 73);
+  text-decoration-color: rgb(83, 52, 73);
+  text-align: center;
+  text-decoration: underline;
+}
+
+.invoices-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin-left: -15px;
+}
+
+.invoices-container li {
+  display: flex;
+  align-items: center;
+  margin-left: -15px;
+}
+
+.invoices-container label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.invoices-container input[type="checkbox"] {
+  margin-right: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.zoom-button {
+  background-color: rgb(83, 52, 73);
+  color: white;
+  width: 65%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.zoom-button:hover {
+  background-color: rgb(131, 102, 107);
+}
+
+.admin-dashboard p {
+  color: rgb(83, 52, 73);
+  margin-top: -10px;
+}
+
+.admin-dashboard .cancel-sessions-button {
+  width: 65%; 
+  padding: 4px;
+  margin-top: -10px; 
+  margin-left: 30px;
+  border: none;
+  border-radius: 5px;
+  background-color: (225, 197, 202);
+  font-size: 16px;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+}
+
+.cancel-sessions-button:hover {
+  background-color: rgb(131, 102, 107);
+}

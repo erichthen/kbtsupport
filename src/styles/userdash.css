@@ -1,0 +1,90 @@
+.user-dashboard .outer-container {
+  background-color: rgba(255, 255, 255, 0.7); 
+}
+
+.user-dashboard .main-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  background-color: rgb(237, 226, 226);
+}
+
+.user-dashboard .logout-button {
+  margin-top: 30px;
+  margin-right: 16px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.user-dashboard .calendar-container {
+  margin-left: 0;
+  margin-bottom: 15px;
+}
+
+.user-dashboard .session-day {
+  background-color: #d1c4e9 !important;
+  color: white !important;
+}
+
+.user-dashboard .session-popup {
+  margin-right: 15px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  text-align: left;
+}
+
+.user-dashboard .session-info {
+  margin-bottom: 10px;
+}
+
+.user-dashboard .session-separator {
+  border: none;
+  height: 1px;
+  background-color: #ddd;
+  margin: 10px 0;
+}
+
+.user-dashboard .react-datepicker {
+  width: 100%; 
+  height: auto;
+}
+
+.user-dashboard .react-datepicker__day-name, 
+.user-dashboard .react-datepicker__day, 
+.user-dashboard .react-datepicker__time-name {
+  width: 3rem; 
+  height: 3rem;
+}
+
+.user-dashboard .react-datepicker__navigation {
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: absolute; 
+  top: -30px; 
+  transform: translateY(15px);
+}
+
+.user-dashboard .react-datepicker__navigation--previous {
+  border-right: 2px solid #590a6d;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  margin-left: 10px;
+  left: 0; 
+}
+
+.user-dashboard .react-datepicker__navigation--next {
+  border-left: 2px solid #590a6d; 
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  margin-right: 10px; 
+  right: 0; 
+}

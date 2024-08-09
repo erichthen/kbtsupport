@@ -1,13 +1,43 @@
-import {sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "firebase/auth";
-import { auth } from '../firebaseConfig'; // Adjust path based on actual location
+import { sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth } from '../firebaseConfig';
+import { sendPasswordResetEmail as firebasesendPasswordResetEmail } from "firebase/auth";
 
 export const sendSignInLink = (email, actionCodeSettings, message) => {
-    // Simulating sending a custom email message
     return sendSignInLinkToEmail(auth, email, actionCodeSettings)
       .then(() => {
         console.log(message);
         window.localStorage.setItem('emailForSignIn', email);
       });
+};
+
+export const sendPasswordResetEmail = async (email) => {
+    try {
+        await firebasesendPasswordResetEmail(auth, email);
+    }
+    catch(error) {
+        console.error('Error sending password reset email: ', error);
+        throw error;
+    }
+};
+
+export const loginUser = async (email, password) => {
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+    }
+    catch (error) {
+        console.error('Error logging in user: ', error);
+        throw error;
+    }
+};
+
+export const registerUser = async (email, password) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      return userCredential; 
+    } catch (error) {
+      console.error('Error during registration: ', error);
+      throw error;
+    }
   };
 
 export const checkSignInLink = (url) => {
@@ -18,17 +48,9 @@ export const completeSignIn = (email, url) => {
     return signInWithEmailLink(auth, email, url);
 };
 
-export const registerUser = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
-};
-
-export const loginUser = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
-};
-
 export const logoutUser = () => {
     return signOut(auth);
-}
+};
 
 export const onAuthStateChanged = (callback) => {
     return auth.onAuthStateChanged(callback);

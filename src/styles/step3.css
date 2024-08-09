@@ -1,0 +1,11 @@
+.step3 .react-datepicker__navigation--previous,
+.step3 .react-datepicker__navigation--next {
+    width: 2px;
+    height: 2px;
+    background-color: transparent; 
+    border: none; 
+}
+
+.step3 p {
+  margin-bottom: 50px;
+}

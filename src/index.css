@@ -1,9 +1,14 @@
 /* index.css */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  #root {
-    padding: 20px;
-  }
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-image: url('/backdrop.jpeg'); /* Absolute path from the public directory */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+#root {
+  padding: 20px;
+}

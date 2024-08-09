@@ -1,90 +1,143 @@
-/* RegistrationForm.css */
 body.registration-form {
-    font-family: Arial, sans-serif;
-    background-color: rgb(237, 226, 226);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  
-  .registration-form .main-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .registration-form .outer-container {
-    background-color: rgb(83, 52, 73);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 30px;
-  }
-  
-  .registration-form .container {
-    background-color: rgb(225, 197, 202);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .registration-form h1 {
-    margin-bottom: 20px;
-    color: rgb(83, 52, 73);
-    text-decoration: underline;
-    text-decoration-color: rgb(83, 52, 73);
-  }
-  
-  .registration-form input,
-  .registration-form select,
-  .registration-form .react-datepicker__input-container input {
-    width: 60%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 20px;
-  }
-  
-  .registration-form button {
-    width: 60%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: rgb(83, 52, 73);
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    margin-top: 10px;
-  }
-  
-  .registration-form button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .registration-form button:hover {
-    background-color: rgb(131, 102, 107);
-  }
-  
-  .registration-form .error {
-    color: red;
-    margin-top: 10px;
-  }
-  
-  .registration-form label {
-    color: rgb(83, 52, 73);
-    margin-bottom: 10px;
-  }
+  font-family: Arial, sans-serif;
+  background-color: rgb(237, 226, 226);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.registration-form .main-container,
+.registration-form .container,
+.registration-form .outer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.registration-form .outer-container {
+  background-color: rgba(255, 255, 255, 0.7); 
+  padding: 60px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.registration-form .container {
+  background-color: rgb(225, 197, 202);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+}
+
+.registration-form h1,
+.registration-form h2 {
+  margin-bottom: 40px;
+  background-color: rgba(255, 255, 255, 0.7); 
+  text-decoration: underline;
+  text-decoration-color: rgb(83, 52, 73);
+}
+
+.registration-form h1 {
+  font-size: 36px;
+}
+
+.registration-form h2 {
+  font-size: 30px;
+}
+
+.registration-form input,
+.registration-form select {
+  width: 100%;
+  padding: 10px 0;
+  margin: 20px 0;
+  border: none;
+  border-bottom: 4px solid #590a6d;
+  background-color: transparent;
+  font-size: 24px;
+  color: #333;
+}
+
+.registration-form input:focus,
+.registration-form select:focus {
+  outline: none;
+  border-bottom-color: #590a6d;
+}
+
+.email-input {
+  font-size: 16px;
+}
+
+.registration-form button {
+  width: 40%;
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(83, 52, 73);
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  margin: 20px;
+}
+
+.registration-form button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.registration-form button:hover {
+  background-color: rgb(131, 102, 107);
+}
+
+.registration-form .error {
+  color: red;
+  margin-top: 20px;
+  font-size: 20px;
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.password-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-strength,
+.password-match {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.password-strength.weak {
+  color: red;
+}
+
+.password-strength.strong {
+  color: green;
+}
+
+.password-match {
+  color: red;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nav-buttons button {
+  flex: 1;
+  margin: 10px;
+  padding: 20px;
+  font-size: 24px;
+}
