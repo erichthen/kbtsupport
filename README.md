@@ -14,5 +14,5 @@ An email will be sent:
 - When a session is 24 hours out, sent to client (with zoom link)
 - When client submits a reschedule request. Sent to admin, approved in app, approval or denial sent  
   to client
-- When client wants to cancel a day, sent to admin
+- When client wants to reschedule all appointments, sent to admin
 - When invoice is sent, sent to client
