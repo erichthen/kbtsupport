@@ -84,17 +84,17 @@ const RegistrationForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     if (password !== confirmPassword) {
       alert('Passwords do not match.');
       return;
     }
-
+  
     try {
       const userCredential = await registerUser(email, password);
       const user = userCredential.user;
-
-      // Add parent to the Firestore with the user's UID
+  
+      // Add parent to the firestore parents collection with their uid
       const parentData = {
         parent_name: name,
         email: email,
@@ -104,17 +104,20 @@ const RegistrationForm = () => {
       };
       
       const parentId = await addParent(parentData);
+  
+      //add sessions same day of the week, same time for the rest of the month + 3 more months
       let currentDate = new Date(startDate);
-      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 3, 0); 
+  
       while (currentDate <= endDate) {
-        if (currentDate.getDay() === 6) {
-          await addSession(parentId, {
-            child_name: child,
-            session_time: new Date(currentDate.setHours(parseInt(selectedTime.split(':')[0]), parseInt(selectedTime.split(':')[1]))).toISOString(),
-          });
+        if (currentDate.getDay() === 6 || currentDate.getDay() === 0) { //saturday or sunday
+            await addSession(parentId, {
+                child_name: child,
+                session_time: new Date(currentDate.setHours(parseInt(selectedTime.split(':')[0]), parseInt(selectedTime.split(':')[1]))).toISOString(),
+            });
         }
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
+        currentDate.setDate(currentDate.getDate() + 7); //same time next week
+    }
       alert('Registration complete. You can now log in with your email and password.');
       history.push('/login');
     } catch (error) {

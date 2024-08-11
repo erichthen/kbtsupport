@@ -206,7 +206,9 @@ body.admin-dashboard {
 }
 
 .session-popup .close-button:hover {
-  background-color: white;
+  color: red;
+  background: transparent;
+  border: none;
 }
 
 .invoices-container {
@@ -215,15 +217,6 @@ body.admin-dashboard {
   padding: 40px;
   border: 1px solid #ccc;
   background-color: #f9f9f9;
-}
-
-.invoices-container h3 {
-  margin-top: -20px;
-  margin-bottom: -10px;
-  color: rgb(83, 52, 73);
-  text-decoration-color: rgb(83, 52, 73);
-  text-align: center;
-  text-decoration: underline;
 }
 
 .invoices-container ul {
@@ -267,11 +260,6 @@ body.admin-dashboard {
   background-color: rgb(131, 102, 107);
 }
 
-.admin-dashboard p {
-  color: rgb(83, 52, 73);
-  margin-top: -10px;
-}
-
 .admin-dashboard .cancel-sessions-button {
   width: 65%; 
   padding: 4px;
@@ -279,7 +267,7 @@ body.admin-dashboard {
   margin-left: 30px;
   border: none;
   border-radius: 5px;
-  background-color: (225, 197, 202);
+  background-color: rgb(83, 52, 73);
   font-size: 16px;
   cursor: pointer;
   display: block;
@@ -288,4 +276,9 @@ body.admin-dashboard {
 
 .cancel-sessions-button:hover {
   background-color: rgb(131, 102, 107);
+}
+
+.admin-dashboard p {
+  margin-bottom: 5px;
+  margin-top: -5px;
 }

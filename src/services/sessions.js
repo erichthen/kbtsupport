@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, query, where, doc, writeBatch} from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where, doc, writeBatch, deleteDoc} from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
 export const addSession = async (parentId, sessionData) => {
@@ -27,11 +27,9 @@ export const getSessions = async () => {
 
 export const getSessionsByParentId = async (parentDocId) => {
   try {
-    console.log('Fetching sessions for parentDocId:', parentDocId);
     const q = query(collection(db, 'sessions'), where('parent_id', '==', parentDocId));
     const querySnapshot = await getDocs(q);
     const sessions = querySnapshot.docs.map(doc => {
-      console.log('Session Data:', doc.data());
       return { id: doc.id, ...doc.data() };
     });
     return sessions;
@@ -45,7 +43,6 @@ export const getAvailableSlots = async () => {
   try {
     const sessionsSnapshot = await getDocs(collection(db, "sessions"));
     const bookedSlots = sessionsSnapshot.docs.map(doc => doc.data().session_time);
-    console.log('Booked Slots:', bookedSlots);
     return bookedSlots;
   } catch (error) {
     console.error('Error getting available slots: ', error);
@@ -56,10 +53,10 @@ export const getAvailableSlots = async () => {
 export const generateTimeSlots = () => {
   const slots = [];
   const endTime = new Date();
-  endTime.setHours(13, 40, 0, 0); // End at 1:40 PM
+  endTime.setHours(13, 40, 0, 0); // end at 1:40 PM
 
   let currentTime = new Date();
-  currentTime.setHours(9, 0, 0, 0); // Start at 9:00 AM
+  currentTime.setHours(9, 0, 0, 0); // start at 9:00 AM
 
   while (currentTime < endTime) {
     slots.push(currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
@@ -74,16 +71,11 @@ export const filterAvailableSlots = (slots, bookedSlots) => {
     console.error('Slots is not an array:', slots);
     return [];
   }
-
-  console.log('Filtering Slots:', { slots, bookedSlots });
-
-  // Convert booked slots to comparable format
+  // convert booked slots to comparable format
   const unavailableSlots = bookedSlots.map(slot => {
     const date = new Date(slot);
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   });
-
-  console.log('Unavailable Slots:', unavailableSlots);
 
   return slots.map(time => ({
     time,
@@ -91,6 +83,7 @@ export const filterAvailableSlots = (slots, bookedSlots) => {
   }));
 };
 
+//called when admin cancels a day of sessions
 export const deleteSessionsByDate = async (sessions) => {
   try {
     const batch = writeBatch(db); 
@@ -105,5 +98,31 @@ export const deleteSessionsByDate = async (sessions) => {
   } catch (error) {
     console.error('Error deleting sessions: ', error);
     throw error;
+  }
+};
+
+//called when client cancels a session
+export const deleteSessionByDate = async (parentId, sessionDate) => {
+  try {
+    const sessionRef = collection(db, 'sessions');
+    const q = query(
+      sessionRef,
+      where('parent_id', '==', parentId),
+      where('session_time', '==', sessionDate) // exact match for the ISO string
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.log('No matching session found.');
+      return;
+    }
+
+    querySnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+      console.log(`Session on ${sessionDate} deleted successfully.`);
+    });
+  } catch (error) {
+    console.error('Error deleting session:', error);
   }
 };

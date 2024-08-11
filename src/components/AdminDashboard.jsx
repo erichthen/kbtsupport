@@ -3,11 +3,11 @@ import { useHistory, Redirect } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 import { sendSignInLink, logoutUser } from '../services/auth';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { getSessions, deleteSessionsByDate } from '../services/sessions';
-import { httpsCallable } from 'firebase/functions';
-import { functions } from '../firebaseConfig';
+import { getSessions,  } from '../services/sessions';
+import { getParentEmailById } from '../services/firestore';
 import '../styles/admindash.css';
+import 'react-datepicker/dist/react-datepicker.css';
+import axios from 'axios';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -57,7 +57,7 @@ const AdminDashboard = () => {
       setShowInviteForm(false);
       setEmail('');
     } catch (error) {
-      console.error('Error sending email: ', error);
+      console.error();
       alert('Error sending registration link.');
     }
   };
@@ -116,23 +116,42 @@ const AdminDashboard = () => {
   };
 
   const handleCancelSessions = async () => {
-    if (selectedSessions.length > 0) {
-      try {
-        await deleteSessionsByDate(selectedSessions);
-        alert('Sessions canceled successfully');
-        setSelectedSessions([]);
+    if (selectedSessions.length === 0) {
+      alert('No sessions selected');
+      return;
+    }
+  
+    try {
+      for (const session of selectedSessions) {
+        const parentId = session.parent_id;
+        const sessionTime = new Date(session.session_time).toLocaleString();
+  
+        const parentEmail = await getParentEmailById(parentId);
+        
+        const message = `
+          Dear Parent,<br>
+          Your child's session on ${sessionTime} has been canceled. We apologize for any inconvenience this may cause.<br>
+          Best Regards,<br>
+          KBT Reading Support
+        `;
 
-        const sendCancellationEmails = httpsCallable(functions, 'sendCancellationEmails');
-        const parentIds = selectedSessions.map(session => session.parent_id);
-        await sendCancellationEmails({ parentIds, date: selectedDate });
-        alert('Cancellation emails sent successfully.');
-      } catch (error) {
-        console.error(error.response.data);
-        alert('Error canceling sessions.');
+        const response = await axios.post('https://us-central1-kbt-reading-support.cloudfunctions.net/sendCancellationEmails', {
+          email: parentEmail,
+          subject: 'Session Cancellation Notification',
+          message: message
+        });
+        console.log(response.data.message || 'Cancellation email sent successfully.');
       }
+  
+      alert('All cancellation emails sent successfully.');
+      setSelectedSessions([]); 
+  
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+      alert('Error sending cancellation emails.');
     }
   };
-
+  
   return (
     <div className="main-container">
       <h1>Hello, Kelli!</h1>

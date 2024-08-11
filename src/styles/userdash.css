@@ -11,7 +11,7 @@
 }
 
 .user-dashboard .logout-button {
-  margin-top: 30px;
+  margin-top: 10px;
   margin-right: 16px;
   padding: 10px 20px;
   font-size: 16px;
@@ -36,6 +36,26 @@
   border: 1px solid #ccc;
   background-color: #f9f9f9;
   text-align: left;
+  position: relative; 
+}
+
+.user-dashboard .session-popup .close-button {
+  position: absolute;
+  top: -22px;
+  right: 1px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: rgb(83, 52, 73);
+  width: auto;
+  height: auto;
+  line-height: normal;
+  padding: 1px 5px;
+}
+
+.user-dashboard .session-popup .close-button:hover {
+  color: red;
 }
 
 .user-dashboard .session-info {
@@ -87,4 +107,82 @@
   border-bottom: 2px solid transparent;
   margin-right: 10px; 
   right: 0; 
+}
+
+.user-dashboard .zoom-link {
+  margin-top: 20px;
+}
+
+.user-dashboard .zoom-link a {
+  text-decoration: underline;
+  color: rgb(40, 55, 221);
+}
+
+.user-dashboard .zoom-link p {
+  margin-top: 10px;
+}
+
+.user-dashboard .cancel-reschedule-button {
+  margin-top: 30px;
+  margin-right: 16px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: rgb(83, 52, 73);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.user-dashboard .cancel-reschedule-button:hover {
+  background-color: #7a218b;
+}
+
+.user-dashboard .options-container {
+  margin-top: 20px;
+}
+
+.user-dashboard .options-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.user-dashboard .option-button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: rgb(83, 52, 73);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  width: 150px; 
+  text-align: center;
+}
+
+.user-dashboard .option-button:hover {
+  background-color: #7a218b;
+}
+
+.user-dashboard .back-button {
+  margin-top: 30px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: rgb(83, 52, 73);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.user-dashboard .back-button:hover {
+  background-color: #7a218b;
+}
+
+.user-dashboard .schedule-details {
+  margin-bottom: 20px;
 }

@@ -1,9 +1,31 @@
+
 .step3 .react-datepicker__navigation--previous,
 .step3 .react-datepicker__navigation--next {
-    width: 2px;
-    height: 2px;
+    background: none;
+    border: none;
+    outline: none;
+    width: 24px;
+    height: 24px;
+    z-index: 10;
+}
+
+.step3 .react-datepicker__navigation--previous::before,
+.step3 .react-datepicker__navigation--next::before {
+    display: none;
+}
+
+
+.step3 .react-datepicker__navigation--previous.react-datepicker__navigation--previous:hover,
+.step3 .react-datepicker__navigation--next.react-datepicker__navigation--next:hover {
     background-color: transparent; 
-    border: none; 
+}
+
+.step3 .react-datepicker__navigation--previous {
+  left: -20px;
+}
+
+.step3 .react-datepicker__navigation--next {
+  right: -20px;
 }
 
 .step3 p {

@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc, doc, getDoc} from "firebase/firestore";
 import { db } from '../firebaseConfig';
 
 export const addParent = async (parentData) => {
@@ -58,5 +58,23 @@ export const getInvoices = async () => {
   } catch (error) {
     console.error('Error retrieving invoices: ', error);
     throw error;
+  }
+};
+
+export const getParentEmailById = async (parentId) => {
+  try {
+    const parentDocRef = doc(db, 'parents', parentId);
+    const parentDoc = await getDoc(parentDocRef);
+
+    if (parentDoc.exists()) {
+      const parentData = parentDoc.data();
+      return parentData.email;
+    } else {
+      console.error(`No parent found with ID: ${parentId}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching parent email:', error);
+    throw new Error('Failed to retrieve parent email');
   }
 };

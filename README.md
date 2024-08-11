@@ -2,10 +2,12 @@
 
 ## TODO ATM  
 - **Cancel a day feature. Make the day unavailable to schedule, and whoever has a session on that day, remove it and send them an email**
-- **Set up appointment reminders, 24 hours before, with the zoom link**
 - **Set up appointment cancellations and reschedule request and approval**
 - **Request to change all of their appointments to a new date and time**
-
+- **If no invoices, display message**
+- **In registration, you cannot skip unless all fields for that step are completed**
+- **Test the send cancellation emails when its more than one parent**
+- **Test the appointment reminder function**
 
 **Emailing**
 

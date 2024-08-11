@@ -14,9 +14,9 @@ const DashBoard = () => {
   const [selectedSessions, setSelectedSessions] = useState([]);
   const [formattedDate, setFormattedDate] = useState('');
   const [showSessions, setShowSessions] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
   const { user } = useAuth();
   const history = useHistory();
-
 
   useEffect(() => {
     document.body.classList.add('user-dashboard');
@@ -24,7 +24,6 @@ const DashBoard = () => {
       document.body.classList.remove('user-dashboard');
     };
   }, []);
-
 
   useEffect(() => {
     const fetchParentName = async () => {
@@ -45,7 +44,6 @@ const DashBoard = () => {
     fetchParentName();
   }, [user]);
 
-  // Fetch sessions based on parent ID
   useEffect(() => {
     const fetchSessions = async () => {
       if (user && parentName) {
@@ -76,6 +74,22 @@ const DashBoard = () => {
       console.error('Error during logout: ', error);
       alert('Error during logout.');
     }
+  };
+
+  const handleShowOptions = () => {
+    setShowOptions(true); 
+  };
+
+  const handleGoBack = () => {
+    setShowOptions(false); 
+  };
+
+  const handleCancelSession = () => {
+    history.push('/dashboard/cancel-session'); 
+  };
+
+  const handleClosePopup = () => {
+    setShowSessions(false);
   };
 
   const isDayWithSession = (date) => {
@@ -116,35 +130,51 @@ const DashBoard = () => {
     setShowSessions(true);
   };
 
-
   return (
     <div className="outer-container">
       <div className="main-container">
-        <h1>Hello, {parentName || 'Loading...'}!</h1>
-        <div className="calendar-container">
-          <DatePicker
-            inline
-            highlightDates={sessions.map(session => new Date(session.session_time))}
-            dayClassName={date => isDayWithSession(date) ? 'session-day' : undefined}
-            onChange={handleDayClick}
-          />
-        </div>
-        {showSessions && (
-          <div className="session-popup">
-            <p>{formattedDate}</p>
-            {selectedSessions.map((session, index) => (
-              <div key={session.id} className="session-info">
-                <p>Time: {session.session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} EST</p>
-                {index < selectedSessions.length - 1 && <hr className="session-separator" />}
+        {!showOptions && (
+          <>
+            <h1>Hello, {parentName || 'Loading...'}!</h1>
+            <p className='schedule-details'> Below is your schedule, click on a shaded day to see session details.</p>
+            <div className="calendar-container">
+              <DatePicker
+                inline
+                highlightDates={sessions.map(session => new Date(session.session_time))}
+                dayClassName={date => isDayWithSession(date) ? 'session-day' : undefined}
+                onChange={handleDayClick}
+              />
+            </div>
+            {showSessions && (
+              <div className="session-popup">
+                <button className="close-button" onClick={handleClosePopup}>x</button>
+                <p>{formattedDate}</p>
+                {selectedSessions.map((session, index) => (
+                  <div key={session.id} className="session-info">
+                    <p>Time: {session.session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} EST</p>
+                    {index < selectedSessions.length - 1 && <hr className="session-separator" />}
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
+            <div className="zoom-link">
+              <a href="https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09&omn=74404485715" target="_blank" rel="noopener noreferrer" className="link">Join Zoom Session</a>
+              <p>Meeting ID: 882 193 2666 - Password: 689887</p>
+            </div>
+            <button className='cancel-reschedule-button' onClick={handleShowOptions}>Cancel/Reschedule</button>
+            <button className='logout-button' onClick={handleLogout}>Logout</button>
+          </>
+        )}
+        {showOptions && (
+          <div className="options-container">
+            <h2>Do you want to...</h2>
+            <div className="options-buttons">
+              <button className="option-button" onClick={handleCancelSession}>Cancel a session</button>
+              <button className="option-button">Reschedule a session</button>
+            </div>
+            <button className="back-button" onClick={handleGoBack}>Back</button>
           </div>
         )}
-        <div className="zoom-link">
-          <a href="https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09&omn=74404485715" target="_blank" rel="noopener noreferrer">Join Zoom Session</a>
-          <p>Meeting ID: 882 193 2666 - Password: 689887</p>
-        </div>
-        <button className='logout-button' onClick={handleLogout}>Logout</button>
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Step1 = ({ name, child, setName, setChild, goToNextStep }) => {
+const Step1 = ({ name, child, setName, setChild, goToNextStep, isFirstStepValid }) => {
   return (
     <>
-    <h1>Welcome!</h1>
+      <h1>Welcome!</h1>
       <div className="input-container">
         <input
           id="name"
@@ -27,7 +27,13 @@ const Step1 = ({ name, child, setName, setChild, goToNextStep }) => {
         />
       </div>
       <div className="nav-buttons">
-        <button type="button" onClick={goToNextStep}>Next</button>
+        <button
+          type="button"
+          onClick={goToNextStep}
+          disabled={!isFirstStepValid} 
+        >
+          Next
+        </button>
       </div>
     </>
   );

@@ -2,10 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChange, setConfirmPassword, passwordStrength, goToPreviousStep, goToNextStep }) => {
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const [isStep2Valid, setIsStep2Valid] = useState(false);
 
   useEffect(() => {
     setPasswordMatch(password === confirmPassword);
   }, [password, confirmPassword]);
+
+  useEffect(() => {
+    setIsStep2Valid(passwordMatch && passwordStrength !== 'weak' && email.trim() !== '');
+  }, [passwordMatch, passwordStrength, email]);
 
   return (
     <>
@@ -19,7 +24,7 @@ const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChang
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
           aria-label="Enter your email"
-          autoComplete="off" 
+          autoComplete="off"
         />
       </div>
       <div className="input-container">
@@ -30,9 +35,9 @@ const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChang
             type="password"
             value={password}
             onChange={handlePasswordChange}
-            placeholder="Enter your password"
-            aria-label="Enter your password"
-            autoComplete="new-password" 
+            placeholder="Enter a password"
+            aria-label="Enter a password"
+            autoComplete="new-password"
           />
         </div>
         {password && (
@@ -51,7 +56,7 @@ const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChang
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Confirm your password"
             aria-label="Confirm your password"
-            autoComplete="new-password" 
+            autoComplete="new-password"
           />
         </div>
         {!passwordMatch && (
@@ -60,7 +65,13 @@ const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChang
       </div>
       <div className="nav-buttons">
         <button type="button" onClick={goToPreviousStep}>Prev</button>
-        <button type="button" onClick={goToNextStep} disabled={!passwordMatch || passwordStrength === 'weak'}>Next</button>
+        <button
+          type="button"
+          onClick={goToNextStep}
+          disabled={!isStep2Valid}  
+        >
+          Next
+        </button>
       </div>
     </>
   );
