@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, query, where, doc, writeBatch, deleteDoc} from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where, writeBatch, deleteDoc} from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
 export const addSession = async (parentId, sessionData) => {
@@ -84,19 +84,39 @@ export const filterAvailableSlots = (slots, bookedSlots) => {
 };
 
 //called when admin cancels a day of sessions
-export const deleteSessionsByDate = async (sessions) => {
+export const deleteSessionsByDate = async (selectedDate) => {
   try {
-    const batch = writeBatch(db); 
+    const batch = writeBatch(db);
 
-    for (const session of sessions) {
-      const sessionRef = doc(db, 'sessions', session.id);
-      batch.delete(sessionRef);
+    // Get the start and end of the selected date
+    const startOfDay = new Date(selectedDate);
+    startOfDay.setHours(0, 0, 0, 0); // Start at 00:00:00
+    const endOfDay = new Date(selectedDate);
+    endOfDay.setHours(23, 59, 59, 999); // End at 23:59:59
+
+    console.log(`Deleting sessions from ${startOfDay.toISOString()} to ${endOfDay.toISOString()}`);
+
+    // Query to get all sessions that match the selected date
+    const sessionsRef = collection(db, 'sessions');
+    const q = query(sessionsRef, where('session_time', '>=', startOfDay.toISOString()),
+                                    where('session_time', '<=', endOfDay.toISOString()));
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.log('No sessions found for the selected date.');
+      return;
     }
+
+    // Iterate through the sessions and delete them
+    querySnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
 
     await batch.commit();
     console.log('Sessions deleted successfully');
   } catch (error) {
-    console.error('Error deleting sessions: ', error);
+    console.error('Error deleting sessions:', error);
     throw error;
   }
 };

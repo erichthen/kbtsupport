@@ -274,11 +274,3 @@ body.admin-dashboard {
   text-align: center;
 }
 
-.cancel-sessions-button:hover {
-  background-color: rgb(131, 102, 107);
-}
-
-.admin-dashboard p {
-  margin-bottom: 5px;
-  margin-top: -5px;
-}

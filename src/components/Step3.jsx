@@ -29,6 +29,7 @@ const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, fil
           dateFormat="yyyy/MM/dd"
           aria-label="Select start date"
           filterDate={isWeekend} // disables weekdays
+          minDate={new Date()} // disables past dates
           inline 
         />
       </div>
@@ -43,7 +44,7 @@ const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, fil
           <option value="">Select a time slot</option>
           {filteredSlots.map((slot, index) => (
             <option key={index} value={slot.time} disabled={slot.status === 'unavailable'}>
-              {slot.time} ({slot.status})
+              {`${slot.time} EST`} ({slot.status})
             </option>
           ))}
         </select>

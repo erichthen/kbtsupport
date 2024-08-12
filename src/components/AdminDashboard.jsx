@@ -81,16 +81,6 @@ const AdminDashboard = () => {
     });
   };
 
-  const getSuffix = (day) => {
-    if (day > 3 && day < 21) return 'th';
-    switch (day % 10) {
-      case 1: return 'st';
-      case 2: return 'nd';
-      case 3: return 'rd';
-      default: return 'th';
-    }
-  };
-
   const handleDayClick = (date) => {
     const sessionsForDay = sessions.filter(session => {
       const sessionDate = new Date(session.session_time);
@@ -100,11 +90,25 @@ const AdminDashboard = () => {
         sessionDate.getDate() === date.getDate()
       );
     });
-    const day = date.getDate();
-    const ordinalSuffix = getSuffix(day);
-    const formattedDate = `${date.toLocaleDateString('en-US', { weekday: 'long' })}, ${date.toLocaleDateString('en-US', { month: 'long' })} ${day}${ordinalSuffix}`;
-    setSelectedDate(formattedDate);
-    setSelectedSessions(sessionsForDay);
+  
+    const formattedSessions = sessionsForDay.map(session => {
+      const sessionTime = new Date(session.session_time);
+  
+      // Convert the session time to the local time zone (EST/EDT) and format it
+      const formattedTime = sessionTime.toLocaleString('en-US', {
+        timeZone: 'America/New_York',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      });
+  
+      return {
+        ...session,
+        formattedTime: `${formattedTime} EST`, // Append EST manually
+      };
+    });
+  
+    setSelectedSessions(formattedSessions);
   };
 
   const handleInvoicesClick = () => {

@@ -100,24 +100,42 @@ const RegistrationForm = () => {
         email: email,
         child_name: child,
         invoice_status: false,
-        uid: user.uid
+        uid: user.uid,
       };
       
       const parentId = await addParent(parentData);
   
-      //add sessions same day of the week, same time for the rest of the month + 3 more months
       let currentDate = new Date(startDate);
       const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 3, 0); 
-  
+
       while (currentDate <= endDate) {
-        if (currentDate.getDay() === 6 || currentDate.getDay() === 0) { //saturday or sunday
+        if (currentDate.getDay() === 6 || currentDate.getDay() === 0) { // Saturday or Sunday
+          const sessionDate = new Date(currentDate);
+          const timeParts = selectedTime.split(':');
+          let hours = parseInt(timeParts[0], 10);
+          const minutes = parseInt(timeParts[1], 10);
+
+          if (selectedTime.includes('PM') && hours !== 12) {
+            hours += 12;
+          } else if (selectedTime.includes('AM') && hours === 12) {
+            hours = 0;
+          }
+
+          if (!isNaN(hours) && !isNaN(minutes)) {
+            sessionDate.setHours(hours, minutes, 0, 0);
+
+            // Save the session to Firestore
             await addSession(parentId, {
-                child_name: child,
-                session_time: new Date(currentDate.setHours(parseInt(selectedTime.split(':')[0]), parseInt(selectedTime.split(':')[1]))).toISOString(),
+              child_name: child,
+              session_time: sessionDate.toISOString(),
             });
+          } else {
+            throw new Error("Invalid time value");
+          }
         }
-        currentDate.setDate(currentDate.getDate() + 7); //same time next week
-    }
+        currentDate.setDate(currentDate.getDate() + 7); // Move to the same day next week
+      }
+  
       alert('Registration complete. You can now log in with your email and password.');
       history.push('/login');
     } catch (error) {
