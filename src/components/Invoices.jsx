@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getParents } from '../services/firestore';
+import { getParents, updateInvoiceStatus } from '../services/firestore';
 import { useHistory } from 'react-router-dom';
 import '../styles/invoices.css';
 import axios from 'axios';
@@ -12,13 +12,14 @@ const Invoices = () => {
   const history = useHistory();
 
   useEffect(() => {
-    const fetchInvoices = async () => {
-      const invoicesData = await getParents();
-      setInvoices(invoicesData);
-    };
+  const fetchInvoices = async () => {
+    const invoicesData = await getParents();
+    const filteredInvoices = invoicesData.filter(invoice => !invoice.invoice_status);
+    setInvoices(filteredInvoices);
+  };
 
-    fetchInvoices();
-  }, []);
+  fetchInvoices();
+}, []);
 
   const handleBackToAdmin = () => {
     history.push('/admin');
@@ -46,10 +47,10 @@ const Invoices = () => {
       alert('Please upload a file');
       return;
     }
-
+  
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
-
+  
     fileReader.onload = async () => {
       const base64File = fileReader.result.split(',')[1]; 
       try {
@@ -60,11 +61,18 @@ const Invoices = () => {
           fileContent: base64File,
           fileName: file.name
         });
+  
+        // Update the invoice status in Firestore
+        await updateInvoiceStatus(selectedParent.id, true);
+  
+        // Remove the parent from the list of invoices in state
+        setInvoices(invoices.filter(invoice => invoice.id !== selectedParent.id));
+  
         alert('Invoice sent successfully');
         handleBackToInvoices();
       } 
       catch (error) {
-        console.error(error.response.data);
+        console.error(error);
         alert('Error sending mail');
       }
     };
@@ -76,12 +84,16 @@ const Invoices = () => {
         <div className="invoices-section">
           <h2>Invoices for {new Date().toLocaleString('default', { month: 'long' })}</h2>
           <ul>
-            {invoices.map(invoice => (
-              <li key={invoice.id}>
-                <span>{invoice.parent_name} - {invoice.child_name}</span>
-                <button className="send-invoice-button" onClick={() => handleSendInvoiceClick(invoice)}>Send Invoice</button>
-              </li>
-            ))}
+            {invoices.length === 0 ? (
+              <p className="no-invoices-message">No more invoices for the month!</p>
+            ) : (
+            invoices.map(invoice => (
+            <li key={invoice.id}>
+              <span>{invoice.parent_name} - {invoice.child_name}</span>
+              <button className="send-invoice-button" onClick={() => handleSendInvoiceClick(invoice)}>Send Invoice</button>
+            </li>
+            ))
+          )}
           </ul>
           <button className="back-button" onClick={handleBackToAdmin}>Back</button>
         </div>

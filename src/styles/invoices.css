@@ -127,3 +127,10 @@ body.invoices-page {
 .upload-button:hover {
   background-color: rgb(131, 102, 107);
 }
+
+.no-invoices-message {
+  text-align: center;
+  color: rgb(83, 52, 73); /* Adjust color as needed */
+  font-weight: bold;
+  margin-top: 35px; /* Adjust spacing as needed */
+}

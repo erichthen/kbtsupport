@@ -170,83 +170,67 @@ body.admin-dashboard {
   right: 0;
 }
 
+.react-datepicker__day--outside-month {
+  visibility: hidden;
+}
+
 .session-day {
   background-color: #e0bbf5;
 }
 
-.admin-dashboard .session-popup {
-  margin-left: 30px;
-  position: relative;
-  margin-top: 20px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.session-container {
+  position: relative; /* Ensure the parent container is positioned relative */
+  padding: 50px;
+  text-align: center;
 }
 
-.session-popup p {
-  margin: 10px 0;
+.session-title {
+  margin-top: -50px; /* Remove default margin */
+  padding-bottom: 30px; /* Space between title and session list */
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center; /* Center the title */
+  color: #ffffff; /* Adjust the color as needed */
+  text-decoration: underline;
+  text-decoration-color: white;
 }
 
-.session-separator {
-  border-top: 1px dashed #ccc;
-  margin: 10px 0;
-}
-
-.session-popup .close-button {
+.session-container .close-button {
   position: absolute;
-  top: -4px;
-  right: 10px;
+  width: 10px;
+  height: 10px;
+  top: -30px;   /* Adjust the top position as needed */
+  right: -10px; /* Adjust the right position as needed */
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
-  color: rgb(83, 52, 73);
-  width: auto;
-  height: auto;
-  line-height: normal;
-  padding: 1px;
+  padding: 0;
 }
 
-.session-popup .close-button:hover {
+.session-container .close-button:hover {
   color: red;
-  background: transparent;
-  border: none;
+  background: none;
 }
 
-.invoices-container {
-  width: 40%;
-  margin-top: 20px;
-  padding: 40px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
-}
-
-.invoices-container ul {
-  list-style-type: none;
-  padding: 0;
-  margin-left: -15px;
-}
-
-.invoices-container li {
+.session-container .session-info-container {
   display: flex;
+  justify-content: center;
   align-items: center;
-  margin-left: -15px;
+  gap: 20px;
 }
 
-.invoices-container label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 5px;
+.session-container .session-info {
+  display: inline-block;
+  padding: 10px;
+  margin-top: -20px;
+  background-color: rgba(225, 197, 202, 0.5);
+  border-radius: 10px;
+  text-align: left; /* Keep the text left-aligned within each session */
+  color: white;
 }
 
-.invoices-container input[type="checkbox"] {
-  margin-right: 10px;
-  margin: 0;
-  padding: 0;
-}
+
 
 .zoom-button {
   background-color: rgb(83, 52, 73);
@@ -264,19 +248,23 @@ body.admin-dashboard {
   background-color: rgb(131, 102, 107);
 }
 
-.admin-dashboard .cancel-sessions-button {
-  width: 65%; 
-  padding: 4px;
-  margin-bottom: -10px;
-  margin-top: 20px; 
-  margin-left: 30px;
+.session-container .cancel-sessions-button {
+  display: block;
+  margin: 20px auto; /* Center the button horizontally */
+  margin-bottom: -55px;
+  padding: 10px 20px;
+  background-color: rgb(177, 48, 65);
+  color: white;
   border: none;
   border-radius: 5px;
-  background-color: rgb(83, 52, 73);
   font-size: 16px;
   cursor: pointer;
-  display: block;
-  text-align: center;
+  width: fit-content; /* Adjusts the button width to fit its content */
+}
+
+
+.admin-dashboard .cancel-sessions-button:hover {
+  background-color: rgb(95, 8, 8);
 }
 
 .admin-dashboard .zoom-info {
@@ -288,3 +276,52 @@ body.admin-dashboard {
   margin-bottom: 5px; /* Adjust this value to decrease/increase spacing between buttons */
 }
 
+/* Style for the confirmation popup */
+.confirmation-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 300px;
+  text-align: center;
+}
+
+/* Style for the buttons inside the confirmation popup */
+.confirmation-popup .confirm-button,
+.confirmation-popup .cancel-button {
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Specific styles for the confirm and cancel buttons */
+.confirmation-popup .confirm-button {
+  background-color: rgb(83, 52, 73);
+  color: white;
+}
+
+.confirmation-popup .confirm-button:hover {
+  background-color: rgb(131, 102, 107);
+}
+
+.confirmation-popup .cancel-button {
+  background-color: #ccc;
+  color: black;
+}
+
+.confirmation-popup .cancel-button:hover {
+  background-color: #999;
+}
+
+.no-sessions {
+  color: white;
+  margin-top: -30px;
+}

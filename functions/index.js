@@ -14,13 +14,13 @@ const transporter = nodemailer.createTransport({
 });
 
 exports.sendMail = functions.https.onRequest((req, res) => {
-  cors({origin: true})(req, res, () => {
+  cors(req, res, () => {
     const {email, subject, message, fileContent, fileName} = req.body;
 
     const mailOptions = {
       from: "erich.then2@gmail.com",
       to: email,
-      subject,
+      subject: subject,
       html: message,
       attachments: [
         {
@@ -33,6 +33,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
+        console.error("Error sending email:", error);
         return res.status(500).send(error.toString());
       }
       return res.status(200).send("Email sent successfully");
@@ -106,7 +107,7 @@ exports.sendReminderEmails = functions.pubsub
 
         const message = `
           Dear Parent,<br>
-          This is a reminder for your child's session on ${sessionTime}.<br>
+          This is a reminder for your child"s session on ${sessionTime}.<br>
           Please join the session using the following Zoom link: <a href="https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09">Join Zoom</a><br>
           Best Regards,<br>
           KBT Reading Support

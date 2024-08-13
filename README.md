@@ -7,6 +7,7 @@
 - **If no invoices, display message**
 - **Test the appointment reminder function**
 - **Redo the styling of the session popup, allow for a new window because it will look bad if lots of sessions
+- **Reset invoice statuses at the end of the month**
 
 **Emailing**
 

@@ -1,146 +1,219 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory, Redirect } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
-import { getSessionsByParentId } from '../services/sessions';
-import { getParentById } from '../services/firestore';
-import { useHistory } from 'react-router-dom';
-import { httpsCallable } from 'firebase/functions';
-import { functions } from '../firebaseConfig';
-import { deleteSessionByDate } from '../services/sessions';
-import '../styles/cancelsession.css';
+import { sendSignInLink, logoutUser } from '../services/auth';
+import DatePicker from 'react-datepicker';
+import { getSessions, deleteSessionsByDate } from '../services/sessions';
+import { getParentEmailById } from '../services/firestore';
+import '../styles/admindash.css';
+import 'react-datepicker/dist/react-datepicker.css';
+import axios from 'axios';
 
-const CancelSession = () => {
-  const [sessions, setSessions] = useState([]);
-  const [selectedSession, setSelectedSession] = useState('');
-  const [note, setNote] = useState(''); 
+const AdminDashboard = () => {
   const { user } = useAuth();
   const history = useHistory();
-  const [parentName, setParentName] = useState('');
+  const [email, setEmail] = useState('');
+  const [showInviteForm, setShowInviteForm] = useState(false);
+  const [sessions, setSessions] = useState([]);
+  const [selectedSessions, setSelectedSessions] = useState([]);
+  const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
 
   useEffect(() => {
-    document.body.classList.add('cancel-session');
+    document.body.classList.add('admin-dashboard');
     return () => {
-      document.body.classList.remove('cancel-session');
+      document.body.classList.remove('admin-dashboard');
     };
   }, []);
 
   useEffect(() => {
     const fetchSessions = async () => {
-      if (user) {
-        try {
-          const parentData = await getParentById(user.uid);
-          if (parentData && parentData.id) {
-            setParentName(parentData.parent_name);
-            const sessions = await getSessionsByParentId(parentData.id);
-            const sortedSessions = sessions.sort(
-              (a, b) => new Date(a.session_time) - new Date(b.session_time)
-            );
-            setSessions(sortedSessions);
-          }
-        } catch (error) {
-          console.error('Error fetching sessions: ', error);
-        }
-      }
+      const sessionsData = await getSessions();
+      const formattedSessions = sessionsData.map(session => ({
+        ...session,
+        session_time: new Date(session.session_time)
+      }));
+      setSessions(formattedSessions);
     };
 
     fetchSessions();
-  }, [user]);
+  }, []);
 
-  const formatSessionDate = (date) => {
-    const sessionDate = new Date(date);
-    const day = sessionDate.getDate();
-    const ordinalSuffix = getOrdinalSuffix(day);
-    return `${sessionDate.toLocaleString('en-US', { month: 'long' })} ${day}${ordinalSuffix}`;
+  const handleLogout = async () => {
+    await logoutUser();
+    history.push('/login');
   };
 
-  const getOrdinalSuffix = (day) => {
-    if (day > 3 && day < 21) return 'th';
-    switch (day % 10) {
-      case 1: return 'st';
-      case 2: return 'nd';
-      case 3: return 'rd';
-      default: return 'th';
+  const handleSendInvite = async () => {
+    const actionCodeSettings = {
+      url: 'http://localhost:3000/register',
+      handleCodeInApp: true,
+    };
+
+    const message = 'Hello, you have been invited to register to the KBT Reading Support website! Click the below link to do so.';
+
+    try {
+      await sendSignInLink(email, actionCodeSettings, message);
+      alert('Registration link sent.');
+      setShowInviteForm(false);
+      setEmail('');
+    } catch (error) {
+      console.error();
+      alert('Error sending registration link.');
     }
   };
 
-  const handleCancelSession = async () => {
-    try {
-      const parentData = await getParentById(user.uid);
-      if (!parentData || !parentData.id) {
-        throw new Error('Parent ID not found');
-      }
-      const parentId = parentData.id; 
-  
-      const sessionDate = selectedSession;
+  if (!user) {
+    return <Redirect to="/login" />;
+  }
 
-      console.log('Session to be deleted: ', sessionDate);
+  if (user.email !== 'kelli.b.then@gmail.com') {
+    return <Redirect to="/" />;
+  }
+
+  const isDayWithSession = (date) => {
+    return sessions.some(session => {
+      const sessionDate = new Date(session.session_time);
+      return (
+        sessionDate.getFullYear() === date.getFullYear() &&
+        sessionDate.getMonth() === date.getMonth() &&
+        sessionDate.getDate() === date.getDate()
+      );
+    });
+  };
+
+  const handleDayClick = (date) => {
+    const sessionsForDay = sessions.filter(session => {
+      const sessionDate = new Date(session.session_time);
+      return (
+        sessionDate.getFullYear() === date.getFullYear() &&
+        sessionDate.getMonth() === date.getMonth() &&
+        sessionDate.getDate() === date.getDate()
+      );
+    });
   
-      const sendCancelEmail = httpsCallable(functions, 'sendCancelEmail');
-      
-      //calling cloud function to email amdin of cancellation
-      const response = await sendCancelEmail({
-        parentName: parentName,
-        sessionDate: formatSessionDate(sessionDate),
-        note: note,
+    const formattedSessions = sessionsForDay.map(session => {
+      const sessionTime = new Date(session.session_time);
+  
+      const formattedTime = sessionTime.toLocaleString('en-US', {
+        timeZone: 'America/New_York',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
       });
   
-      if (response.data.success) {
-        console.log('Cancellation email sent successfully.');
+      return {
+        ...session,
+        formattedTime: `${formattedTime} EST`,
+      };
+    });
   
-        //remove session from schedule
-        await deleteSessionByDate(parentId, sessionDate);
+    setSelectedSessions(formattedSessions);
+  };
 
-        console.log(`Session should be deleted for parentId: ${parentId} at date: ${sessionDate}`);
-  
-        alert('Session canceled and email sent successfully.');
-        history.push('/dashboard');
-      } else {
-        throw new Error(response.data.error || 'Failed to send cancellation email.');
+  const handleInvoicesClick = () => {
+    history.push('/admin/invoices');
+  };
+
+  const handleClosePopup = () => {
+    setSelectedSessions([]);
+  };
+
+  const handleCancelSessions = () => {
+    if (selectedSessions.length === 0) {
+      alert('No sessions selected');
+      return;
+    }
+    setShowConfirmationPopup(true);
+  };
+
+  const handleConfirmCancel = async () => {
+    try {
+      const sessionDate = new Date(selectedSessions[0].session_time);
+      for (const session of selectedSessions) {
+        const parentId = session.parent_id;
+        const sessionTime = new Date(session.session_time).toLocaleString();
+        const parentEmail = await getParentEmailById(parentId);
+        const message = `
+          Dear Parent,<br>
+          Your child's session on ${sessionTime} has been canceled. We apologize for any inconvenience this may cause.<br>
+          Best Regards,<br>
+          KBT Reading Support
+        `;
+        const response = await axios.post('https://us-central1-kbt-reading-support.cloudfunctions.net/sendCancellationEmails', {
+          email: parentEmail,
+          subject: 'Session Cancellation Notification',
+          message: message
+        });
+        console.log(response.data.message || 'Cancellation email sent successfully.');
       }
+      await deleteSessionsByDate(sessionDate);
+      alert('All cancellation emails sent and sessions deleted successfully.');
+      setSelectedSessions([]);
+      setShowConfirmationPopup(false);
     } catch (error) {
-      console.error(error);
-      alert('Error canceling the session.');
+      console.error(error.response ? error.response.data : error.message);
+      alert('Error sending cancellation emails or deleting sessions.');
     }
   };
 
   return (
-    <div className="cancel-session-container">
-      <h3>Select a session to cancel</h3>
-      <select 
-        value={selectedSession} 
-        onChange={(e) => setSelectedSession(e.target.value)}
-        className="session-dropdown"
-      >
-        <option value="">Select a session</option>
-        {sessions.map(session => (
-          <option key={session.id} value={session.session_time}>
-            {formatSessionDate(session.session_time)}
-          </option>
-        ))}
-      </select>
-      
-      {selectedSession && (
-        <div className="note-container">
-          <textarea
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            placeholder="Add a note for the cancellation"
-            className="note-textbox"
+    <div className="main-container">
+      <h1>Hello, Kelli!</h1>
+      <div className="outer-container">
+        <div className="container">
+          {!showInviteForm && (
+            <button className="add-client-button" onClick={() => setShowInviteForm(true)}>Add Client</button>
+          )}
+          {showInviteForm && (
+            <div className="input-group">
+              <input
+                className="email-input"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Client email"
+              />
+              <button className="send-button" onClick={handleSendInvite}>Send Invite</button>
+            </div>
+          )}
+          <button className="zoom-button" onClick={() => window.open("https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09&omn=74404485715", "_blank", "noopener noreferrer")}>Join Zoom Call</button>
+          <button className="invoices-button" onClick={handleInvoicesClick}>Invoices</button>
+          <button className="logout-button" onClick={handleLogout}>Logout</button>
+        </div>
+        <div className="calendar-container">
+          <DatePicker
+            inline
+            highlightDates={sessions.map(session => new Date(session.session_time))}
+            dayClassName={date => isDayWithSession(date) ? 'session-day' : undefined}
+            onChange={handleDayClick} 
           />
         </div>
-      )}
-      <p>An email with the note will be sent to<br />KBT Reading Support regarding your cancellation.</p>
-      <div className="buttons">
-        <button
-          onClick={handleCancelSession}
-          className="cancel-button"
-          disabled={!note || !selectedSession} 
-        >
-          Cancel Session
-        </button>
-        <button onClick={() => history.push('/dashboard')} className="back-button">Back</button>
+        {selectedSessions.length > 0 && (
+          <>
+            <div className="session-popup">
+              <button className="close-button" onClick={handleClosePopup}>x</button>
+              {selectedSessions.map((session, index) => (
+                <div key={session.id} className="session-info">
+                  <p>Child's Name: {session.child_name}</p>
+                  <p>Time: {session.session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+                  {index < selectedSessions.length - 1 && <hr className="session-separator" />}
+                </div>
+              ))}
+              <button className="cancel-sessions-button" onClick={handleCancelSessions}>Cancel Sessions</button>
+            </div>
+          </>
+        )}
       </div>
+
+      {showConfirmationPopup && (
+        <div className="confirmation-popup">
+          <p>Are you sure you want to cancel the sessions on {new Date(selectedSessions[0]?.session_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}?</p>
+          <button onClick={handleConfirmCancel} className="confirm-button">Yes</button>
+          <button onClick={() => setShowConfirmationPopup(false)} className="cancel-button">No</button>
+        </div>
+      )}
     </div>
   );
 };
 
-export default CancelSession;
+export default AdminDashboard;

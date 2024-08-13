@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, addDoc, doc, getDoc} from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc, doc, getDoc, updateDoc} from "firebase/firestore";
 import { db } from '../firebaseConfig';
 
 export const addParent = async (parentData) => {
@@ -76,5 +76,17 @@ export const getParentEmailById = async (parentId) => {
   } catch (error) {
     console.error('Error fetching parent email:', error);
     throw new Error('Failed to retrieve parent email');
+  }
+};
+
+export const updateInvoiceStatus = async (parentId, status) => {
+  try {
+    const parentRef = doc(db, 'parents', parentId);
+    await updateDoc(parentRef, {
+      invoice_status: status
+    });
+  } catch (error) {
+    console.error('Error updating invoice status:', error);
+    throw error;
   }
 };
