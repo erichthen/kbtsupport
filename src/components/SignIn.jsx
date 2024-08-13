@@ -33,7 +33,12 @@ const SignIn = () => {
         history.push('/dashboard'); 
       }
     } catch (error) {
-      setError(error.message);
+      if (error.code === 'auth/invalid-login-credentials') {
+        setError('Incorrect Password!');
+      }
+      else {
+        setError(error.message);
+      }
     }
   };
 

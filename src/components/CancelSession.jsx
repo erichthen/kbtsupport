@@ -71,8 +71,9 @@ const CancelSession = () => {
       const parentId = parentData.id; 
   
       const sessionDate = selectedSession;
+
+      console.log('Session to be deleted: ', sessionDate);
   
-      //reference to the cloud function
       const sendCancelEmail = httpsCallable(functions, 'sendCancelEmail');
       
       //calling cloud function to email amdin of cancellation
@@ -87,6 +88,8 @@ const CancelSession = () => {
   
         //remove session from schedule
         await deleteSessionByDate(parentId, sessionDate);
+
+        console.log(`Session should be deleted for parentId: ${parentId} at date: ${sessionDate}`);
   
         alert('Session canceled and email sent successfully.');
         history.push('/dashboard');

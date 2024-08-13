@@ -57,7 +57,7 @@ body.admin-dashboard {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 
 .admin-dashboard input {
@@ -66,6 +66,10 @@ body.admin-dashboard {
   margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+.admin-dashboard .email-input {
+  margin-top: 30px;
 }
 
 .admin-dashboard button {
@@ -263,7 +267,8 @@ body.admin-dashboard {
 .admin-dashboard .cancel-sessions-button {
   width: 65%; 
   padding: 4px;
-  margin-top: -10px; 
+  margin-bottom: -10px;
+  margin-top: 20px; 
   margin-left: 30px;
   border: none;
   border-radius: 5px;
@@ -272,5 +277,14 @@ body.admin-dashboard {
   cursor: pointer;
   display: block;
   text-align: center;
+}
+
+.admin-dashboard .zoom-info {
+  margin-top: -10px;
+  margin-bottom: -10px;
+}
+
+.admin-dashboard .container button {
+  margin-bottom: 5px; /* Adjust this value to decrease/increase spacing between buttons */
 }
 

@@ -3,7 +3,7 @@ import { useHistory, Redirect } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 import { sendSignInLink, logoutUser } from '../services/auth';
 import DatePicker from 'react-datepicker';
-import { getSessions,  } from '../services/sessions';
+import { getSessions, deleteSessionsByDate } from '../services/sessions';
 import { getParentEmailById } from '../services/firestore';
 import '../styles/admindash.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -16,7 +16,6 @@ const AdminDashboard = () => {
   const [showInviteForm, setShowInviteForm] = useState(false);
   const [sessions, setSessions] = useState([]);
   const [selectedSessions, setSelectedSessions] = useState([]);
-  const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
     document.body.classList.add('admin-dashboard');
@@ -126,19 +125,22 @@ const AdminDashboard = () => {
     }
   
     try {
+      // Get the date from the first session (since all sessions are from the same day)
+      const sessionDate = new Date(selectedSessions[0].session_time);
+  
       for (const session of selectedSessions) {
         const parentId = session.parent_id;
         const sessionTime = new Date(session.session_time).toLocaleString();
   
         const parentEmail = await getParentEmailById(parentId);
-        
+  
         const message = `
           Dear Parent,<br>
           Your child's session on ${sessionTime} has been canceled. We apologize for any inconvenience this may cause.<br>
           Best Regards,<br>
           KBT Reading Support
         `;
-
+  
         const response = await axios.post('https://us-central1-kbt-reading-support.cloudfunctions.net/sendCancellationEmails', {
           email: parentEmail,
           subject: 'Session Cancellation Notification',
@@ -147,12 +149,15 @@ const AdminDashboard = () => {
         console.log(response.data.message || 'Cancellation email sent successfully.');
       }
   
-      alert('All cancellation emails sent successfully.');
-      setSelectedSessions([]); 
+      // After sending emails, delete the sessions
+      await deleteSessionsByDate(sessionDate);
+  
+      alert('All cancellation emails sent and sessions deleted successfully.');
+      setSelectedSessions([]);
   
     } catch (error) {
       console.error(error.response ? error.response.data : error.message);
-      alert('Error sending cancellation emails.');
+      alert('Error sending cancellation emails or deleting sessions.');
     }
   };
   
@@ -167,6 +172,7 @@ const AdminDashboard = () => {
           {showInviteForm && (
             <div className="input-group">
               <input
+                className="email-input"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -175,9 +181,7 @@ const AdminDashboard = () => {
               <button className="send-button" onClick={handleSendInvite}>Send Invite</button>
             </div>
           )}
-          <button className="zoom-button" onClick={() => window.open("https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09&omn=74404485715", "_blank", "noopener noreferrer")}>Join Zoom Session</button>
-          <p>Meeting ID: 882 193 2666 </p>
-          <p>Passcode: 689887</p> 
+          <button className="zoom-button" onClick={() => window.open("https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09&omn=74404485715", "_blank", "noopener noreferrer")}>Join Zoom Call</button>
           <button className="invoices-button" onClick={handleInvoicesClick}>Invoices</button>
           <button className="logout-button" onClick={handleLogout}>Logout</button>
         </div>
@@ -192,9 +196,7 @@ const AdminDashboard = () => {
         {selectedSessions.length > 0 && (
           <>
             <div className="session-popup">
-              <button className="cancel-sessions-button" onClick={handleCancelSessions}>Cancel Sessions</button>
               <button className="close-button" onClick={handleClosePopup}>x</button>
-              <p>{selectedDate}</p>
               {selectedSessions.map((session, index) => (
                 <div key={session.id} className="session-info">
                   <p>Child's Name: {session.child_name}</p>
@@ -202,6 +204,7 @@ const AdminDashboard = () => {
                   {index < selectedSessions.length - 1 && <hr className="session-separator" />}
                 </div>
               ))}
+              <button className="cancel-sessions-button" onClick={handleCancelSessions}>Cancel Sessions</button>
             </div>
           </>
         )}
