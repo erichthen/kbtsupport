@@ -186,7 +186,6 @@ const AdminDashboard = () => {
                 <div key={session.id} className="session-info">
                   <p>Child's Name: {session.child_name}</p>
                   <p>Time: {session.session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
-                  {index < selectedSessions.length - 1 && <hr className="session-separator" />}
                 </div>
               ))
             ) : (
