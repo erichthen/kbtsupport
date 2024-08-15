@@ -12,8 +12,7 @@
 TODO ASAP
 - Finish implementing the rescheudling for both admin and client
 - Allow admin to cancel a specific session
-- Allow admin to reschdule a specifc session
-
+- Allow admin to reschdule a specifc session - you did the delete part, now you need to add and send email (both client and admin rescheduling processes)
 
 **Emailing**
 

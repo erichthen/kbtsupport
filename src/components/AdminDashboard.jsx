@@ -1,9 +1,14 @@
+
+
+
+
+
 import React, { useEffect, useState } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 import { sendSignInLink, logoutUser } from '../services/auth';
 import DatePicker from 'react-datepicker';
-import { getSessions, deleteSessionsByDate } from '../services/sessions';
+import { getSessions, deleteSessionsByDate, deleteSessionById, addSession } from '../services/sessions';
 import { getParentEmailById } from '../services/firestore';
 import '../styles/admindash.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -23,8 +28,8 @@ const AdminDashboard = () => {
   const [selectedDay, setSelectedDay] = useState(null); // Store selected day
   const [filteredSlots, setFilteredSlots] = useState([]); // For storing available slots
   const [selectedDayToRescheduleTo, setSelectedDayToRescheduleTo] = useState(null);
-  const [selectedSession, setSelectedSession] = useState(null); // For selected session
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null); // For selected time slot
+  const [selectedSession, setSelectedSession] = useState(null);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
 
   useEffect(() => {
     document.body.classList.add('admin-dashboard');
@@ -212,16 +217,6 @@ const AdminDashboard = () => {
     const selected = new Date(event.target.value);
     setSelectedDay(selected); // Store selected day as a Date object
   };
-
-  const handleSessionSelect = (event) => {
-    const selectedSessionId = event.target.value;
-    setSelectedSession(selectedSessionId);
-  };
-  
-  const handleTimeSlotSelect = (event) => {
-    const selectedTime = event.target.value;
-    setSelectedTimeSlot(selectedTime);
-  };
   
   // Log session data and filter sessions based on selected day
   const sessionsForSelectedDay = selectedDay
@@ -252,8 +247,54 @@ const AdminDashboard = () => {
     setFilteredSlots(filteredSlots);
   };
 
-  const handleRescheduleSession = () => {
-    //TODO IMPLEMENT THIS
+  const handleRescheduleSession = async () => {
+    try {
+      // Check if required fields are filled
+      console.log("Selected Day:", selectedDay);
+      console.log("Selected Session:", selectedSession);
+      console.log("Selected Day to Reschedule To:", selectedDayToRescheduleTo);
+      console.log("Selected Time Slot:", selectedTimeSlot);
+  
+      if (!selectedDay || !selectedSession || !selectedDayToRescheduleTo || !selectedTimeSlot) {
+        alert("Please fill out all of the fields.");
+        return;
+      }
+  
+      // Ensure that selectedSession is an object with an id
+      if (!selectedSession.id) {
+        console.error("Selected session does not have an ID.");
+        return;
+      }
+  
+      // Call deleteSessionById to delete the selected session
+      await deleteSessionById(selectedSession.id);
+      console.log(`Session for ${selectedSession.child_name} on ${selectedSession.session_time} deleted successfully.`);
+  
+      // Proceed with adding the new rescheduled session (this can be added next)
+      alert("Session deleted successfully. Proceeding to reschedule.");
+    } catch (error) {
+      console.error("Error deleting session: ", error);
+      alert("Error deleting the session.");
+    }
+  };
+
+  const getAllWeekends = () => {
+    const weekends = [];
+    const today = new Date();
+    const endDate = new Date();
+    endDate.setMonth(today.getMonth() + 3); // Two months from now
+  
+    let currentDate = new Date(today);
+  
+    while (currentDate <= endDate) {
+      const day = currentDate.getDay();
+      if (day === 6 || day === 0) { // Saturday (6) or Sunday (0)
+        weekends.push(new Date(currentDate));
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+  
+    return weekends;
   };
 
   return (
@@ -262,70 +303,73 @@ const AdminDashboard = () => {
       <div className="outer-container">
         {showReschedule ? (
           <div className="reschedule-container">
-          <h2 className="reschedule-title">Reschedule a Session</h2>
-        
-          {/* Select day of session */}
-          <p className="select-date-title">Select day of session</p>
-          <select className="session-dropdown" onChange={handleDaySelect}>
-            <option value="">-- Select a Day --</option>
-            {sessions.map((session, index) => (
-              <option key={index} value={session.session_time}>
-                {getFormattedDate(new Date(session.session_time))}
-              </option>
-            ))}
-          </select>
-        
-          {/* Select session */}
-          <p className="select-session">Select Session</p>
-          <select className="session-dropdown" onChange={handleSessionSelect}>
-            {sessionsForSelectedDay.length > 0 ? (
-              sessionsForSelectedDay.map((session, index) => (
-                <option key={index} value={session.id}>
-                  {`${session.child_name} at ${session.session_time.toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true,
-                  })}`}
+            <h2 className="reschedule-title">Reschedule a Session</h2>
+  
+            {/* Select day of session */}
+            <p className="select-date-title">Select day of session</p>
+            <select className="session-dropdown" onChange={handleDaySelect}>
+              <option value="">-- Select a Day --</option>
+              {sessions.map((session, index) => (
+                <option key={index} value={session.session_time}>
+                  {getFormattedDate(new Date(session.session_time))}
                 </option>
-              ))
-            ) : (
-              <option>No sessions available</option>
-            )}
-          </select>
-        
-          {/* Select day to reschedule to */}
-          <p className="select-new-date">Select day to reschedule to</p>
-          <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
-            <option value="">-- Select a Day --</option>
-            {sessions.map((session, index) => (
-              <option key={index} value={session.session_time}>
-                {getFormattedDate(new Date(session.session_time))}
-              </option>
-            ))}
-          </select>
-        
-          {/* Select time to reschedule to */}
-          <p className="select-new-time">Select time to reschedule to</p>
-          <select className="session-dropdown" onChange={handleTimeSlotSelect}>
-            <option value="">-- Select a Time --</option>
-            {filteredSlots.map((slot, index) => (
-              <option key={index} value={slot.time} disabled={slot.status === 'unavailable'}>
-                {slot.time} {slot.status === 'unavailable' ? '(Unavailable)' : ''}
-              </option>
-            ))}
-          </select>
-        
-          {/* Reschedule button */}
-          <button
-            className="reschedule-session-button"
-            disabled={!selectedDay || !selectedSession || !selectedDayToRescheduleTo || !selectedTimeSlot}
-            onClick={handleRescheduleSession}
-          >
-            Reschedule Session
-          </button>
-        
-          <button className="back-button" onClick={() => setShowReschedule(false)}>Back</button>
-        </div>
+              ))}
+            </select>
+  
+            {/* Select session */}
+            <p className="select-session">Select Session</p>
+            <select className="session-dropdown" onChange={(e) => {
+              const sessionId = e.target.value;
+              const session = sessionsForSelectedDay.find(s => s.id === sessionId);
+              setSelectedSession(session); // Set the full session object, not just the ID
+            }}>
+              <option value="">-- Select a Session --</option>
+              {sessionsForSelectedDay.length > 0 ? (
+                sessionsForSelectedDay.map((session, index) => (
+                  <option key={index} value={session.id}>
+                    {`${session.child_name} at ${session.session_time.toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                    })}`}
+                  </option>
+                ))
+              ) : (
+                <option>No sessions available</option>
+              )}
+            </select>
+  
+            {/* Select day to reschedule to */}
+            <p className="select-new-date">Select day to reschedule to</p>
+            <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
+              <option value="">-- Select a Day --</option>
+              {getAllWeekends().map((day, index) => (
+                <option key={index} value={day.toISOString()}>
+                  {getFormattedDate(new Date(day))}
+                </option>
+              ))}
+            </select>
+  
+            {/* Select time to reschedule to */}
+            <p className="select-new-time">Select time to reschedule to</p>
+            <select className="session-dropdown" onChange={(e) => setSelectedTimeSlot(e.target.value)}>
+              <option value="">-- Select a Time --</option>
+              {filteredSlots.map((slot, index) => (
+                <option key={index} value={slot.time} disabled={slot.status === 'unavailable'}>
+                  {slot.time} {slot.status === 'unavailable' ? '(Unavailable)' : ''}
+                </option>
+              ))}
+            </select>
+  
+            <button 
+              className="reschedule-session-button" 
+              onClick={handleRescheduleSession}
+            >
+              Reschedule Session
+            </button>
+  
+            <button className="back-button" onClick={() => setShowReschedule(false)}>Back</button>
+          </div>
         ) : showSessions ? (
           <div className="session-container">
             <h2 className="session-title">Sessions for {getFormattedDate(selectedDate)}</h2>
@@ -378,6 +422,7 @@ const AdminDashboard = () => {
       </div>
     </div>
   );
+  
 };
 
 export default AdminDashboard;

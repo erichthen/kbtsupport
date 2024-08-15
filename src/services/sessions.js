@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, query, where, writeBatch, deleteDoc} from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where, writeBatch, deleteDoc, doc} from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
 export const addSession = async (parentId, sessionData) => {
@@ -83,7 +83,6 @@ export const filterAvailableSlots = (slots, bookedSlots) => {
   }));
 };
 
-//called when admin cancels a day of sessions
 export const deleteSessionsByDate = async (selectedDate) => {
   try {
     const batch = writeBatch(db);
@@ -121,7 +120,7 @@ export const deleteSessionsByDate = async (selectedDate) => {
   }
 };
 
-//called when client cancels a session
+
 export const deleteSessionByDate = async (parentId, sessionDate) => {
   try {
     const sessionRef = collection(db, 'sessions');
@@ -146,6 +145,16 @@ export const deleteSessionByDate = async (parentId, sessionDate) => {
       await deleteDoc(doc.ref);
       console.log(`Session on ${sessionDate} deleted successfully.`);
     });
+  } catch (error) {
+    console.error('Error deleting session:', error);
+  }
+};
+
+export const deleteSessionById = async (sessionId) => {
+  try {
+    const sessionRef = doc(db, 'sessions', sessionId); // Referencing the document by its id
+    await deleteDoc(sessionRef);
+    console.log(`Session with ID: ${sessionId} deleted successfully.`);
   } catch (error) {
     console.error('Error deleting session:', error);
   }
