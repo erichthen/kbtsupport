@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/authContext';
 import { getParentById } from '../services/firestore';
-import { getSessionsByParentId } from '../services/sessions';
+import { getSessionsByParentId, generateTimeSlots, getAvailableSlots, filterAvailableSlots, deleteSessionByDate } from '../services/sessions';
 import { useHistory } from 'react-router-dom';
+import { httpsCallable } from 'firebase/functions';
+import { functions } from '../firebaseConfig';
 import { logoutUser } from '../services/auth';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import '../styles/userdash.css'; 
+import '../styles/userdash.css';
 
 const DashBoard = () => {
   const [parentName, setParentName] = useState(null);
@@ -15,6 +17,12 @@ const DashBoard = () => {
   const [formattedDate, setFormattedDate] = useState('');
   const [showSessions, setShowSessions] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [showReschedule, setShowReschedule] = useState(false);
+  const [selectedDay, setSelectedDay] = useState(null); // Day of session
+  const [selectedDayToRescheduleTo, setSelectedDayToRescheduleTo] = useState(null); // Day to reschedule to
+  const [filteredSlots, setFilteredSlots] = useState([]); // Available time slots for rescheduling
+  const [showCancel, setShowCancel] = useState(false); // Control for showing the cancel form
+  const [cancelReason, setCancelReason] = useState('');
   const { user } = useAuth();
   const history = useHistory();
 
@@ -66,6 +74,30 @@ const DashBoard = () => {
     fetchSessions();
   }, [user, parentName]);
 
+  useEffect(() => {
+    if (selectedDayToRescheduleTo) {
+      const fetchSlots = async () => {
+        const availableSlots = generateTimeSlots();
+        const bookedSlotsArray = await getAvailableSlots();
+        
+        // Filter booked slots for the selected day
+        const filteredBookedSlots = bookedSlotsArray.filter(slot => {
+          const slotDate = new Date(slot);
+          return (
+            slotDate.getFullYear() === selectedDayToRescheduleTo.getFullYear() &&
+            slotDate.getMonth() === selectedDayToRescheduleTo.getMonth() &&
+            slotDate.getDate() === selectedDayToRescheduleTo.getDate()
+          );
+        });
+
+        const filteredSlots = filterAvailableSlots(availableSlots, filteredBookedSlots);
+        setFilteredSlots(filteredSlots);
+      };
+
+      fetchSlots();
+    }
+  }, [selectedDayToRescheduleTo]);
+
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -84,12 +116,13 @@ const DashBoard = () => {
     setShowOptions(false); 
   };
 
-  const handleCancelSession = () => {
-    history.push('/dashboard/cancel-session'); 
+  const handleRescheduleSession = () => {
+    setShowReschedule(true); // Show reschedule form
   };
 
   const handleClosePopup = () => {
     setShowSessions(false);
+    setShowReschedule(false); // Close reschedule form
   };
 
   const isDayWithSession = (date) => {
@@ -130,13 +163,83 @@ const DashBoard = () => {
     setShowSessions(true);
   };
 
+  const handleDayToRescheduleToSelect = (event) => {
+    const selected = new Date(event.target.value);
+    setSelectedDayToRescheduleTo(selected);
+  };
+
+  const handleDaySelect = (event) => {
+    const selected = new Date(event.target.value);
+    setSelectedDay(selected); // Store the selected day
+  
+    // Filter sessions based on the selected day
+    const filteredSessionsForDay = sessions.filter(session => {
+      const sessionDate = new Date(session.session_time);
+      return (
+        sessionDate.getFullYear() === selected.getFullYear() &&
+        sessionDate.getMonth() === selected.getMonth() &&
+        sessionDate.getDate() === selected.getDate()
+      );
+    });
+  
+    setSelectedSessions(filteredSessionsForDay); // Update selected sessions based on the selected day
+  };
+
+  const handleDayToCancelSelect = (event) => {
+    const selected = new Date(event.target.value);
+    setSelectedDay(selected); // Set the selected day to cancel
+  };
+
+  const navigateToCancelForm = () => {
+    setShowCancel(true); // Show cancel session form
+    setShowOptions(false); // Hide options page
+  };
+
+  const submitCancelSession = async () => {
+    if (!selectedDay || !cancelReason) {
+      alert("Please select a day and provide a reason for cancellation.");
+      return;
+    }
+  
+    try {
+      const parentData = await getParentById(user.uid); // Fetch parent data
+      const sessionDateFormatted = new Date(selectedDay).toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+      
+      // Call the cloud function to send the email
+      const sendCancelEmail = httpsCallable(functions, 'sendCancelEmail');
+      const emailResponse = await sendCancelEmail({
+        parentName: parentData.parent_name,
+        sessionDate: sessionDateFormatted,  // For the email only, use a formatted string
+        note: cancelReason
+      });
+  
+      if (emailResponse.data.success) {
+        console.log("Cancellation email sent successfully.");
+  
+        // Delete the session for the selected day (pass the actual Date object)
+        await deleteSessionByDate(parentData.id, selectedDay);  // Pass selectedDay as Date
+  
+        alert("Session canceled successfully.");
+        setShowCancel(false); // Hide cancel form and return to options
+        setShowOptions(true);  // Show options page
+      } else {
+        alert("Error sending cancellation email: " + emailResponse.data.error);
+      }
+    } catch (error) {
+      console.error("Error canceling session:", error);
+      alert("Error canceling session. Please try again.");
+    }
+  };
+  
+  const sortedSessions = [...sessions].sort((a, b) => new Date(a.session_time) - new Date(b.session_time));
+
   return (
     <div className="outer-container">
       <div className="main-container">
-        {!showOptions && (
+        {!showOptions && !showReschedule && !showCancel && (
           <>
             <h1>Hello, {parentName || 'Loading...'}!</h1>
-            <p className='schedule-details'> Below is your schedule, click on a shaded day to see session details.</p>
+            <p className="schedule-details">Below is your schedule, click on a shaded day to see session details.</p>
             <div className="calendar-container">
               <DatePicker
                 inline
@@ -158,26 +261,138 @@ const DashBoard = () => {
               </div>
             )}
             <div className="zoom-link">
-              <a href="https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09&omn=74404485715" target="_blank" rel="noopener noreferrer" className="link">Join Zoom Session</a>
+              <a
+                href="https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09&omn=74404485715"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link"
+              >
+                Join Zoom Session
+              </a>
               <p>Meeting ID: 882 193 2666 - Password: 689887</p>
             </div>
-            <button className='cancel-reschedule-button' onClick={handleShowOptions}>Cancel/Reschedule</button>
-            <button className='logout-button' onClick={handleLogout}>Logout</button>
+            <button className="cancel-reschedule-button" onClick={handleShowOptions}>
+              Cancel/Reschedule
+            </button>
+            <button className="logout-button" onClick={handleLogout}>Logout</button>
           </>
         )}
-        {showOptions && (
-          <div className="options-container">
-            <h2>Do you want to...</h2>
-            <div className="options-buttons">
-              <button className="option-button" onClick={handleCancelSession}>Cancel a session</button>
-              <button className="option-button">Reschedule a session</button>
-            </div>
-            <button className="back-button" onClick={handleGoBack}>Back</button>
+  
+      {showOptions && !showReschedule && !showCancel && (
+        <div className="options-container">
+          <h2>Do you want to...</h2>
+          <div className="options-buttons">
+            <button className="option-button" onClick={navigateToCancelForm}>
+              Cancel a session
+            </button>
+            <button className="option-button" onClick={handleRescheduleSession}>
+              Reschedule a session
+            </button>
+          </div>
+        <button className="back-button" onClick={handleGoBack}>Back</button>
+        </div>
+      )}
+  
+        {showReschedule && (
+          <div className="reschedule-container">
+            <h2 className="reschedule-title">Reschedule a Session</h2>
+  
+            {/* Select day of session */}
+            <p className="select-date-title">Select day of session</p>
+            <select className="session-dropdown" onChange={handleDaySelect}>
+              <option value="">-- Select a Day --</option>
+              {sortedSessions.map((session, index) => (
+                <option key={index} value={session.session_time}>
+                  {new Date(session.session_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+                </option>
+              ))}
+            </select>
+  
+            {/* Select session */}
+            <p className="select-session">Select Session</p>
+            <select className="session-dropdown">
+              {selectedSessions.length > 0 ? (
+                selectedSessions.map((session, index) => (
+                  <option key={index} value={session.id}>
+                    {`${session.child_name} at ${session.session_time.toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                    })}`}
+                  </option>
+                ))
+              ) : (
+                <option>No sessions available</option>
+              )}
+            </select>
+  
+            {/* Select day to reschedule to */}
+            <p className="select-new-date">Select day to reschedule to</p>
+            <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
+              <option value="">-- Select a Day --</option>
+              {sortedSessions.map((session, index) => (
+                <option key={index} value={session.session_time}>
+                  {new Date(session.session_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+                </option>
+              ))}
+            </select>
+  
+            {/* Select time to reschedule to */}
+            <p className="select-new-time">Select time to reschedule to</p>
+            <select className="session-dropdown">
+              <option value="">-- Select a Time --</option>
+              {filteredSlots.length > 0 ? (
+                filteredSlots.map((slot, index) => (
+                  <option key={index} value={slot.time} disabled={slot.status === 'unavailable'}>
+                    {slot.time} {slot.status === 'unavailable' ? '(Unavailable)' : ''}
+                  </option>
+                ))
+              ) : (
+                <option>No available slots</option>
+              )}
+            </select>
+  
+            <button className="back-button" onClick={handleClosePopup}>Back</button>
+          </div>
+        )}
+  
+        {showCancel && (
+          <div className="cancel-container">
+            <h2 className="cancel-title">Cancel a Session</h2>
+  
+            {/* Select day of session */}
+            <p className="select-date-title">Select day of session</p>
+            <select className="session-dropdown" onChange={handleDayToCancelSelect}>
+              <option value="">-- Select a Day --</option>
+              {sortedSessions.map((session, index) => (
+                <option key={index} value={session.session_time}>
+                  {new Date(session.session_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+                </option>
+              ))}
+            </select>
+  
+            {/* Textbox for cancellation reason */}
+            <textarea
+              className="cancel-reason-textbox"
+              placeholder="Please provide a brief explanation of why you are canceling"
+              value={cancelReason}
+              onChange={(e) => setCancelReason(e.target.value)}
+            ></textarea>
+  
+            {/* Cancel session button */}
+            <button
+              className="cancel-session-button"
+              onClick={submitCancelSession}
+              disabled={!selectedDay || !cancelReason} // Disable button if the day or reason is missing
+            >Cancel Session </button>
+  
+            <button className="back-button" onClick={() => { setShowCancel(false); setShowOptions(true); }}>Back</button>
           </div>
         )}
       </div>
     </div>
   );
+
 };
 
 export default DashBoard;

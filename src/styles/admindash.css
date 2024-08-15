@@ -208,12 +208,69 @@ body.admin-dashboard {
   padding: 0;
 }
 
+.admin-dashboard .reschedule-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensures that content is spaced between top and bottom */
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
+.admin-dashboard .reschedule-container .reschedule-title {
+  font-size: 22px;
+  margin-top: -40px;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+  text-decoration: underline;
+  text-decoration-color: white;
+}
+
+.admin-dashboard .reschedule-container p{
+  color: white;
+}
+
+.admin-dashboard .reschedule-container .back-button {
+  align-self: center;
+  margin-bottom: -25px;
+  margin-top: 25px;
+  color: white;
+  background-color: rgb(225, 197, 202);
+}
+
+.admin-dashboard .reschedule-container .back-button:hover {
+  background-color: rgb(131, 102, 107);
+}
+
+.admin-dashboard .reschedule-session-button {
+  margin-left: 17px;
+  width: 200px;
+}
+
+.admin-dashbaord select-date-title {
+  font-size: 18px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.admin-dashboard .session-dropdown {
+  width: 80%;
+  padding: 12px;
+  margin-left: 22px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: white;
+  color: black;
+  font-size: 16px;
+}
+
 .session-container .close-button:hover {
   color: red;
   background: none;
 }
-
-
 
 .session-container .session-info {
   display: inline-block;
@@ -228,7 +285,17 @@ body.admin-dashboard {
   color: white;
 }
 
-
+.admin-dashboard .reschedule-button {
+  background-color: rgb(83, 52, 73);
+  color: white;
+  width: 65%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
 
 .zoom-button {
   background-color: rgb(83, 52, 73);

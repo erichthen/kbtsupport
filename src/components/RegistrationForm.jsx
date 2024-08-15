@@ -34,12 +34,9 @@ const RegistrationForm = () => {
   useEffect(() => {
     const fetchSlots = async () => {
       const availableSlots = generateTimeSlots();
-      console.log('Available Slots:', availableSlots);
       const bookedSlotsArray = await getAvailableSlots();
-      console.log('Booked Slots Array:', bookedSlotsArray);
       const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray);
       setFilteredSlots(filteredSlots);
-      console.log('Filtered Slots:', filteredSlots);
     };
     fetchSlots();
   }, [startDate]);

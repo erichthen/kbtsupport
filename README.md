@@ -1,13 +1,19 @@
 ### This project will entail creating a website for my Mother's tutoring business.  
 
 ## TODO ATM  
-- **Cancel a day feature. Make the day unavailable to schedule, and whoever has a session on that day, remove it and send them an email**
+
 - **Set up appointment cancellations and reschedule request and approval**
 - **Request to change all of their appointments to a new date and time**
-- **If no invoices, display message**
 - **Test the appointment reminder function**
-- **Redo the styling of the session popup, allow for a new window because it will look bad if lots of sessions
+- **Ensure no autofilling for passwords, ESPECIALLY for admin credentials
 - **Reset invoice statuses at the end of the month**
+
+
+TODO ASAP
+- Finish implementing the rescheudling for both admin and client
+- Allow admin to cancel a specific session
+- Allow admin to reschdule a specifc session
+
 
 **Emailing**
 

@@ -18,6 +18,86 @@
   cursor: pointer;
 }
 
+.user-dashboard .reschedule-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all elements */
+  padding: 20px;
+  text-align: center;
+  gap: 20px; /* Space between form fields */
+}
+
+.user-dashboard .reschedule-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-decoration: underline;
+}
+
+.user-dashboard .select-date-title,
+.user-dashboard .select-session,
+.user-dashboard .select-new-date,
+.user-dashboard .select-new-time {
+  margin-bottom: 20px; /* Space between label and dropdown */
+}
+
+.user-dashboard .session-dropdown {
+  margin-bottom: -10px; /* Add space after each dropdown */
+  padding: 10px;
+  width: 250px; /* Set a fixed width for dropdowns */
+}
+
+.user-dashboard .cancel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.user-dashboard .cancel-session-button {
+  background-color: #4d0a40; /* Adjust as needed */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 50px;
+  width: 80%; /* Ensure it stretches to match dropdown */
+  font-size: 16px;
+}
+
+.user-dashboard .cancel-session-button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+  opacity: 0.6; /* Makes the button look more muted */
+}
+
+.user-dashboard .cancel-reason-textbox {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  margin-top: 40px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  resize: none; /* Disable resizing of the textbox */
+}
+
+.user-dashboard .back-button {
+  margin-top: 20px; /* Add space above the back button */
+  padding: 10px 20px;
+  background-color: #5D3B6D;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  align-self: center; /* Keep button centered */
+}
+
+.user-dashboard .back-button:hover {
+  background-color: #4A2955;
+}
+
 .user-dashboard .calendar-container {
   margin-left: 0;
   margin-bottom: 15px;

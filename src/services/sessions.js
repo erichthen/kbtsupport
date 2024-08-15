@@ -125,10 +125,14 @@ export const deleteSessionsByDate = async (selectedDate) => {
 export const deleteSessionByDate = async (parentId, sessionDate) => {
   try {
     const sessionRef = collection(db, 'sessions');
+    
+    // Ensure both the queried date and stored date are in ISO format
+    const sessionDateISO = sessionDate.toISOString(); 
+
     const q = query(
       sessionRef,
       where('parent_id', '==', parentId),
-      where('session_time', '==', sessionDate) // exact match for the ISO string
+      where('session_time', '==', sessionDateISO) // Exact match for the ISO string
     );
 
     const querySnapshot = await getDocs(q);
