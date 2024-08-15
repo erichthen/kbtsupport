@@ -270,11 +270,23 @@ const AdminDashboard = () => {
       await deleteSessionById(selectedSession.id);
       console.log(`Session for ${selectedSession.child_name} on ${selectedSession.session_time} deleted successfully.`);
   
-      // Proceed with adding the new rescheduled session (this can be added next)
-      alert("Session deleted successfully. Proceeding to reschedule.");
+      // Now, we proceed with adding the rescheduled session
+      const sessionData = {
+        session_time: new Date(selectedDayToRescheduleTo.setHours(
+          parseInt(selectedTimeSlot.split(':')[0]), 
+          parseInt(selectedTimeSlot.split(':')[1]), 0, 0 // Set time based on selected slot
+        )).toISOString(),  // Make sure we store it as an ISO date string
+        child_name: selectedSession.child_name,
+        parent_id: selectedSession.parent_id // Retain the same parent ID
+      };
+  
+      // Call addSession to add the new rescheduled session
+      const newSessionId = await addSession(selectedSession.parent_id, sessionData);
+      console.log(`Rescheduled session added successfully with ID: ${newSessionId}`);
+      alert("Session rescheduled successfully.");
     } catch (error) {
-      console.error("Error deleting session: ", error);
-      alert("Error deleting the session.");
+      console.error("Error during rescheduling: ", error);
+      alert("Error rescheduling the session.");
     }
   };
 

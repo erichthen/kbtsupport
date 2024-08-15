@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/authContext';
 import { getParentById } from '../services/firestore';
-import { getSessionsByParentId, generateTimeSlots, getAvailableSlots, filterAvailableSlots, deleteSessionByDate } from '../services/sessions';
+import { getSessionsByParentId, generateTimeSlots, getAvailableSlots, filterAvailableSlots, deleteSessionByDate , deleteSessionById, addSession} from '../services/sessions';
 import { useHistory } from 'react-router-dom';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '../firebaseConfig';
@@ -23,6 +23,8 @@ const DashBoard = () => {
   const [filteredSlots, setFilteredSlots] = useState([]); // Available time slots for rescheduling
   const [showCancel, setShowCancel] = useState(false); // Control for showing the cancel form
   const [cancelReason, setCancelReason] = useState('');
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+  const [selectedSession, setSelectedSession] = useState(null);
   const { user } = useAuth();
   const history = useHistory();
 
@@ -116,13 +118,18 @@ const DashBoard = () => {
     setShowOptions(false); 
   };
 
-  const handleRescheduleSession = () => {
+  const showRescheduleSession = () => {
     setShowReschedule(true); // Show reschedule form
   };
 
   const handleClosePopup = () => {
     setShowSessions(false);
     setShowReschedule(false); // Close reschedule form
+  };
+
+  const getFormattedDate = (date) => {
+    const options = { month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
   };
 
   const isDayWithSession = (date) => {
@@ -233,6 +240,69 @@ const DashBoard = () => {
   
   const sortedSessions = [...sessions].sort((a, b) => new Date(a.session_time) - new Date(b.session_time));
 
+  const getAllWeekends = () => {
+    const weekends = [];
+    const today = new Date();
+    const endDate = new Date();
+    endDate.setMonth(today.getMonth() + 3); // Two months from now
+  
+    let currentDate = new Date(today);
+  
+    while (currentDate <= endDate) {
+      const day = currentDate.getDay();
+      if (day === 6 || day === 0) { // Saturday (6) or Sunday (0)
+        weekends.push(new Date(currentDate));
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+  
+    return weekends;
+  };
+
+  const handleRescheduleSession = async () => {
+    try {
+      // Check if all required fields are filled
+      console.log("Selected Day:", selectedDay);
+      console.log("Selected Sessions:", selectedSessions);
+      console.log("Selected Day to Reschedule To:", selectedDayToRescheduleTo);
+      console.log("Selected Time Slot:", selectedTimeSlot);
+  
+      if (!selectedDay || !selectedSessions.length || !selectedDayToRescheduleTo || !selectedTimeSlot) {
+        alert("Please fill out all of the fields.");
+        return;
+      }
+  
+      // Get the session to be deleted (first session in the selectedSessions array)
+      const selectedSession = selectedSessions[0]; 
+      if (!selectedSession.id) {
+        console.error("Selected session does not have an ID.");
+        return;
+      }
+  
+      // Call deleteSessionById to delete the selected session by ID
+      await deleteSessionById(selectedSession.id);
+      console.log(`Session for ${selectedSession.child_name} on ${selectedSession.session_time} deleted successfully.`);
+  
+      // Now, add the rescheduled session
+      const sessionData = {
+        session_time: new Date(selectedDayToRescheduleTo.setHours(
+          parseInt(selectedTimeSlot.split(':')[0]), 
+          parseInt(selectedTimeSlot.split(':')[1]), 0, 0 // Set time based on selected slot
+        )).toISOString(),
+        child_name: selectedSession.child_name,
+        parent_id: selectedSession.parent_id,
+      };
+  
+      // Call addSession to add the new rescheduled session
+      const newSessionId = await addSession(selectedSession.parent_id, sessionData);
+      console.log(`Rescheduled session added successfully with ID: ${newSessionId}`);
+      alert("Session rescheduled successfully.");
+    } catch (error) {
+      console.error("Error during rescheduling: ", error);
+      alert("Error rescheduling the session.");
+    }
+  };
+
   return (
     <div className="outer-container">
       <div className="main-container">
@@ -278,20 +348,20 @@ const DashBoard = () => {
           </>
         )}
   
-      {showOptions && !showReschedule && !showCancel && (
-        <div className="options-container">
-          <h2>Do you want to...</h2>
-          <div className="options-buttons">
-            <button className="option-button" onClick={navigateToCancelForm}>
-              Cancel a session
-            </button>
-            <button className="option-button" onClick={handleRescheduleSession}>
-              Reschedule a session
-            </button>
+        {showOptions && !showReschedule && !showCancel && (
+          <div className="options-container">
+            <h2>Do you want to...</h2>
+            <div className="options-buttons">
+              <button className="option-button" onClick={navigateToCancelForm}>
+                Cancel a session
+              </button>
+              <button className="option-button" onClick={showRescheduleSession}>
+                Reschedule a session
+              </button>
+            </div>
+            <button className="back-button" onClick={handleGoBack}>Back</button>
           </div>
-        <button className="back-button" onClick={handleGoBack}>Back</button>
-        </div>
-      )}
+        )}
   
         {showReschedule && (
           <div className="reschedule-container">
@@ -310,7 +380,7 @@ const DashBoard = () => {
   
             {/* Select session */}
             <p className="select-session">Select Session</p>
-            <select className="session-dropdown">
+            <select className="session-dropdown" onChange={(e) => setSelectedSession(e.target.value)}>
               {selectedSessions.length > 0 ? (
                 selectedSessions.map((session, index) => (
                   <option key={index} value={session.id}>
@@ -330,16 +400,16 @@ const DashBoard = () => {
             <p className="select-new-date">Select day to reschedule to</p>
             <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
               <option value="">-- Select a Day --</option>
-              {sortedSessions.map((session, index) => (
-                <option key={index} value={session.session_time}>
-                  {new Date(session.session_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+              {getAllWeekends().map((day, index) => (
+                <option key={index} value={day.toISOString()}>
+                  {getFormattedDate(new Date(day))}
                 </option>
               ))}
             </select>
   
             {/* Select time to reschedule to */}
             <p className="select-new-time">Select time to reschedule to</p>
-            <select className="session-dropdown">
+            <select className="session-dropdown" onChange={(e) => setSelectedTimeSlot(e.target.value)}>
               <option value="">-- Select a Time --</option>
               {filteredSlots.length > 0 ? (
                 filteredSlots.map((slot, index) => (
@@ -351,7 +421,7 @@ const DashBoard = () => {
                 <option>No available slots</option>
               )}
             </select>
-  
+            <button className="reschedule-button" onClick={handleRescheduleSession}>Reschedule Session</button>
             <button className="back-button" onClick={handleClosePopup}>Back</button>
           </div>
         )}
@@ -384,7 +454,9 @@ const DashBoard = () => {
               className="cancel-session-button"
               onClick={submitCancelSession}
               disabled={!selectedDay || !cancelReason} // Disable button if the day or reason is missing
-            >Cancel Session </button>
+            >
+              Cancel Session
+            </button>
   
             <button className="back-button" onClick={() => { setShowCancel(false); setShowOptions(true); }}>Back</button>
           </div>

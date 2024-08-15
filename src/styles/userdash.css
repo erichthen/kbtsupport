@@ -266,3 +266,8 @@
 .user-dashboard .schedule-details {
   margin-bottom: 20px;
 }
+
+.user-dashboard .reschedule-button {
+  width: 80%;
+  margin-bottom: -20px;
+}
