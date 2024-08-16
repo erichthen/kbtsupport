@@ -153,6 +153,52 @@ exports.sendCancelEmail = functions.https.onCall(async (data, context) => {
   }
 });
 
+exports.sendRescheduleEmail = functions.https.onCall(async (data, context) => {
+  const {parentName, oldSessionDate, oldTimeSlot,
+    newSessionDate, newTimeSlot} = data;
 
+  const mailOptions = {
+    from: "erich.then2@gmail.com",
+    to: "erich.then2@gmail.com",
+    subject: "Client Rescheduled Session",
+    html: `
+      <p><strong>${parentName}</strong> has rescheduled their session.</p>
+      <p><strong>Previous Date:</strong> ${oldSessionDate} at ${oldTimeSlot}</p>
+      <p><strong>New Date:</strong> ${newSessionDate} at ${newTimeSlot}</p>
+    `,
+  };
 
+  try {
+    await transporter.sendMail(mailOptions);
+    return {success: true};
+  } catch (error) {
+    console.error("Error sending reschedule email:", error);
+    return {success: false, error: error.toString()};
+  }
+});
 
+exports.sendAdminReschedule = functions.https.onCall(async (data, context) => {
+  const {parentEmail, parentName, oldSessionDate, oldTimeSlot,
+    newSessionDate, newTimeSlot} = data;
+
+  const mailOptions = {
+    from: "erich.then2@gmail.com", // Admin email
+    to: parentEmail, // Parent's email
+    subject: `Session Rescheduled`,
+    html: `
+      <p>Dear ${parentName},</p>
+      <p>Your child's session has been rescheduled.</p>
+      <p><strong>Previous Date:</strong> ${oldSessionDate} at ${oldTimeSlot}</p>
+      <p><strong>New Date:</strong> ${newSessionDate} at ${newTimeSlot}</p>
+      <p>Thank you,<br>KBT Reading Support</p>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return {success: true};
+  } catch (error) {
+    console.error("Error sending reschedule email to parent:", error);
+    return {success: false, error: error.toString()};
+  }
+});
