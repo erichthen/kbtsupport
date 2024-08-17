@@ -5,7 +5,6 @@ import RegistrationForm from './components/RegistrationForm.jsx';
 import AdminDashboard from './components/AdminDashboard.jsx';
 import DashBoard from './components/DashBoard.jsx'; 
 import Invoices from './components/Invoices';
-import CancelSession from './components/CancelSession.jsx';
 import { AuthProvider } from './context/authContext.js';
 
 const App = () => {
@@ -15,7 +14,6 @@ const App = () => {
         <Switch>
           <Route path="/login" component={SignIn} />
           <Route path="/register" component={RegistrationForm} />
-          <Route exact path="/dashboard/cancel-session" component={CancelSession} />
           <Route path="/dashboard" component={DashBoard} />
           <Route exact path="/admin/invoices" component={Invoices} />
           <Route exact path="/admin" component={AdminDashboard} />

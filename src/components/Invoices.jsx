@@ -9,6 +9,7 @@ const Invoices = () => {
   const [selectedParent, setSelectedParent] = useState(null);
   const [note, setNote] = useState('');
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -48,6 +49,7 @@ const Invoices = () => {
       return;
     }
   
+    setLoading(true);
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
   
@@ -74,6 +76,8 @@ const Invoices = () => {
       catch (error) {
         console.error(error);
         alert('Error sending mail');
+      } finally {
+        setLoading(false)
       }
     };
   };
@@ -107,7 +111,9 @@ const Invoices = () => {
           <p>This email will be sent to: {selectedParent.email}</p>
           <div className="buttons-container">
             <button className="back-button" onClick={handleBackToInvoices}>Back</button>
-            <button className="send-invoice-button" onClick={handleSendInvoice}>Send Invoice</button>
+            <button className="send-invoice-button" onClick={handleSendInvoice} disabled={loading}>
+              {loading ? 'Sending...' : 'Send Invoice'}
+            </button>
           </div>
         </div>
       )}

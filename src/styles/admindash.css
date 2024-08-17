@@ -236,8 +236,8 @@ body.admin-dashboard {
   align-self: center;
   margin-bottom: -25px;
   margin-top: 25px;
-  color: white;
-  background-color: rgb(225, 197, 202);
+  color: black;
+  background-color: white;
 }
 
 .admin-dashboard .reschedule-container .back-button:hover {
@@ -245,11 +245,74 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .reschedule-session-button {
+  background-color: white;
+  color: black;
   margin-left: 17px;
   width: 200px;
 }
 
-.admin-dashbaord select-date-title {
+.admin-dashboard .choose-title {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  color: rgb(83, 52, 73);
+  text-decoration: underline;
+  text-decoration-color: rgb(83, 52, 73);
+}
+
+.admin-dashboard .options-container {
+  background-color: rgb(221, 195, 199);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%; /* Full height */
+  padding: 20px;
+}
+
+.admin-dashboard .choose-title {
+  margin-bottom: 20px; /* Add some space below the title */
+}
+
+.admin-dashboard .option-button {
+  background-color:rgb(83, 52, 73);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px; /* Space between buttons */
+}
+
+.admin-dashboard .option-button:hover {
+  background-color: rgb(66, 28, 54);
+}
+
+/* Make option buttons align in a row */
+.admin-dashboard .options-container {
+  justify-content: flex-start; /* Align content at the top */
+}
+
+.admin-dashboard .options-buttons {
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Space between buttons */
+  margin-bottom: 20px; /* Add space below the buttons */
+}
+
+.admin-dashboard .options-back-button {
+  align-self: center;
+  padding: 10px 20px;
+  background-color: rgb(83, 52, 73);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: auto; /* Push the button to the bottom */
+  margin-bottom: 10px;
+}
+
+.admin-dashboard select-date-title {
   font-size: 18px;
   color: white;
   margin-bottom: 10px;
@@ -267,12 +330,53 @@ body.admin-dashboard {
   font-size: 16px;
 }
 
+.admin-dashboard .cancel-session-dropdown {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin-left: 25px;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: white;
+  color: black;
+  font-size: 16px;
+}
+
+.admin-dashboard .cancel-container {
+  background-color: rgb(221, 195, 199);
+}
+
+.admin-dashboard .cancel-title {
+  text-align: center;
+  margin-left: 7px;
+}
+.admin-dashboard .cancel-session-buttons {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.admin-dashboard .cancel-note {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.admin-dashboard .cancel-button .cancel-back-button {
+  background-color: rgb(83, 52, 73);
+}
+
+.admin-dashboard .cancel-button {
+  width: 200px;
+}
+
 .session-container .close-button:hover {
   color: red;
   background: none;
 }
 
-.session-container .session-info {
+.admin-dashboard .session-info {
   display: inline-block;
   gap: 20px;
   padding: 10px;
@@ -390,4 +494,49 @@ body.admin-dashboard {
 .no-sessions {
   color: white;
   margin-top: -30px;
+}
+
+
+.cancel-confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Dim background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Make sure it's in front of everything */
+}
+
+.admin-dashboard .cancel-confirmation-popup {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 300px;
+  width: 100%;
+}
+
+.admin-dashboard .cancel-confirmation-popup p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.admin-dashboard .cancel-confirmation-buttons {
+  display: flex;
+  justify-content: space-around;
+  width: 300px;
+}
+
+.admin-dashboard .sessions-confirm-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.admin-dashboard .sessions-cancel-button {
+  background-color: #dc3545;
+  color: white;
 }

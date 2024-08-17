@@ -2,17 +2,14 @@
 
 ## TODO ATM  
 
-- **Set up appointment cancellations and reschedule request and approval**
 - **Request to change all of their appointments to a new date and time**
 - **Test the appointment reminder function**
 - **Ensure no autofilling for passwords, ESPECIALLY for admin credentials
 - **Reset invoice statuses at the end of the month**
-
+- **Prompt user to schedule their appointments at the start of a new month. (maybe?)
 
 TODO ASAP
-- Finish implementing the rescheudling for both admin and client
-- Allow admin to cancel a specific session
-- Allow admin to reschdule a specifc session - you did the delete part, now you need to add and send email (both client and admin rescheduling processes)
+- **DISABLE BUTTON FOR REGISTRATION UNTIL IT IS COMPLETE** 
 
 **Emailing**
 
@@ -23,13 +20,16 @@ An email will be sent:
 - When client wants to reschedule all appointments, sent to admin
 - When invoice is sent, sent to client
 
+**You need to find a way to extend session registration once the span of a few months passes**
+
 
 #### cases to implement and test  
 
+
+- **Make sure it goes back to options or dash after admin reschedule**
 - when registering, times that are already booked need to be unavailable  
 - when admin cancel day, test case of multiple parents, and their sessions removed from the db and from the calendar  
-- when user cancels day, note + notifcation -> email to admin. ensure it is removed from the calendar for both amdin and client.  
 - appointment reminder function  
-- when admin reschedules a session, (ask about this) approval? or automatic schedule change  
 - when client cancels or reschedules, available slots must be updated to accomidate the opening  
-- invoice sending 
+- invoice sending (parents invoice goes away for the month when invoice is sent, also resets at beginning of each new month)
+- Once deployed, change instances of your email to mothers

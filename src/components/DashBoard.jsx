@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/authContext';
 import { getParentById } from '../services/firestore';
 import { getSessionsByParentId, generateTimeSlots, getAvailableSlots, filterAvailableSlots, deleteSessionByDate , deleteSessionById, addSession} from '../services/sessions';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '../firebaseConfig';
 import { logoutUser } from '../services/auth';
@@ -24,6 +24,8 @@ const DashBoard = () => {
   const [showCancel, setShowCancel] = useState(false); // Control for showing the cancel form
   const [cancelReason, setCancelReason] = useState('');
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+  const [loading, setLoading] = useState(false); // Add this state to manage button disable
+  // eslint-disable-next-line
   const [selectedSession, setSelectedSession] = useState(null);
   const { user } = useAuth();
   const history = useHistory();
@@ -99,6 +101,10 @@ const DashBoard = () => {
       fetchSlots();
     }
   }, [selectedDayToRescheduleTo]);
+
+  if (!user) {
+    return <Redirect to="/login" />;
+  }
 
   const handleLogout = async () => {
     try {
@@ -204,11 +210,12 @@ const DashBoard = () => {
 
   const submitCancelSession = async () => {
     if (!selectedDay || !cancelReason) {
-      alert("Please select a day and provide a reason for cancellation.");
+      alert("Please select a day and provide a reason for cancelation.");
       return;
     }
   
     try {
+      setLoading(true);
       const parentData = await getParentById(user.uid); // Fetch parent data
       const sessionDateFormatted = new Date(selectedDay).toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
       
@@ -221,7 +228,7 @@ const DashBoard = () => {
       });
   
       if (emailResponse.data.success) {
-        console.log("Cancellation email sent successfully.");
+        console.log("Cancelation email sent successfully.");
   
         // Delete the session for the selected day (pass the actual Date object)
         await deleteSessionByDate(parentData.id, selectedDay);  // Pass selectedDay as Date
@@ -230,11 +237,13 @@ const DashBoard = () => {
         setShowCancel(false); // Hide cancel form and return to options
         setShowOptions(true);  // Show options page
       } else {
-        alert("Error sending cancellation email: " + emailResponse.data.error);
+        alert("Error sending cancelation email: " + emailResponse.data.error);
       }
     } catch (error) {
       console.error("Error canceling session:", error);
       alert("Error canceling session. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -261,6 +270,8 @@ const DashBoard = () => {
 
   const handleRescheduleSession = async () => {
     try {
+
+      setLoading(true);
       // Check if all required fields are filled
       console.log("Selected Day:", selectedDay);
       console.log("Selected Sessions:", selectedSessions);
@@ -269,13 +280,14 @@ const DashBoard = () => {
   
       if (!selectedDay || !selectedSessions.length || !selectedDayToRescheduleTo || !selectedTimeSlot) {
         alert("Please fill out all of the fields.");
+        setLoading(false);
         return;
-      }
-  
+      }  
       // Get the session to be deleted (first session in the selectedSessions array)
       const selectedSession = selectedSessions[0]; 
       if (!selectedSession.id) {
         console.error("Selected session does not have an ID.");
+        setLoading(false);
         return;
       }
   
@@ -283,12 +295,21 @@ const DashBoard = () => {
       await deleteSessionById(selectedSession.id);
       console.log(`Session for ${selectedSession.child_name} on ${selectedSession.session_time} deleted successfully.`);
   
-      // Now, add the rescheduled session
+      // Handle time conversion logic for PM and AM
+      const timeParts = selectedTimeSlot.split(':');
+      let hours = parseInt(timeParts[0], 10);
+      const minutes = parseInt(timeParts[1], 10);
+  
+      // Check for PM and adjust the hour accordingly
+      if (selectedTimeSlot.includes('PM') && hours !== 12) {
+        hours += 12; // Convert 1:00 PM to 13:00
+      } else if (selectedTimeSlot.includes('AM') && hours === 12) {
+        hours = 0; // Handle 12 AM case
+      }
+  
+      // Add the rescheduled session
       const sessionData = {
-        session_time: new Date(selectedDayToRescheduleTo.setHours(
-          parseInt(selectedTimeSlot.split(':')[0]), 
-          parseInt(selectedTimeSlot.split(':')[1]), 0, 0 // Set time based on selected slot
-        )).toISOString(),
+        session_time: new Date(selectedDayToRescheduleTo.setHours(hours, minutes, 0, 0)).toISOString(),
         child_name: selectedSession.child_name,
         parent_id: selectedSession.parent_id,
       };
@@ -296,10 +317,33 @@ const DashBoard = () => {
       // Call addSession to add the new rescheduled session
       const newSessionId = await addSession(selectedSession.parent_id, sessionData);
       console.log(`Rescheduled session added successfully with ID: ${newSessionId}`);
-      alert("Session rescheduled successfully.");
+  
+      // Fetch parent data for the email
+      const parentData = await getParentById(user.uid);
+  
+      // Call the cloud function to send the reschedule email
+      const sendRescheduleEmail = httpsCallable(functions, 'sendRescheduleEmail');
+      const emailResponse = await sendRescheduleEmail({
+        parentName: parentData.parent_name,
+        oldSessionDate: new Date(selectedSession.session_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
+        oldTimeSlot: new Date(selectedSession.session_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
+        newSessionDate: new Date(sessionData.session_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
+        newTimeSlot: selectedTimeSlot
+      });
+  
+      if (emailResponse.data.success) {
+        alert("Session rescheduled successfully.");
+        setShowReschedule(false); // Hide reschedule form
+        setShowOptions(true); // Go back to options container
+      } else {
+        alert("Error sending reschedule email: " + emailResponse.data.error);
+      }
+  
     } catch (error) {
       console.error("Error during rescheduling: ", error);
       alert("Error rescheduling the session.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -421,7 +465,13 @@ const DashBoard = () => {
                 <option>No available slots</option>
               )}
             </select>
-            <button className="reschedule-button" onClick={handleRescheduleSession}>Reschedule Session</button>
+            <p>An email will be sent to kelli.b.then@gmail.com</p>
+            <button 
+              className="reschedule-button" onClick={handleRescheduleSession}
+              disabled={loading} // Disable the button while the operation is in progress
+            >
+              {loading ? 'Rescheduling...' : 'Reschedule Session'}
+            </button>
             <button className="back-button" onClick={handleClosePopup}>Back</button>
           </div>
         )}
@@ -450,12 +500,13 @@ const DashBoard = () => {
             ></textarea>
   
             {/* Cancel session button */}
+            <p>An email will be sent to kelli.b.then@gmail.com</p>
             <button
               className="cancel-session-button"
               onClick={submitCancelSession}
-              disabled={!selectedDay || !cancelReason} // Disable button if the day or reason is missing
+              disabled={loading || !selectedDay || !cancelReason} // Disable button if the day or reason is missing
             >
-              Cancel Session
+              {loading ? 'Canceling...' : 'Cancel Session'}
             </button>
   
             <button className="back-button" onClick={() => { setShowCancel(false); setShowOptions(true); }}>Back</button>

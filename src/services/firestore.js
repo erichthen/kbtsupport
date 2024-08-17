@@ -40,6 +40,22 @@ export const getParentById = async (uid) => {
   }
 };
 
+export const getParentByDocumentId = async (docId) => {
+  try {
+    const parentDocRef = doc(db, 'parents', docId);
+    const parentDoc = await getDoc(parentDocRef);
+    if (parentDoc.exists()) {
+      return { id: parentDoc.id, ...parentDoc.data() };
+    } else {
+      console.log('No such document!');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching parent document by document ID: ', error);
+    throw error;
+  }
+};
+
 export const getAvailableSlots = async () => {
   const slots = ["9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM"];
   const sessionsSnapshot = await getDocs(collection(db, "sessions"));

@@ -41,7 +41,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
   });
 });
 
-exports.sendCancellationEmails = functions.https.onRequest((req, res) => {
+exports.sendCancelationEmails = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     console.log("CORS middleware passed.");
 
@@ -199,6 +199,31 @@ exports.sendAdminReschedule = functions.https.onCall(async (data, context) => {
     return {success: true};
   } catch (error) {
     console.error("Error sending reschedule email to parent:", error);
+    return {success: false, error: error.toString()};
+  }
+});
+
+exports.sendAdminCancel = functions.https.onCall(async (data, context) => {
+  const {parentName, parentEmail, sessionDate} = data;
+
+  const mailOptions = {
+    from: "erich.then2@gmail.com",
+    to: parentEmail,
+    subject: "Your Session has been Canceled",
+    html: `
+      <p>Dear <strong>${parentName}</strong>,</p>
+      <p>Your session on <strong>${sessionDate}</strong> has been canceled.</p>
+      <p>If you need to reschedule, you may do so on the website.</p>
+      <p>Best Regards,</p>
+      <p>KBT Reading Support</p>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return {success: true};
+  } catch (error) {
+    console.error("Error sending cancellation email:", error);
     return {success: false, error: error.toString()};
   }
 });

@@ -21,7 +21,6 @@ const RegistrationForm = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isFirstStepValid, setIsFirstStepValid] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-
   const history = useHistory();
 
   useEffect(() => {
