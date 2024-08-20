@@ -35,7 +35,7 @@ const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChang
             type="password"
             value={password}
             onChange={handlePasswordChange}
-            placeholder="Enter a password"
+            placeholder="Create a password"
             aria-label="Enter a password"
             autoComplete="new-password"
           />

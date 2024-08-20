@@ -3,6 +3,7 @@
 }
 
 .user-dashboard .main-container {
+  position: relative;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
@@ -270,4 +271,18 @@
 .user-dashboard .reschedule-button {
   width: 80%;
   margin-bottom: -20px;
+}
+
+.user-dashboard .report-issue-link {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  color: blue;
+  text-decoration: underline;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.user-dashboard .report-issue-link:hover {
+  color: darkblue;
 }

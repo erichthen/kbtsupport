@@ -21,7 +21,7 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .outer-container {
-  background-color: rgb(83, 52, 73);
+  background-color: rgb(237, 226, 226);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -81,6 +81,10 @@ body.admin-dashboard {
   font-size: 16px;
   cursor: pointer;
   margin-top: 10px;
+}
+
+.admin-dashboard .no-sessions {
+  color: rgb(83, 52, 73);
 }
 
 .admin-dashboard button:disabled {
@@ -179,20 +183,21 @@ body.admin-dashboard {
 }
 
 .session-container {
+  background-color: rgb(237, 226, 226);
   position: relative; /* Ensure the parent container is positioned relative */
   padding: 50px;
   text-align: center;
 }
 
-.session-title {
-  margin-top: -50px; /* Remove default margin */
+.admin-dashboard .session-title {
+  margin-top: -30px; /* Remove default margin */
   padding-bottom: 30px; /* Space between title and session list */
   font-size: 24px;
   font-weight: bold;
   text-align: center; /* Center the title */
-  color: #ffffff; /* Adjust the color as needed */
+  color: rgb(83, 52, 73); /* Adjust the color as needed */
   text-decoration: underline;
-  text-decoration-color: white;
+  text-decoration-color: rgb(83, 52, 73);
 }
 
 .session-container .close-button {
@@ -223,9 +228,9 @@ body.admin-dashboard {
   margin-top: -40px;
   font-weight: bold;
   text-align: center;
-  color: #ffffff;
+  color: rgb(83, 52, 73);
   text-decoration: underline;
-  text-decoration-color: white;
+  text-decoration-color: rgb(83, 52, 73);
 }
 
 .admin-dashboard .reschedule-container p{
@@ -245,9 +250,10 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .reschedule-session-button {
-  background-color: white;
-  color: black;
+  background-color: rgb(83, 52, 73);
+  color: white;
   margin-left: 17px;
+  margin-bottom: -5px;
   width: 200px;
 }
 
@@ -383,7 +389,7 @@ body.admin-dashboard {
   margin-top: -20px;
   margin-left: 10px;
   margin-right: 10px;
-  background-color: rgba(225, 197, 202, 0.5);
+  background-color: rgb(83, 52, 73);
   border-radius: 10px;
   text-align: left; /* Keep the text left-aligned within each session */
   color: white;
@@ -422,7 +428,7 @@ body.admin-dashboard {
   margin: 20px auto; /* Center the button horizontally */
   margin-top: 50px;
   margin-bottom: -40px;
-  padding: 5px 10px;
+  padding: 10px 15px;
   background-color: rgb(177, 48, 65);
   color: white;
   border: none;

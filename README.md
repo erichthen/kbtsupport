@@ -8,8 +8,6 @@
 - **Reset invoice statuses at the end of the month**
 - **Prompt user to schedule their appointments at the start of a new month. (maybe?)
 
-TODO ASAP
-- **DISABLE BUTTON FOR REGISTRATION UNTIL IT IS COMPLETE** 
 
 **Emailing**
 
@@ -32,4 +30,9 @@ An email will be sent:
 - appointment reminder function  
 - when client cancels or reschedules, available slots must be updated to accomidate the opening  
 - invoice sending (parents invoice goes away for the month when invoice is sent, also resets at beginning of each new month)
+
+
+### hosting and transitioning
 - Once deployed, change instances of your email to mothers
+- create her an app password, test thoroughly
+

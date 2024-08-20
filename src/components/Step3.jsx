@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/step3.css'; 
 
-const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, filteredSlots, goToPreviousStep, isFormValid }) => {
+const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, filteredSlots, goToPreviousStep, isFormValid, loading }) => {
 
   useEffect(() => {
     document.body.classList.add('step3');
@@ -19,7 +19,7 @@ const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, fil
 
   return (
     <>
-      <p>Please select a date and time for your upcoming session. The same day and time will be applied for the following months, 
+      <p>Please select a date and time for your upcoming session. The same day and time will be applied for the following months of the school year, 
       however you will be able to request a reschedule or cancel anytime.</p>
       <div className="input-container datepicker-container">
         <DatePicker
@@ -51,7 +51,9 @@ const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, fil
       </div>
       <div className="nav-buttons">
         <button type="button" onClick={goToPreviousStep}>Prev</button>
-        <button type="submit" disabled={!isFormValid}>Register</button>
+        <button type="submit" disabled={!isFormValid || loading}>
+          {loading ? 'Registering...' : 'Register'}
+        </button>
       </div>
     </>
   );

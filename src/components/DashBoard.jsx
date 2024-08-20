@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/authContext';
 import { getParentById } from '../services/firestore';
 import { getSessionsByParentId, generateTimeSlots, getAvailableSlots, filterAvailableSlots, deleteSessionByDate , deleteSessionById, addSession} from '../services/sessions';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory, Redirect, Link } from 'react-router-dom';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '../firebaseConfig';
 import { logoutUser } from '../services/auth';
@@ -79,26 +79,33 @@ const DashBoard = () => {
   }, [user, parentName]);
 
   useEffect(() => {
-    if (selectedDayToRescheduleTo) {
+    // Check if selectedDayToRescheduleTo is valid before proceeding
+    if (selectedDayToRescheduleTo && !isNaN(new Date(selectedDayToRescheduleTo))) {
+      console.log('Valid selectedDayToRescheduleTo:', selectedDayToRescheduleTo);
+  
       const fetchSlots = async () => {
-        const availableSlots = generateTimeSlots();
-        const bookedSlotsArray = await getAvailableSlots();
-        
-        // Filter booked slots for the selected day
-        const filteredBookedSlots = bookedSlotsArray.filter(slot => {
-          const slotDate = new Date(slot);
-          return (
-            slotDate.getFullYear() === selectedDayToRescheduleTo.getFullYear() &&
-            slotDate.getMonth() === selectedDayToRescheduleTo.getMonth() &&
-            slotDate.getDate() === selectedDayToRescheduleTo.getDate()
-          );
-        });
-
-        const filteredSlots = filterAvailableSlots(availableSlots, filteredBookedSlots);
-        setFilteredSlots(filteredSlots);
+        try {
+          const availableSlots = generateTimeSlots();
+          const bookedSlotsArray = await getAvailableSlots();
+  
+          // Log bookedSlotsArray to check its content
+          console.log('Booked Slots:', bookedSlotsArray);
+  
+          // Call filterAvailableSlots and pass selectedDayToRescheduleTo
+          const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray, selectedDayToRescheduleTo);
+  
+          // Log the filtered slots
+          console.log('Filtered Slots:', filteredSlots);
+  
+          setFilteredSlots(filteredSlots);
+        } catch (error) {
+          console.error('Error fetching slots:', error);
+        }
       };
-
+  
       fetchSlots();
+    } else {
+      console.warn('Invalid or undefined selectedDayToRescheduleTo:', selectedDayToRescheduleTo);
     }
   }, [selectedDayToRescheduleTo]);
 
@@ -178,7 +185,12 @@ const DashBoard = () => {
 
   const handleDayToRescheduleToSelect = (event) => {
     const selected = new Date(event.target.value);
-    setSelectedDayToRescheduleTo(selected);
+    
+    if (!isNaN(selected.getTime())) { // Ensure it's a valid date
+      setSelectedDayToRescheduleTo(selected);
+    } else {
+      console.error('Invalid date selected:', selected);
+    }
   };
 
   const handleDaySelect = (event) => {
@@ -270,28 +282,24 @@ const DashBoard = () => {
 
   const handleRescheduleSession = async () => {
     try {
-
-      setLoading(true);
-      // Check if all required fields are filled
-      console.log("Selected Day:", selectedDay);
-      console.log("Selected Sessions:", selectedSessions);
-      console.log("Selected Day to Reschedule To:", selectedDayToRescheduleTo);
-      console.log("Selected Time Slot:", selectedTimeSlot);
+      setLoading(true); // Disable button while loading
   
+      // Ensure that all required fields are filled
       if (!selectedDay || !selectedSessions.length || !selectedDayToRescheduleTo || !selectedTimeSlot) {
         alert("Please fill out all of the fields.");
         setLoading(false);
         return;
-      }  
+      }
+  
       // Get the session to be deleted (first session in the selectedSessions array)
-      const selectedSession = selectedSessions[0]; 
+      const selectedSession = selectedSessions[0];
       if (!selectedSession.id) {
         console.error("Selected session does not have an ID.");
         setLoading(false);
         return;
       }
   
-      // Call deleteSessionById to delete the selected session by ID
+      // Delete the selected session by its ID
       await deleteSessionById(selectedSession.id);
       console.log(`Session for ${selectedSession.child_name} on ${selectedSession.session_time} deleted successfully.`);
   
@@ -300,7 +308,7 @@ const DashBoard = () => {
       let hours = parseInt(timeParts[0], 10);
       const minutes = parseInt(timeParts[1], 10);
   
-      // Check for PM and adjust the hour accordingly
+      // Adjust the hour for PM cases
       if (selectedTimeSlot.includes('PM') && hours !== 12) {
         hours += 12; // Convert 1:00 PM to 13:00
       } else if (selectedTimeSlot.includes('AM') && hours === 12) {
@@ -308,8 +316,9 @@ const DashBoard = () => {
       }
   
       // Add the rescheduled session
+      const rescheduleDate = new Date(selectedDayToRescheduleTo.setHours(hours, minutes, 0, 0));
       const sessionData = {
-        session_time: new Date(selectedDayToRescheduleTo.setHours(hours, minutes, 0, 0)).toISOString(),
+        session_time: rescheduleDate.toISOString(),
         child_name: selectedSession.child_name,
         parent_id: selectedSession.parent_id,
       };
@@ -327,7 +336,7 @@ const DashBoard = () => {
         parentName: parentData.parent_name,
         oldSessionDate: new Date(selectedSession.session_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
         oldTimeSlot: new Date(selectedSession.session_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
-        newSessionDate: new Date(sessionData.session_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
+        newSessionDate: rescheduleDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }), // Use the correct date format
         newTimeSlot: selectedTimeSlot
       });
   
@@ -343,7 +352,7 @@ const DashBoard = () => {
       console.error("Error during rescheduling: ", error);
       alert("Error rescheduling the session.");
     } finally {
-      setLoading(false);
+      setLoading(false); // Enable button after operation is complete
     }
   };
 
@@ -512,6 +521,9 @@ const DashBoard = () => {
             <button className="back-button" onClick={() => { setShowCancel(false); setShowOptions(true); }}>Back</button>
           </div>
         )}
+        <Link to="/report-an-issue" className="report-issue-link">
+          Report an issue
+        </Link>
       </div>
     </div>
   );

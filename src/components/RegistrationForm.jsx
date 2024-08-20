@@ -21,6 +21,7 @@ const RegistrationForm = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isFirstStepValid, setIsFirstStepValid] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);  
   const history = useHistory();
 
   useEffect(() => {
@@ -31,14 +32,20 @@ const RegistrationForm = () => {
   }, []);
 
   useEffect(() => {
+    if (!startDate) {
+      console.error("Start date is undefined"); // Early exit if startDate is not set
+      return;
+    }
+  
     const fetchSlots = async () => {
       const availableSlots = generateTimeSlots();
       const bookedSlotsArray = await getAvailableSlots();
-      const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray);
+      const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray, startDate); // Pass startDate instead of undefined
       setFilteredSlots(filteredSlots);
     };
+  
     fetchSlots();
-  }, [startDate]);
+  }, [startDate]); // Only trigger when startDate is set
 
   const checkFormValidity = useCallback(() => {
     const requiredFields = [email, password, confirmPassword, name, child, selectedTime];
@@ -57,13 +64,16 @@ const RegistrationForm = () => {
 
   const handleDateChange = async (date) => {
     setStartDate(date);
+  
+    if (!(date instanceof Date) || isNaN(date)) {
+      console.error('Invalid date:', date);
+      return;
+    }
+  
     const availableSlots = generateTimeSlots();
-    console.log('Available Slots:', availableSlots);
     const bookedSlotsArray = await getAvailableSlots();
-    console.log('Booked Slots Array:', bookedSlotsArray);
-    const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray);
+    const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray, date); // Pass the valid date
     setFilteredSlots(filteredSlots);
-    console.log('Filtered Slots:', filteredSlots);
   };
 
   const handlePasswordChange = (event) => {
@@ -87,6 +97,7 @@ const RegistrationForm = () => {
     }
   
     try {
+      setLoading(true);
       const userCredential = await registerUser(email, password);
       const user = userCredential.user;
   
@@ -102,7 +113,7 @@ const RegistrationForm = () => {
       const parentId = await addParent(parentData);
   
       let currentDate = new Date(startDate);
-      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 3, 0); 
+      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 8, 0); 
 
       while (currentDate <= endDate) {
         if (currentDate.getDay() === 6 || currentDate.getDay() === 0) { // Saturday or Sunday
@@ -131,12 +142,14 @@ const RegistrationForm = () => {
         }
         currentDate.setDate(currentDate.getDate() + 7); // Move to the same day next week
       }
-  
       alert('Registration complete. You can now log in with your email and password.');
       history.push('/login');
+
     } catch (error) {
       console.error("Error during registration: ", error.message, error.code);
       alert(`Error during registration: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -186,6 +199,7 @@ const RegistrationForm = () => {
                 filteredSlots={filteredSlots} 
                 goToPreviousStep={goToPreviousStep} 
                 isFormValid={isFormValid} 
+                loading={loading}
               />
             )}
           </form>

@@ -78,6 +78,7 @@ const SignIn = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
+                autoComplete='off'
               />
             </div>
             <div>
@@ -89,6 +90,7 @@ const SignIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 required
+                autoComplete='off'
               />
             </div>
             {error && <div className="error">{error}</div>}

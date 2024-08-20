@@ -54,12 +54,15 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const fetchSlotsForRescheduleToDay = async () => {
-      if (!selectedDayToRescheduleTo) return; // Wait until a day is selected
+      if (!selectedDayToRescheduleTo) {
+        console.error("No selected day to reschedule to");
+        return; // Wait until a valid day is selected
+      }
   
       const availableSlots = generateTimeSlots(); // Generate all possible slots for the day
       const bookedSlotsArray = await getAvailableSlots(); // Get all booked sessions across all days
   
-      // Filter the booked slots to only include those on the day to reschedule to
+      // Filter the booked slots to only include those on the "reschedule to" day
       const filteredBookedSlots = bookedSlotsArray.filter(slot => {
         const slotDate = new Date(slot);
         return (
@@ -69,8 +72,8 @@ const AdminDashboard = () => {
         );
       });
   
-      // Filter the available slots based on booked slots only for the "reschedule to" day
-      const filteredSlots = filterAvailableSlots(availableSlots, filteredBookedSlots);
+      // Pass `selectedDayToRescheduleTo` as the selected date argument
+      const filteredSlots = filterAvailableSlots(availableSlots, filteredBookedSlots, selectedDayToRescheduleTo);
   
       setFilteredSlots(filteredSlots); // Set filtered slots for the dropdown
     };
@@ -250,15 +253,22 @@ const AdminDashboard = () => {
       })
     : [];
 
-  const handleDayToRescheduleToSelect = async (event) => {
-    const selected = new Date(event.target.value);
-    setSelectedDayToRescheduleTo(selected);
-  
-    const availableSlots = generateTimeSlots();
-    const bookedSlots = await getAvailableSlots();
-    const filteredSlots = filterAvailableSlots(availableSlots, bookedSlots);
-    setFilteredSlots(filteredSlots);
-  };
+    const handleDayToRescheduleToSelect = async (event) => {
+      const selected = new Date(event.target.value);
+      setSelectedDayToRescheduleTo(selected); // Set the selected day to reschedule to
+    
+      // Generate available time slots
+      const availableSlots = generateTimeSlots();
+    
+      // Fetch booked slots across all days
+      const bookedSlots = await getAvailableSlots();
+    
+      // Filter available slots based on booked slots and the selected day
+      const filteredSlots = filterAvailableSlots(availableSlots, bookedSlots, selected); 
+    
+      // Set the filtered slots in the state
+      setFilteredSlots(filteredSlots);
+    };
 
   const handleRescheduleSession = async () => {
     try {
@@ -419,7 +429,6 @@ const AdminDashboard = () => {
         {showReschedule ? (
           <div className="reschedule-container">
             <h2 className="reschedule-title">Reschedule a Session</h2>
-            <p className="select-date-title">Select day of session</p>
             <select className="session-dropdown" onChange={handleDaySelect}>
               <option value="">-- Select a Day --</option>
               {sessions
@@ -430,8 +439,7 @@ const AdminDashboard = () => {
                   </option>
                 ))}
             </select>
-  
-            <p className="select-session">Select Session</p>
+
             <select className="session-dropdown" onChange={(e) => {
               const sessionId = e.target.value;
               const session = sessionsForSelectedDay.find(s => s.id === sessionId);
@@ -452,8 +460,7 @@ const AdminDashboard = () => {
                 <option>No sessions available</option>
               )}
             </select>
-  
-            <p className="select-new-date">Select day to reschedule to</p>
+
             <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
               <option value="">-- Select a Day --</option>
               {getAllWeekends().map((day, index) => (
@@ -462,8 +469,7 @@ const AdminDashboard = () => {
                 </option>
               ))}
             </select>
-  
-            <p className="select-new-time">Select time to reschedule to</p>
+
             <select className="session-dropdown" onChange={(e) => setSelectedTimeSlot(e.target.value)}>
               <option value="">-- Select a Time --</option>
               {filteredSlots.map((slot, index) => (
@@ -474,7 +480,7 @@ const AdminDashboard = () => {
             </select>
   
             <button className="reschedule-session-button" onClick={handleRescheduleSession} disabled={loading}>
-              {loading ? 'Rescheduling...' : 'Rescheudle Session'}
+              {loading ? 'Rescheduling...' : 'Reschedule Session'}
             </button>
   
             <button className="back-button" onClick={() => setShowReschedule(false)}>Back</button>
@@ -491,14 +497,16 @@ const AdminDashboard = () => {
                 </div>
               ))
             ) : (
-              <p className="no-sessions">No sessions on this day!</p>
+              <p className="no-sessions">No sessions!</p>
             )}
-            <button className="cancel-sessions-button" onClick={handleCancelSessions}>Cancel Sessions</button>
+            {selectedSessions.length > 0 && (
+              <button className="cancel-sessions-button" onClick={handleCancelSessions}>Cancel Sessions</button>
+            )}
           </div>
         ) : showCancel ? (
           <div className="cancel-container">
             <h2 className="cancel-title">Cancel a Session</h2>
-            <p className="cancel-note">If you would like to cancel<br /> a day of sessions, you can do so<br/>by clicking the day on the calendar.</p>
+            <p className="cancel-note">If you would like to cancel<br /> <strong>a day of sessions</strong>, you can do so<br/>by clicking the day on the calendar.</p>
             <select className="cancel-session-dropdown" onChange={handleDaySelect}>
               <option value="">-- Select a Day --</option>
               {sessions
@@ -582,7 +590,7 @@ const AdminDashboard = () => {
                   </button>
                 </div>
               )}
-              <button className="zoom-button" onClick={() => window.open("https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09&omn=74404485715", "_blank", "noopener noreferrer")}>Join Zoom Call</button>
+              <button className="zoom-button" onClick={() => window.open("https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09&omn=74404485715", "_blank", "noopener noreferrer")}>Join Zoom Meeting</button>
               <button className="invoices-button" onClick={handleInvoicesClick}>Invoices</button>
               <button
                 className="reschedule-button"

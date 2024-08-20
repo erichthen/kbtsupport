@@ -66,21 +66,43 @@ export const generateTimeSlots = () => {
   return slots;
 };
 
-export const filterAvailableSlots = (slots, bookedSlots) => {
+export const filterAvailableSlots = (slots, bookedSlots, selectedDate) => {
   if (!Array.isArray(slots)) {
     console.error('Slots is not an array:', slots);
     return [];
   }
-  // convert booked slots to comparable format
-  const unavailableSlots = bookedSlots.map(slot => {
-    const date = new Date(slot);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  });
 
-  return slots.map(time => ({
-    time,
-    status: unavailableSlots.includes(time) ? 'unavailable' : 'available'
-  }));
+  // Ensure selectedDate is valid
+  if (!(selectedDate instanceof Date) || isNaN(selectedDate)) {
+    console.error('Invalid selectedDate:', selectedDate);
+    return [];
+  }
+
+  const selectedDay = selectedDate.toLocaleDateString(); // Get the selected day in MM/DD/YYYY format
+
+  // Convert bookedSlots to a format that includes both date and time for comparison
+  const unavailableSlots = bookedSlots
+    .filter(slot => slot) // Filter out undefined or invalid slots
+    .map(slot => {
+      const date = new Date(slot);
+      if (!(date instanceof Date) || isNaN(date)) {
+        console.error('Invalid slot date:', slot);
+        return null;
+      }
+      const day = date.toLocaleDateString(); // Get the date (MM/DD/YYYY format)
+      const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Get the time
+      return { day, time }; // Return both the day and time
+    })
+    .filter(slot => slot); // Filter out any invalid/null slot objects
+
+  // Filter out the slots that are unavailable on the selected day
+  return slots.map(time => {
+    const isUnavailable = unavailableSlots.some(slot => slot.day === selectedDay && slot.time === time);
+    return {
+      time,
+      status: isUnavailable ? 'unavailable' : 'available'
+    };
+  });
 };
 
 export const deleteSessionsByDate = async (selectedDate) => {

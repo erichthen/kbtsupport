@@ -6,6 +6,7 @@ import AdminDashboard from './components/AdminDashboard.jsx';
 import DashBoard from './components/DashBoard.jsx'; 
 import Invoices from './components/Invoices';
 import { AuthProvider } from './context/authContext.js';
+import ReportIssue from './components/ReportIssue.jsx';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/dashboard" component={DashBoard} />
           <Route exact path="/admin/invoices" component={Invoices} />
           <Route exact path="/admin" component={AdminDashboard} />
+          <Route path="/report-an-issue" component={ReportIssue}/>
           <Route path="/" component={SignIn} exact /> {/* Redirect root to login */}
         </Switch>
       </Router>
