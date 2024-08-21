@@ -314,3 +314,23 @@ exports.reportIssue = functions.https.onCall(async (data, context) => {
     return {success: false};
   }
 });
+
+exports.sendCancelAllSession = functions.https.onCall(async (data, context) => {
+  const {user} = data;
+
+  const mailOptions = {
+    from: "erich.then2@gmail.com",
+    to: "erich.then2@gmail.com", // Can be your or another admin's email
+    subject: `${user} has canceled all of their sessions`,
+    text: `${user} has canceled all sessions from their dashboard.`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return {success: true};
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return {success: false, error: error.message};
+  }
+});
+

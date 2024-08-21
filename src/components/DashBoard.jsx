@@ -27,6 +27,7 @@ const DashBoard = () => {
   const [loading, setLoading] = useState(false); // Add this state to manage button disable
   // eslint-disable-next-line
   const [selectedSession, setSelectedSession] = useState(null);
+  const [showCancelAllPopup, setShowCancelAllPopup] = useState(false); // State to show/hide the popup
   const { user } = useAuth();
   const history = useHistory();
 
@@ -79,8 +80,7 @@ const DashBoard = () => {
   }, [user, parentName]);
 
   useEffect(() => {
-    // Check if selectedDayToRescheduleTo is valid before proceeding
-    if (selectedDayToRescheduleTo && !isNaN(new Date(selectedDayToRescheduleTo))) {
+    if (selectedDayToRescheduleTo !== null && !isNaN(new Date(selectedDayToRescheduleTo))) {
       console.log('Valid selectedDayToRescheduleTo:', selectedDayToRescheduleTo);
   
       const fetchSlots = async () => {
@@ -88,7 +88,6 @@ const DashBoard = () => {
           const availableSlots = generateTimeSlots();
           const bookedSlotsArray = await getAvailableSlots();
   
-          // Log bookedSlotsArray to check its content
           console.log('Booked Slots:', bookedSlotsArray);
   
           // Call filterAvailableSlots and pass selectedDayToRescheduleTo
@@ -104,8 +103,6 @@ const DashBoard = () => {
       };
   
       fetchSlots();
-    } else {
-      console.warn('Invalid or undefined selectedDayToRescheduleTo:', selectedDayToRescheduleTo);
     }
   }, [selectedDayToRescheduleTo]);
 
@@ -356,6 +353,51 @@ const DashBoard = () => {
     }
   };
 
+  const openCancelAllPopup = () => {
+    setShowCancelAllPopup(true); // Show the popup
+  };
+  
+  const closeCancelAllPopup = () => {
+    setShowCancelAllPopup(false); // Close the popup
+  };
+
+  const cancelAllSessions = async () => {
+    if (!user || !sessions.length) {
+      alert('No sessions to cancel.');
+    }
+    setLoading(true);
+
+    try {
+      const parentData = await getParentById(user.uid);
+
+      if (!parentData || !parentData.id) {
+        alert('Error fetchign data');
+        setLoading(false);
+        return;
+      }
+
+      for (const session of sessions) {
+        await deleteSessionById(session.id);
+      }
+
+      setSessions([]);
+
+      const sendCancelAllSession = httpsCallable(functions, 'sendCancelAllSession');
+      await sendCancelAllSession({user: parentName});
+
+      alert('All sessions canceled and email sent successfully.');
+    }
+    catch (error) {
+      console.error('Error canceling all sessions: ', error);
+      alert('Error canceling all sessions');
+    }
+    finally {
+      setLoading(false);
+      setShowCancelAllPopup(false);
+    }
+
+  };
+
   return (
     <div className="outer-container">
       <div className="main-container">
@@ -411,8 +453,23 @@ const DashBoard = () => {
               <button className="option-button" onClick={showRescheduleSession}>
                 Reschedule a session
               </button>
+              <button className="option-button" onClick={openCancelAllPopup}>
+                Cancel all sessions
+              </button>
             </div>
             <button className="back-button" onClick={handleGoBack}>Back</button>
+          </div>
+        )}
+
+        {showCancelAllPopup && (
+          <div className="cancel-all-popup">
+            <div className="popup-content">
+              <p>Are you sure you want to cancel all sessions? <br />You will not be able to undo this action. <br />Please do this only if your child will no longer be attending sessions.</p>
+              <button className="yes-button" onClick={cancelAllSessions} disabled={loading}>
+                {loading ? "Processing..." : "Yes"}
+              </button>
+              <button className="no-button" onClick={closeCancelAllPopup}>No</button>
+            </div>
           </div>
         )}
   

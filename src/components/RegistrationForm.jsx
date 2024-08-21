@@ -113,7 +113,7 @@ const RegistrationForm = () => {
       const parentId = await addParent(parentData);
   
       let currentDate = new Date(startDate);
-      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 8, 0); 
+      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 9, 0); 
 
       while (currentDate <= endDate) {
         if (currentDate.getDay() === 6 || currentDate.getDay() === 0) { // Saturday or Sunday
