@@ -28,6 +28,10 @@ const DashBoard = () => {
   // eslint-disable-next-line
   const [selectedSession, setSelectedSession] = useState(null);
   const [showCancelAllPopup, setShowCancelAllPopup] = useState(false); // State to show/hide the popup
+  const [showRescheduleAllForm, setShowRescheduleAllForm] = useState(false);
+  const [selectedDayForAll, setSelectedDayForAll] = useState(null);
+  const [selectedTimeSlotForAll, setSelectedTimeSlotForAll] = useState(null); 
+  const [availableSlots, setAvailableSlots] = useState([]);
   const { user } = useAuth();
   const history = useHistory();
 
@@ -106,6 +110,23 @@ const DashBoard = () => {
     }
   }, [selectedDayToRescheduleTo]);
 
+  useEffect(() => {
+    const fetchSlots = async () => {
+      try {
+        const availableSlotsData = generateTimeSlots(); // Generate all time slots
+        const bookedSlotsArray = await getAvailableSlots(); // Get already booked slots
+        const filteredSlots = filterAvailableSlots(availableSlotsData, bookedSlotsArray, selectedDayForAll);
+        setAvailableSlots(filteredSlots);
+      } catch (error) {
+        console.error("Error fetching slots:", error);
+      }
+    };
+
+    if (selectedDayForAll) {
+      fetchSlots();
+    }
+  }, [selectedDayForAll]);
+
   if (!user) {
     return <Redirect to="/login" />;
   }
@@ -126,6 +147,7 @@ const DashBoard = () => {
 
   const handleGoBack = () => {
     setShowOptions(false); 
+    setShowRescheduleAllForm(false);
   };
 
   const showRescheduleSession = () => {
@@ -210,6 +232,11 @@ const DashBoard = () => {
   const handleDayToCancelSelect = (event) => {
     const selected = new Date(event.target.value);
     setSelectedDay(selected); // Set the selected day to cancel
+  };
+
+  const handleShowRescheduleAllForm = () => {
+    setShowRescheduleAllForm(true); // Show the form when the button is clicked
+    setShowOptions(false); // Hide the options page
   };
 
   const navigateToCancelForm = () => {
@@ -395,13 +422,96 @@ const DashBoard = () => {
       setLoading(false);
       setShowCancelAllPopup(false);
     }
-
   };
+
+  const handleRescheduleAllSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      setLoading(true); // Disable the button while loading
+  
+      // Ensure that both the day and time are selected
+      if (!selectedDayForAll || !selectedTimeSlotForAll) {
+        alert("Please select a day and time.");
+        setLoading(false);
+        return;
+      }
+  
+      // Get the parent data (assuming `user` is already authenticated)
+      const parentData = await getParentById(user.uid);
+      if (!parentData || !parentData.id) {
+        alert("Parent data not found.");
+        setLoading(false);
+        return;
+      }
+  
+      // Delete all current sessions for the parent
+      for (const session of sessions) {
+        await deleteSessionById(session.id);
+      }
+  
+      // Calculate new session dates and times for the selected day and time
+      let currentDate = new Date(selectedDayForAll);
+      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 9, 0); // 9 months from the start date
+  
+      // Set the hours and minutes for the selected time slot
+      const timeParts = selectedTimeSlotForAll.split(':');
+      let hours = parseInt(timeParts[0], 10);
+      const minutes = parseInt(timeParts[1], 10);
+  
+      // Adjust the hour for PM cases
+      if (selectedTimeSlotForAll.includes('PM') && hours !== 12) {
+        hours += 12;
+      } else if (selectedTimeSlotForAll.includes('AM') && hours === 12) {
+        hours = 0; // Handle 12 AM case
+      }
+  
+      // Loop through weekends and add sessions
+      while (currentDate <= endDate) {
+        if (currentDate.getDay() === 6 || currentDate.getDay() === 0) { // Saturday or Sunday
+          const sessionDate = new Date(currentDate);
+          sessionDate.setHours(hours, minutes, 0, 0);
+  
+          // Save the session to Firestore
+          await addSession(parentData.id, {
+            child_name: parentData.child_name,
+            session_time: sessionDate.toISOString(),
+          });
+        }
+        currentDate.setDate(currentDate.getDate() + 7); // Move to the same day next week
+      }
+  
+      // Optionally send a notification email to the admin about the rescheduling
+      const sendRescheduleAllEmail = httpsCallable(functions, 'sendRescheduleAll');
+      await sendRescheduleAllEmail({
+        parentName: parentData.parent_name,
+        rescheduledDay: new Date(selectedDayForAll).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }),
+        rescheduledTime: selectedTimeSlotForAll
+      });
+  
+      alert("All sessions rescheduled successfully.");
+      setShowRescheduleAllForm(false); // Close the form
+      setShowOptions(true); // Go back to options container
+  
+    } catch (error) {
+      console.error("Error during rescheduling all sessions: ", error);
+      alert("Error rescheduling the sessions.");
+    } finally {
+      setLoading(false); // Enable the button after operation is complete
+    }
+  };
+
+  const getNextDayOfWeek = (dayOfWeek) => {
+    const today = new Date();
+    const resultDate = new Date(today);
+    resultDate.setDate(today.getDate() + (dayOfWeek + 7 - today.getDay()) % 7); 
+    return resultDate;
+  };
+  
 
   return (
     <div className="outer-container">
       <div className="main-container">
-        {!showOptions && !showReschedule && !showCancel && (
+        {!showOptions && !showReschedule && !showCancel && !showRescheduleAllForm && (
           <>
             <h1>Hello, {parentName || 'Loading...'}!</h1>
             <p className="schedule-details">Below is your schedule, click on a shaded day to see session details.</p>
@@ -443,7 +553,7 @@ const DashBoard = () => {
           </>
         )}
   
-        {showOptions && !showReschedule && !showCancel && (
+        {showOptions && !showReschedule && !showCancel && !showRescheduleAllForm && (
           <div className="options-container">
             <h2>Do you want to...</h2>
             <div className="options-buttons">
@@ -456,11 +566,14 @@ const DashBoard = () => {
               <button className="option-button" onClick={openCancelAllPopup}>
                 Cancel all sessions
               </button>
+              <button className="option-button" onClick={handleShowRescheduleAllForm}>
+                Reschedule all sessions
+              </button>
             </div>
             <button className="back-button" onClick={handleGoBack}>Back</button>
           </div>
         )}
-
+  
         {showCancelAllPopup && (
           <div className="cancel-all-popup">
             <div className="popup-content">
@@ -476,7 +589,7 @@ const DashBoard = () => {
         {showReschedule && (
           <div className="reschedule-container">
             <h2 className="reschedule-title">Reschedule a Session</h2>
-  
+    
             {/* Select day of session */}
             <p className="select-date-title">Select day of session</p>
             <select className="session-dropdown" onChange={handleDaySelect}>
@@ -487,7 +600,7 @@ const DashBoard = () => {
                 </option>
               ))}
             </select>
-  
+    
             {/* Select session */}
             <p className="select-session">Select Session</p>
             <select className="session-dropdown" onChange={(e) => setSelectedSession(e.target.value)}>
@@ -505,7 +618,7 @@ const DashBoard = () => {
                 <option>No sessions available</option>
               )}
             </select>
-  
+    
             {/* Select day to reschedule to */}
             <p className="select-new-date">Select day to reschedule to</p>
             <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
@@ -516,7 +629,7 @@ const DashBoard = () => {
                 </option>
               ))}
             </select>
-  
+    
             {/* Select time to reschedule to */}
             <p className="select-new-time">Select time to reschedule to</p>
             <select className="session-dropdown" onChange={(e) => setSelectedTimeSlot(e.target.value)}>
@@ -540,6 +653,37 @@ const DashBoard = () => {
             </button>
             <button className="back-button" onClick={handleClosePopup}>Back</button>
           </div>
+        )}
+  
+        {showRescheduleAllForm && (
+          <form onSubmit={handleRescheduleAllSubmit} className="reschedule-all-container">
+            <h2 className="reschedule-all-title">Reschedule All Sessions</h2>
+            <select className="session-dropdown" onChange={(e) => {
+              const selectedDay = e.target.value === 'Saturday' ? getNextDayOfWeek(6) : getNextDayOfWeek(0);
+              setSelectedDayForAll(selectedDay);
+              }} required>
+                <option value="">-- Select a Day --</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+            </select>
+            
+            <select className="res-session-dropdown" onChange={(e) => setSelectedTimeSlotForAll(e.target.value)} required>
+              <option value="">-- Select a Time --</option>
+              {availableSlots.map((slot, index) => (
+                <option key={index} value={slot.time} disabled={slot.status === 'unavailable'}>
+                  {slot.time} {slot.status === 'unavailable' ? '(Unavailable)' : ''}
+                </option>
+              ))}
+            </select>
+            
+            {/* Submit button */}
+            <button type="submit" className="reschedule-all-button" disabled={loading}>
+              {loading ? 'Rescheduling...' : 'Reschedule All Sessions'}
+            </button>
+            
+            {/* Back button */}
+            <button type="button" className="back-button" onClick={handleGoBack}>Back</button>
+          </form>
         )}
   
         {showCancel && (
@@ -578,13 +722,13 @@ const DashBoard = () => {
             <button className="back-button" onClick={() => { setShowCancel(false); setShowOptions(true); }}>Back</button>
           </div>
         )}
+  
         <Link to="/report-an-issue" className="report-issue-link">
           Report an issue
         </Link>
       </div>
     </div>
   );
-
 };
 
 export default DashBoard;

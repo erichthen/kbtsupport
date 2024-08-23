@@ -19,8 +19,8 @@ const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, fil
 
   return (
     <>
-      <p>Please select a date and time for your upcoming session. The same day and time will be applied for the following months of the school year, 
-      however you will be able to reschedule or cancel anytime.</p>
+      <p>Please select a date and time for your upcoming session. The same day and time will be applied for the following months of the school year. 
+       You will be able to reschedule or cancel anytime.</p>
       <div className="input-container datepicker-container">
         <DatePicker
           id="start-date"

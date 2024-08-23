@@ -334,3 +334,26 @@ exports.sendCancelAllSession = functions.https.onCall(async (data, context) => {
   }
 });
 
+exports.sendRescheduleAll = functions.https.onCall(async (data, context) => {
+  const {parentName, rescheduledDay, rescheduledTime} = data;
+
+  // Define the email content
+  const mailOptions = {
+    from: "erich.then2@gmail.com",
+    to: "erich.then2@gmail.com", // Replace with admin email
+    subject: `${parentName} has rescheduled all sessions`,
+    text: `The parent ${parentName} has rescheduled all their sessions.
+           New session day: ${rescheduledDay}.
+           New session time: ${rescheduledTime}.`,
+  };
+
+  try {
+    // Send the email
+    await transporter.sendMail(mailOptions);
+    return {success: true};
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return {success: false, error: error.message};
+  }
+});
+

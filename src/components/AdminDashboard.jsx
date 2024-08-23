@@ -492,8 +492,8 @@ const AdminDashboard = () => {
             {selectedSessions.length > 0 ? (
               selectedSessions.map((session, index) => (
                 <div key={session.id} className="session-info">
-                  <p>Child's Name: {session.child_name}</p>
-                  <p>Time: {session.session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+                  <p>{session.child_name}</p>
+                  <p>{session.session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
                 </div>
               ))
             ) : (

@@ -385,13 +385,13 @@ body.admin-dashboard {
 .admin-dashboard .session-info {
   display: inline-block;
   gap: 20px;
-  padding: 10px;
+  padding: 10px 30px;
   margin-top: -20px;
   margin-left: 10px;
   margin-right: 10px;
   background-color: rgb(83, 52, 73);
   border-radius: 10px;
-  text-align: left; /* Keep the text left-aligned within each session */
+  text-align: center; /* Keep the text left-aligned within each session */
   color: white;
 }
 
