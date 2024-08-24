@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../firebaseConfig";
-import { useHistory } from "react-router-dom"; // Import useHistory
+import { useHistory } from "react-router-dom";
 import '../styles/reportissue.css';
 
 const ReportIssue = () => {
@@ -11,14 +11,11 @@ const ReportIssue = () => {
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   
-  const history = useHistory(); // Initialize useHistory hook
+  const history = useHistory();
 
   useEffect(() => {
-    // Add the .report-issue class to the body when the component mounts
     document.body.classList.add("report-issue");
-    
     return () => {
-      // Remove the .report-issue class when the component unmounts
       document.body.classList.remove("report-issue");
     };
   }, []);
@@ -38,7 +35,7 @@ const ReportIssue = () => {
     try {
       const result = await reportIssue({ clientEmail: email, issue: issue });
       if (result.data.success) {
-        setSubmitted(true); // Set the submission status to true
+        setSubmitted(true);
       } else {
         setMessage("Failed to report issue. Please try again.");
       }
@@ -89,10 +86,9 @@ const ReportIssue = () => {
         </>
       )}
 
-      {/* Add Back Button */}
       <button
         className="back-button"
-        onClick={() => history.push("/dashboard")} // Navigate to dashboard
+        onClick={() => history.push("/dashboard")}
       >
         Back to Dashboard
       </button>

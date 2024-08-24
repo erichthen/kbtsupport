@@ -1,25 +1,64 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import SignIn from './components/SignIn.jsx';
-import RegistrationForm from './components/RegistrationForm.jsx';
-import AdminDashboard from './components/AdminDashboard.jsx';
-import DashBoard from './components/DashBoard.jsx'; 
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import { useAuth, AuthProvider } from './context/authContext';
+import SignIn from './components/SignIn';
+import RegistrationForm from './components/RegistrationForm';
+import DashBoard from './components/DashBoard';
 import Invoices from './components/Invoices';
-import { AuthProvider } from './context/authContext.js';
-import ReportIssue from './components/ReportIssue.jsx';
+import AdminDashboard from './components/AdminDashboard';
+import ReportIssue from './components/ReportIssue';
+
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const { user } = useAuth();
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        user ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/login" />
+        )
+      }
+    />
+  );
+};
+
+const AdminRoute = ({ component: Component, ...rest }) => {
+  const { user } = useAuth();
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        user && user.email === 'kelli.b.then@gmail.com' ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/login" />
+        )
+      }
+    />
+  );
+};
 
 const App = () => {
   return (
     <AuthProvider>
       <Router>
         <Switch>
+          {/* Public Routes */}
           <Route path="/login" component={SignIn} />
           <Route path="/register" component={RegistrationForm} />
-          <Route path="/dashboard" component={DashBoard} />
-          <Route exact path="/admin/invoices" component={Invoices} />
-          <Route exact path="/admin" component={AdminDashboard} />
-          <Route path="/report-an-issue" component={ReportIssue}/>
-          <Route path="/" component={SignIn} exact /> {/* Redirect root to login */}
+          <Route path="/report-an-issue" component={ReportIssue} />
+
+          {/* Private Routes */}
+          <PrivateRoute path="/dashboard" component={DashBoard} />
+
+          {/* Admin Routes */}
+          <AdminRoute exact path="/admin/invoices" component={Invoices} />
+          <AdminRoute exact path="/admin" component={AdminDashboard} />
+
+          {/* Redirect root to login */}
+          <Route exact path="/" render={() => <Redirect to="/login" />} />
         </Switch>
       </Router>
     </AuthProvider>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/authContext';
 import { getParentById } from '../services/firestore';
 import { getSessionsByParentId, generateTimeSlots, getAvailableSlots, filterAvailableSlots, deleteSessionByDate , deleteSessionById, addSession} from '../services/sessions';
-import { useHistory, Redirect, Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '../firebaseConfig';
 import { logoutUser } from '../services/auth';
@@ -18,16 +18,16 @@ const DashBoard = () => {
   const [showSessions, setShowSessions] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [showReschedule, setShowReschedule] = useState(false);
-  const [selectedDay, setSelectedDay] = useState(null); // Day of session
-  const [selectedDayToRescheduleTo, setSelectedDayToRescheduleTo] = useState(null); // Day to reschedule to
-  const [filteredSlots, setFilteredSlots] = useState([]); // Available time slots for rescheduling
-  const [showCancel, setShowCancel] = useState(false); // Control for showing the cancel form
+  const [selectedDay, setSelectedDay] = useState(null); 
+  const [selectedDayToRescheduleTo, setSelectedDayToRescheduleTo] = useState(null);
+  const [filteredSlots, setFilteredSlots] = useState([]); 
+  const [showCancel, setShowCancel] = useState(false); 
   const [cancelReason, setCancelReason] = useState('');
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
-  const [loading, setLoading] = useState(false); // Add this state to manage button disable
+  const [loading, setLoading] = useState(false); 
   // eslint-disable-next-line
   const [selectedSession, setSelectedSession] = useState(null);
-  const [showCancelAllPopup, setShowCancelAllPopup] = useState(false); // State to show/hide the popup
+  const [showCancelAllPopup, setShowCancelAllPopup] = useState(false); 
   const [showRescheduleAllForm, setShowRescheduleAllForm] = useState(false);
   const [selectedDayForAll, setSelectedDayForAll] = useState(null);
   const [selectedTimeSlotForAll, setSelectedTimeSlotForAll] = useState(null); 
@@ -94,10 +94,8 @@ const DashBoard = () => {
   
           console.log('Booked Slots:', bookedSlotsArray);
   
-          // Call filterAvailableSlots and pass selectedDayToRescheduleTo
           const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray, selectedDayToRescheduleTo);
   
-          // Log the filtered slots
           console.log('Filtered Slots:', filteredSlots);
   
           setFilteredSlots(filteredSlots);
@@ -113,8 +111,8 @@ const DashBoard = () => {
   useEffect(() => {
     const fetchSlots = async () => {
       try {
-        const availableSlotsData = generateTimeSlots(); // Generate all time slots
-        const bookedSlotsArray = await getAvailableSlots(); // Get already booked slots
+        const availableSlotsData = generateTimeSlots(); 
+        const bookedSlotsArray = await getAvailableSlots();
         const filteredSlots = filterAvailableSlots(availableSlotsData, bookedSlotsArray, selectedDayForAll);
         setAvailableSlots(filteredSlots);
       } catch (error) {
@@ -126,10 +124,6 @@ const DashBoard = () => {
       fetchSlots();
     }
   }, [selectedDayForAll]);
-
-  if (!user) {
-    return <Redirect to="/login" />;
-  }
 
   const handleLogout = async () => {
     try {
@@ -151,12 +145,12 @@ const DashBoard = () => {
   };
 
   const showRescheduleSession = () => {
-    setShowReschedule(true); // Show reschedule form
+    setShowReschedule(true); 
   };
 
   const handleClosePopup = () => {
     setShowSessions(false);
-    setShowReschedule(false); // Close reschedule form
+    setShowReschedule(false); 
   };
 
   const getFormattedDate = (date) => {
@@ -205,7 +199,7 @@ const DashBoard = () => {
   const handleDayToRescheduleToSelect = (event) => {
     const selected = new Date(event.target.value);
     
-    if (!isNaN(selected.getTime())) { // Ensure it's a valid date
+    if (!isNaN(selected.getTime())) { 
       setSelectedDayToRescheduleTo(selected);
     } else {
       console.error('Invalid date selected:', selected);
@@ -214,9 +208,8 @@ const DashBoard = () => {
 
   const handleDaySelect = (event) => {
     const selected = new Date(event.target.value);
-    setSelectedDay(selected); // Store the selected day
+    setSelectedDay(selected); 
   
-    // Filter sessions based on the selected day
     const filteredSessionsForDay = sessions.filter(session => {
       const sessionDate = new Date(session.session_time);
       return (
@@ -226,22 +219,22 @@ const DashBoard = () => {
       );
     });
   
-    setSelectedSessions(filteredSessionsForDay); // Update selected sessions based on the selected day
+    setSelectedSessions(filteredSessionsForDay); 
   };
 
   const handleDayToCancelSelect = (event) => {
     const selected = new Date(event.target.value);
-    setSelectedDay(selected); // Set the selected day to cancel
+    setSelectedDay(selected); 
   };
 
   const handleShowRescheduleAllForm = () => {
-    setShowRescheduleAllForm(true); // Show the form when the button is clicked
-    setShowOptions(false); // Hide the options page
+    setShowRescheduleAllForm(true);
+    setShowOptions(false);
   };
 
   const navigateToCancelForm = () => {
-    setShowCancel(true); // Show cancel session form
-    setShowOptions(false); // Hide options page
+    setShowCancel(true); 
+    setShowOptions(false); 
   };
 
   const submitCancelSession = async () => {
@@ -252,26 +245,25 @@ const DashBoard = () => {
   
     try {
       setLoading(true);
-      const parentData = await getParentById(user.uid); // Fetch parent data
+      const parentData = await getParentById(user.uid);
       const sessionDateFormatted = new Date(selectedDay).toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
       
-      // Call the cloud function to send the email
       const sendCancelEmail = httpsCallable(functions, 'sendCancelEmail');
       const emailResponse = await sendCancelEmail({
         parentName: parentData.parent_name,
-        sessionDate: sessionDateFormatted,  // For the email only, use a formatted string
+        sessionDate: sessionDateFormatted,  
         note: cancelReason
       });
   
       if (emailResponse.data.success) {
         console.log("Cancelation email sent successfully.");
   
-        // Delete the session for the selected day (pass the actual Date object)
-        await deleteSessionByDate(parentData.id, selectedDay);  // Pass selectedDay as Date
+        await deleteSessionByDate(parentData.id, selectedDay);  
   
-        alert("Session canceled successfully.");
-        setShowCancel(false); // Hide cancel form and return to options
-        setShowOptions(true);  // Show options page
+        alert("Session canceled successfully. Refresh to see changes.");
+        setShowCancel(false); 
+        setShowOptions(true);
+
       } else {
         alert("Error sending cancelation email: " + emailResponse.data.error);
       }
@@ -289,13 +281,13 @@ const DashBoard = () => {
     const weekends = [];
     const today = new Date();
     const endDate = new Date();
-    endDate.setMonth(today.getMonth() + 3); // Two months from now
+    endDate.setMonth(today.getMonth() + 3); 
   
     let currentDate = new Date(today);
   
     while (currentDate <= endDate) {
       const day = currentDate.getDay();
-      if (day === 6 || day === 0) { // Saturday (6) or Sunday (0)
+      if (day === 6 || day === 0) {
         weekends.push(new Date(currentDate));
       }
       currentDate.setDate(currentDate.getDate() + 1);
@@ -306,16 +298,14 @@ const DashBoard = () => {
 
   const handleRescheduleSession = async () => {
     try {
-      setLoading(true); // Disable button while loading
+      setLoading(true);
   
-      // Ensure that all required fields are filled
       if (!selectedDay || !selectedSessions.length || !selectedDayToRescheduleTo || !selectedTimeSlot) {
         alert("Please fill out all of the fields.");
         setLoading(false);
         return;
       }
   
-      // Get the session to be deleted (first session in the selectedSessions array)
       const selectedSession = selectedSessions[0];
       if (!selectedSession.id) {
         console.error("Selected session does not have an ID.");
@@ -323,23 +313,19 @@ const DashBoard = () => {
         return;
       }
   
-      // Delete the selected session by its ID
       await deleteSessionById(selectedSession.id);
       console.log(`Session for ${selectedSession.child_name} on ${selectedSession.session_time} deleted successfully.`);
   
-      // Handle time conversion logic for PM and AM
       const timeParts = selectedTimeSlot.split(':');
       let hours = parseInt(timeParts[0], 10);
       const minutes = parseInt(timeParts[1], 10);
   
-      // Adjust the hour for PM cases
       if (selectedTimeSlot.includes('PM') && hours !== 12) {
-        hours += 12; // Convert 1:00 PM to 13:00
+        hours += 12;
       } else if (selectedTimeSlot.includes('AM') && hours === 12) {
-        hours = 0; // Handle 12 AM case
+        hours = 0;
       }
   
-      // Add the rescheduled session
       const rescheduleDate = new Date(selectedDayToRescheduleTo.setHours(hours, minutes, 0, 0));
       const sessionData = {
         session_time: rescheduleDate.toISOString(),
@@ -347,27 +333,24 @@ const DashBoard = () => {
         parent_id: selectedSession.parent_id,
       };
   
-      // Call addSession to add the new rescheduled session
       const newSessionId = await addSession(selectedSession.parent_id, sessionData);
       console.log(`Rescheduled session added successfully with ID: ${newSessionId}`);
   
-      // Fetch parent data for the email
       const parentData = await getParentById(user.uid);
   
-      // Call the cloud function to send the reschedule email
       const sendRescheduleEmail = httpsCallable(functions, 'sendRescheduleEmail');
       const emailResponse = await sendRescheduleEmail({
         parentName: parentData.parent_name,
         oldSessionDate: new Date(selectedSession.session_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
         oldTimeSlot: new Date(selectedSession.session_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
-        newSessionDate: rescheduleDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }), // Use the correct date format
+        newSessionDate: rescheduleDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
         newTimeSlot: selectedTimeSlot
       });
   
       if (emailResponse.data.success) {
-        alert("Session rescheduled successfully.");
-        setShowReschedule(false); // Hide reschedule form
-        setShowOptions(true); // Go back to options container
+        alert("Session rescheduled successfully. Refresh to see changes.");
+        setShowReschedule(false);
+        setShowOptions(true);
       } else {
         alert("Error sending reschedule email: " + emailResponse.data.error);
       }
@@ -376,16 +359,16 @@ const DashBoard = () => {
       console.error("Error during rescheduling: ", error);
       alert("Error rescheduling the session.");
     } finally {
-      setLoading(false); // Enable button after operation is complete
+      setLoading(false);
     }
   };
 
   const openCancelAllPopup = () => {
-    setShowCancelAllPopup(true); // Show the popup
+    setShowCancelAllPopup(true); 
   };
   
   const closeCancelAllPopup = () => {
-    setShowCancelAllPopup(false); // Close the popup
+    setShowCancelAllPopup(false);
   };
 
   const cancelAllSessions = async () => {
@@ -412,7 +395,7 @@ const DashBoard = () => {
       const sendCancelAllSession = httpsCallable(functions, 'sendCancelAllSession');
       await sendCancelAllSession({user: parentName});
 
-      alert('All sessions canceled and email sent successfully.');
+      alert('All sessions canceled and email sent successfully. Refresh to see changes.');
     }
     catch (error) {
       console.error('Error canceling all sessions: ', error);
@@ -427,76 +410,68 @@ const DashBoard = () => {
   const handleRescheduleAllSubmit = async (event) => {
     event.preventDefault();
     try {
-      setLoading(true); // Disable the button while loading
+      setLoading(true);
   
-      // Ensure that both the day and time are selected
       if (!selectedDayForAll || !selectedTimeSlotForAll) {
         alert("Please select a day and time.");
         setLoading(false);
         return;
       }
   
-      // Get the parent data (assuming `user` is already authenticated)
+
       const parentData = await getParentById(user.uid);
       if (!parentData || !parentData.id) {
         alert("Parent data not found.");
         setLoading(false);
         return;
       }
-  
-      // Delete all current sessions for the parent
+
       for (const session of sessions) {
         await deleteSessionById(session.id);
       }
   
-      // Calculate new session dates and times for the selected day and time
       let currentDate = new Date(selectedDayForAll);
-      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 9, 0); // 9 months from the start date
+      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 9, 0); 
   
-      // Set the hours and minutes for the selected time slot
       const timeParts = selectedTimeSlotForAll.split(':');
       let hours = parseInt(timeParts[0], 10);
       const minutes = parseInt(timeParts[1], 10);
   
-      // Adjust the hour for PM cases
       if (selectedTimeSlotForAll.includes('PM') && hours !== 12) {
         hours += 12;
       } else if (selectedTimeSlotForAll.includes('AM') && hours === 12) {
-        hours = 0; // Handle 12 AM case
+        hours = 0; 
       }
   
-      // Loop through weekends and add sessions
       while (currentDate <= endDate) {
-        if (currentDate.getDay() === 6 || currentDate.getDay() === 0) { // Saturday or Sunday
+        if (currentDate.getDay() === 6 || currentDate.getDay() === 0) { 
           const sessionDate = new Date(currentDate);
           sessionDate.setHours(hours, minutes, 0, 0);
   
-          // Save the session to Firestore
           await addSession(parentData.id, {
             child_name: parentData.child_name,
             session_time: sessionDate.toISOString(),
           });
         }
-        currentDate.setDate(currentDate.getDate() + 7); // Move to the same day next week
+        currentDate.setDate(currentDate.getDate() + 7); 
       }
   
-      // Optionally send a notification email to the admin about the rescheduling
       const sendRescheduleAllEmail = httpsCallable(functions, 'sendRescheduleAll');
       await sendRescheduleAllEmail({
         parentName: parentData.parent_name,
-        rescheduledDay: new Date(selectedDayForAll).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }),
+        rescheduledDay: new Date(selectedDayForAll).toLocaleDateString('en-US', { weekday: 'long' }),
         rescheduledTime: selectedTimeSlotForAll
       });
   
-      alert("All sessions rescheduled successfully.");
-      setShowRescheduleAllForm(false); // Close the form
-      setShowOptions(true); // Go back to options container
+      alert("All sessions rescheduled successfully. Refresh to see changes.");
+      setShowRescheduleAllForm(false);
+      setShowOptions(true);
   
     } catch (error) {
       console.error("Error during rescheduling all sessions: ", error);
       alert("Error rescheduling the sessions.");
     } finally {
-      setLoading(false); // Enable the button after operation is complete
+      setLoading(false);
     }
   };
 
@@ -590,7 +565,6 @@ const DashBoard = () => {
           <div className="reschedule-container">
             <h2 className="reschedule-title">Reschedule a Session</h2>
     
-            {/* Select day of session */}
             <p className="select-date-title">Select day of session</p>
             <select className="session-dropdown" onChange={handleDaySelect}>
               <option value="">-- Select a Day --</option>
@@ -601,7 +575,6 @@ const DashBoard = () => {
               ))}
             </select>
     
-            {/* Select session */}
             <p className="select-session">Select Session</p>
             <select className="session-dropdown" onChange={(e) => setSelectedSession(e.target.value)}>
               {selectedSessions.length > 0 ? (
@@ -619,7 +592,6 @@ const DashBoard = () => {
               )}
             </select>
     
-            {/* Select day to reschedule to */}
             <p className="select-new-date">Select day to reschedule to</p>
             <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
               <option value="">-- Select a Day --</option>
@@ -630,7 +602,6 @@ const DashBoard = () => {
               ))}
             </select>
     
-            {/* Select time to reschedule to */}
             <p className="select-new-time">Select time to reschedule to</p>
             <select className="session-dropdown" onChange={(e) => setSelectedTimeSlot(e.target.value)}>
               <option value="">-- Select a Time --</option>
@@ -647,7 +618,7 @@ const DashBoard = () => {
             <p>An email will be sent to kelli.b.then@gmail.com</p>
             <button 
               className="reschedule-button" onClick={handleRescheduleSession}
-              disabled={loading} // Disable the button while the operation is in progress
+              disabled={loading} 
             >
               {loading ? 'Rescheduling...' : 'Reschedule Session'}
             </button>
@@ -676,12 +647,10 @@ const DashBoard = () => {
               ))}
             </select>
             
-            {/* Submit button */}
             <button type="submit" className="reschedule-all-button" disabled={loading}>
               {loading ? 'Rescheduling...' : 'Reschedule All Sessions'}
             </button>
             
-            {/* Back button */}
             <button type="button" className="back-button" onClick={handleGoBack}>Back</button>
           </form>
         )}
@@ -690,7 +659,6 @@ const DashBoard = () => {
           <div className="cancel-container">
             <h2 className="cancel-title">Cancel a Session</h2>
   
-            {/* Select day of session */}
             <p className="select-date-title">Select day of session</p>
             <select className="session-dropdown" onChange={handleDayToCancelSelect}>
               <option value="">-- Select a Day --</option>
@@ -701,7 +669,6 @@ const DashBoard = () => {
               ))}
             </select>
   
-            {/* Textbox for cancellation reason */}
             <textarea
               className="cancel-reason-textbox"
               placeholder="Please provide a brief explanation of why you are canceling"
@@ -714,7 +681,7 @@ const DashBoard = () => {
             <button
               className="cancel-session-button"
               onClick={submitCancelSession}
-              disabled={loading || !selectedDay || !cancelReason} // Disable button if the day or reason is missing
+              disabled={loading || !selectedDay || !cancelReason} 
             >
               {loading ? 'Canceling...' : 'Cancel Session'}
             </button>

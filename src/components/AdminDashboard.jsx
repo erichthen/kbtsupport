@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
-import { useAuth } from '../context/authContext';
+import { useHistory } from 'react-router-dom';
 import { sendSignInLink, logoutUser } from '../services/auth';
 import DatePicker from 'react-datepicker';
 import { getSessions, deleteSessionsByDate, deleteSessionById, addSession } from '../services/sessions';
@@ -13,7 +12,6 @@ import axios from 'axios';
 import { generateTimeSlots, getAvailableSlots, filterAvailableSlots } from '../services/sessions';
 
 const AdminDashboard = () => {
-  const { user } = useAuth();
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [showInviteForm, setShowInviteForm] = useState(false);
@@ -90,14 +88,6 @@ const AdminDashboard = () => {
     history.push('/login');
   };
 
-  if (!user) {
-    return <Redirect to="/login" />;
-  }
-
-  if (user.email !== 'kelli.b.then@gmail.com') {
-    return <Redirect to="/" />;
-  }
-
   const handleSendInvite = async () => {
     const actionCodeSettings = {
       url: 'http://localhost:3000/register',
@@ -145,7 +135,6 @@ const AdminDashboard = () => {
     const formattedSessions = sessionsForDay.map(session => {
       const sessionTime = new Date(session.session_time);
 
-      // Convert the session time to the local time zone (EST/EDT) and format it
       const formattedTime = sessionTime.toLocaleString('en-US', {
         timeZone: 'America/New_York',
         hour: '2-digit',
@@ -155,7 +144,7 @@ const AdminDashboard = () => {
 
       return {
         ...session,
-        formattedTime: `${formattedTime} EST`, // Append EST manually
+        formattedTime: `${formattedTime} EST`, 
         sessionTime: sessionTime
       };
     });
@@ -164,20 +153,20 @@ const AdminDashboard = () => {
 
     setSelectedSessions(formattedSessions);
     setSelectedDate(date);
-    setShowSessions(true); // Replace outer-container content with sessions container
+    setShowSessions(true); 
   };
 
   const handleClosePopup = () => {
     setSelectedSessions([]);
-    setShowSessions(false); // Show calendar again
+    setShowSessions(false); 
   };
 
   const handleCancelSessions = () => {
-    setShowCancelConfirmation(true); // Show confirmation popup
+    setShowCancelConfirmation(true);
   };
 
   const handleCloseCancelConfirmation = () => {
-    setShowCancelConfirmation(false); // Close the popup without canceling
+    setShowCancelConfirmation(false); 
   };
 
   const confirmCancelSessions = async () => {
@@ -187,7 +176,7 @@ const AdminDashboard = () => {
     }
 
     try {
-      // Get the date from the first session (since all sessions are from the same day)
+
       const sessionDate = new Date(selectedSessions[0].session_time);
 
       for (const session of selectedSessions) {
@@ -211,10 +200,9 @@ const AdminDashboard = () => {
         console.log(response.data.message || 'Cancelation email sent successfully.');
       }
 
-      // After sending emails, delete the sessions
       await deleteSessionsByDate(sessionDate);
 
-      alert('All cancelation emails sent and sessions deleted successfully.');
+      alert('All cancelation emails sent and sessions deleted successfully. Refresh to see changes.');
       setSelectedSessions([]);
       setShowSessions(false);
       setShowCancelConfirmation(false); 
@@ -228,7 +216,7 @@ const AdminDashboard = () => {
   const handleRescheduleClick = () => {
     setShowCancel(false);
     setShowReschedule(false);
-    setShowOptions(true); // Show Reschedule/Cancel options
+    setShowOptions(true); 
   };
 
   const getFormattedDate = (date) => {
@@ -238,10 +226,9 @@ const AdminDashboard = () => {
 
   const handleDaySelect = (event) => {
     const selected = new Date(event.target.value);
-    setSelectedDay(selected); // Store selected day as a Date object
+    setSelectedDay(selected); 
   };
 
-  // Log session data and filter sessions based on selected day
   const sessionsForSelectedDay = selectedDay
     ? sessions.filter(session => {
         const sessionDate = new Date(session.session_time);
@@ -255,24 +242,20 @@ const AdminDashboard = () => {
 
     const handleDayToRescheduleToSelect = async (event) => {
       const selected = new Date(event.target.value);
-      setSelectedDayToRescheduleTo(selected); // Set the selected day to reschedule to
+      setSelectedDayToRescheduleTo(selected); 
     
-      // Generate available time slots
       const availableSlots = generateTimeSlots();
     
-      // Fetch booked slots across all days
       const bookedSlots = await getAvailableSlots();
     
-      // Filter available slots based on booked slots and the selected day
       const filteredSlots = filterAvailableSlots(availableSlots, bookedSlots, selected); 
     
-      // Set the filtered slots in the state
       setFilteredSlots(filteredSlots);
     };
 
   const handleRescheduleSession = async () => {
     try {
-      // Check if required fields are filled
+
       setLoading(true);
       console.log("Selected Day:", selectedDay);
       console.log("Selected Session:", selectedSession);
@@ -285,30 +268,26 @@ const AdminDashboard = () => {
         return;
       }
   
-      // Ensure that selectedSession is an object with an id
       if (!selectedSession.id) {
         console.error("Selected session does not have an ID.");
         setLoading(false);
         return;
       }
   
-      // Call deleteSessionById to delete the selected session
       await deleteSessionById(selectedSession.id);
       console.log(`Session for ${selectedSession.child_name} on ${selectedSession.session_time} deleted successfully.`);
   
-      // Handle time conversion logic for PM and AM
       const timeParts = selectedTimeSlot.split(':');
       let hours = parseInt(timeParts[0], 10);
       const minutes = parseInt(timeParts[1], 10);
-  
-      // Check for PM and adjust the hour accordingly
+      
+      //handle am, pm, bc it was reading as 1:00am when it should have been pm
       if (selectedTimeSlot.includes('PM') && hours !== 12) {
-        hours += 12; // Convert 1:00 PM to 13:00
+        hours += 12;
       } else if (selectedTimeSlot.includes('AM') && hours === 12) {
-        hours = 0; // Handle 12 AM case
+        hours = 0; 
       }
   
-      // Add the rescheduled session
       const sessionData = {
         session_time: new Date(selectedDayToRescheduleTo.setHours(hours, minutes, 0, 0)).toISOString(),
         child_name: selectedSession.child_name,
@@ -318,7 +297,6 @@ const AdminDashboard = () => {
       const newSessionId = await addSession(selectedSession.parent_id, sessionData);
       console.log(`Rescheduled session added successfully with ID: ${newSessionId}`);
   
-      // Fetch parent's data using the parent_id (document ID)
       const parentData = await getParentByDocumentId(selectedSession.parent_id);
   
       if (!parentData) {
@@ -327,7 +305,6 @@ const AdminDashboard = () => {
         return;
       }
   
-      // Call the cloud function to send the reschedule email to the parent
       const sendAdminRescheduleEmail = httpsCallable(functions, 'sendAdminReschedule');
       const emailResponse = await sendAdminRescheduleEmail({
         parentEmail: parentData.email,
@@ -340,7 +317,7 @@ const AdminDashboard = () => {
   
       if (emailResponse.data.success) {
         console.log("Reschedule email sent to parent successfully.");
-        alert("Session rescheduled and email sent successfully.");
+        alert("Session rescheduled and email sent successfully. Refresh to see changes.");
       } else {
         alert("Error sending reschedule email: " + emailResponse.data.error);
       }
@@ -358,13 +335,13 @@ const AdminDashboard = () => {
     const weekends = [];
     const today = new Date();
     const endDate = new Date();
-    endDate.setMonth(today.getMonth() + 3); // Two months from now
+    endDate.setMonth(today.getMonth() + 3); 
   
     let currentDate = new Date(today);
   
     while (currentDate <= endDate) {
       const day = currentDate.getDay();
-      if (day === 6 || day === 0) { // Saturday (6) or Sunday (0)
+      if (day === 6 || day === 0) { 
         weekends.push(new Date(currentDate));
       }
       currentDate.setDate(currentDate.getDate() + 1);
@@ -382,7 +359,6 @@ const AdminDashboard = () => {
   
     try {
       setLoading(true);
-      // Fetch parent's data using the parent_id (document ID) from the selected session
       const parentData = await getParentByDocumentId(selectedSession.parent_id);
       
       if (!parentData) {
@@ -393,7 +369,6 @@ const AdminDashboard = () => {
   
       const sessionDateFormatted = new Date(selectedDay).toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
   
-      // Call the cloud function to send the cancelation email to the parent
       const sendAdminCancel = httpsCallable(functions, 'sendAdminCancel');
       const emailResponse = await sendAdminCancel({
         parentName: parentData.parent_name,
@@ -402,14 +377,13 @@ const AdminDashboard = () => {
       });
   
       if (emailResponse.data.success) {
-        alert("cancelation email sent successfully.");
+        alert("Cancelation email sent successfully.");
   
-        // Delete the session for the selected day
         await deleteSessionById(selectedSession.id);
   
-        alert("Session canceled successfully.");
-        setShowCancel(false); // Hide cancel form and return to options
-        setShowOptions(true);  // Show options page
+        alert("Session canceled successfully. Refresh to see changes.");
+        setShowCancel(false); 
+        setShowOptions(true); 
       } else {
         alert("Error sending cancelation email: " + emailResponse.data.error);
         setLoading(false);

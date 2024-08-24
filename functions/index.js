@@ -8,8 +8,8 @@ admin.initializeApp();
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "erich.then2@gmail.com",
-    pass: "ogvw hxcu tohn sgzc",
+    user: "kelli.b.then@gmail.com",
+    pass: "gavo ebgy kxpb pabh",
   },
 });
 
@@ -19,7 +19,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
     const {email, subject, message, fileContent, fileName} = req.body;
 
     const mailOptions = {
-      from: "erich.then2@gmail.com",
+      from: "kelli.b.then@gmail.com",
       to: email,
       subject: subject,
       html: message,
@@ -113,7 +113,7 @@ exports.sendReminderEmails = functions.pubsub
       `;
 
         const mailOptions = {
-          from: "erich.then2@gmail.com",
+          from: "kelli.b.then@gmail.com",
           to: parentEmail,
           subject: "Session Reminder",
           html: message,
@@ -143,7 +143,7 @@ exports.sendCancelationEmails = functions.https.onRequest((req, res) => {
       const {email, subject, message} = req.body;
 
       const mailOptions = {
-        from: "erich.then2@gmail.com",
+        from: "kelli.b.then@gmail.com",
         to: email,
         subject: subject,
         html: message,
@@ -165,8 +165,8 @@ exports.sendCancelEmail = functions.https.onCall(async (data, context) => {
   const {parentName, sessionDate, note} = data;
 
   const mailOptions = {
-    from: "erich.then2@gmail.com",
-    to: "erich.then2@gmail.com",
+    from: "kelli.b.then@gmail.com",
+    to: "kelli.b.then@gmail.com",
     subject: "Client Canceled Appointment",
     html: `
       <p><strong>${parentName}</strong> has canceled their appointment.</p>
@@ -190,8 +190,8 @@ exports.sendRescheduleEmail = functions.https.onCall(async (data, context) => {
     newSessionDate, newTimeSlot} = data;
 
   const mailOptions = {
-    from: "erich.then2@gmail.com",
-    to: "erich.then2@gmail.com",
+    from: "kelli.b.then@gmail.com",
+    to: "kelli.b.then@gmail.com",
     subject: "Client Rescheduled Session",
     html: `
       <p><strong>${parentName}</strong> has rescheduled their session.</p>
@@ -215,7 +215,7 @@ exports.sendAdminReschedule = functions.https.onCall(async (data, context) => {
     newSessionDate, newTimeSlot} = data;
 
   const mailOptions = {
-    from: "erich.then2@gmail.com", // Admin email
+    from: "kelli.b.then@gmail.com", // Admin email
     to: parentEmail, // Parent"s email
     subject: `Session Rescheduled`,
     html: `
@@ -241,7 +241,7 @@ exports.sendAdminCancel = functions.https.onCall(async (data, context) => {
   const {parentName, parentEmail, sessionDate} = data;
 
   const mailOptions = {
-    from: "erich.then2@gmail.com",
+    from: "kelli.b.then@gmail.com",
     to: parentEmail,
     subject: "Your Session has been Canceled",
     html: `
@@ -319,8 +319,8 @@ exports.sendCancelAllSession = functions.https.onCall(async (data, context) => {
   const {user} = data;
 
   const mailOptions = {
-    from: "erich.then2@gmail.com",
-    to: "erich.then2@gmail.com", // Can be your or another admin's email
+    from: "kelli.b.then@gmail.com",
+    to: "kelli.b.then@gmail.com", // Can be your or another admin's email
     subject: `${user} has canceled all of their sessions`,
     text: `${user} has canceled all sessions from their dashboard.`,
   };
@@ -337,10 +337,9 @@ exports.sendCancelAllSession = functions.https.onCall(async (data, context) => {
 exports.sendRescheduleAll = functions.https.onCall(async (data, context) => {
   const {parentName, rescheduledDay, rescheduledTime} = data;
 
-  // Define the email content
   const mailOptions = {
-    from: "erich.then2@gmail.com",
-    to: "erich.then2@gmail.com", // Replace with admin email
+    from: "kelli.b.then@gmail.com",
+    to: "kelli.b.then@gmail.com",
     subject: `${parentName} has rescheduled all sessions`,
     text: `The parent ${parentName} has rescheduled all their sessions.
            New session day: ${rescheduledDay}.

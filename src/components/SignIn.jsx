@@ -25,7 +25,7 @@ const SignIn = () => {
     event.preventDefault();
     try {
       await loginUser(email, password);
-      
+  
       // Check if the logged-in user is the admin
       if (email === 'kelli.b.then@gmail.com') { 
         history.push('/admin'); 
@@ -33,12 +33,8 @@ const SignIn = () => {
         history.push('/dashboard'); 
       }
     } catch (error) {
-      if (error.code === 'auth/invalid-login-credentials') {
-        setError('Incorrect Password!');
-      }
-      else {
-        setError(error.message);
-      }
+      // Always show 'Invalid Credentials' for any error
+      setError('Invalid Credentials');
     }
   };
 
@@ -48,9 +44,16 @@ const SignIn = () => {
       await sendPasswordResetEmail(forgotPasswordEmail);
       setResetEmailSent(true);
       setShowForgotPassword(false);
+      setError(''); // Clear any previous error messages
     } catch (error) {
-      console.error('Error sending password reset email: ', error);
-      alert('Error sending password reset email. Please try again.');
+      setResetEmailSent(false); // Ensure success message is not shown
+      console.log('Error code:', error.code); // Log the error code for debugging
+      console.log('Error message:', error.message); // Log the error message for debugging
+      if (error.code === 'auth/user-not-found') {
+        setError('No account found with this email address.');
+      } else {
+        setError('Error sending password reset email. Please try again.');
+      }
     }
   };
 
