@@ -94,7 +94,7 @@ const AdminDashboard = () => {
       handleCodeInApp: true,
     };
 
-    const message = 'Hello, you have been invited to register to the KBT Reading Support website! Click the below link to do so. It is highly reccomended to view and use this website on a laptop or computer.';
+    const message = 'Hello, you have been invited to register to the KBT Reading Support website! Click the below link to do so.';
 
     try {
       setLoading(true);
