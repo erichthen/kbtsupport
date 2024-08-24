@@ -94,8 +94,7 @@ const AdminDashboard = () => {
       handleCodeInApp: true,
     };
 
-    const message = 'Hello, you have been invited to register to the KBT Reading Support website! Click the below link to do so.';
-
+    console.log('Action code settings: ', actionCodeSettings);
     try {
       setLoading(true);
       await sendSignInLink(email, actionCodeSettings, message);
