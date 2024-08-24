@@ -2,10 +2,9 @@ import { sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, crea
 import { auth } from '../firebaseConfig';
 import { sendPasswordResetEmail as firebasesendPasswordResetEmail } from "firebase/auth";
 
-export const sendSignInLink = async (email, actionCodeSettings, message) => {
+export const sendSignInLink = async (email, actionCodeSettings) => {
     try {
       await sendSignInLinkToEmail(auth, email, actionCodeSettings);
-      console.log(message);
       window.localStorage.setItem('emailForSignIn', email);
     } catch (error) {
       console.error('Error sending sign-in link:', error);

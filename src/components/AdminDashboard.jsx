@@ -97,7 +97,7 @@ const AdminDashboard = () => {
     console.log('Action code settings: ', actionCodeSettings);
     try {
       setLoading(true);
-      await sendSignInLink(email, actionCodeSettings, message);
+      await sendSignInLink(email, actionCodeSettings);
       alert('Registration link sent.');
       setShowInviteForm(false);
       setEmail('');
