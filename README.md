@@ -2,11 +2,9 @@
 
 ## TODO ATM  
 
-- **Request to change all of their appointments to a new date and time**
 - **Test the appointment reminder function**
 - **Ensure no autofilling for passwords, ESPECIALLY for admin credentials
 - **Reset invoice statuses at the end of the month**
-- **Prompt user to schedule their appointments at the start of a new month. (maybe?)
 
 
 **Emailing**

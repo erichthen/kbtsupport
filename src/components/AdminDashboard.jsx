@@ -93,8 +93,7 @@ const AdminDashboard = () => {
       url: 'https://kbt-reading-support.web.app/register',
       handleCodeInApp: true,
     };
-
-    console.log('Action code settings: ', actionCodeSettings);
+    
     try {
       setLoading(true);
       await sendSignInLink(email, actionCodeSettings);

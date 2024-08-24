@@ -84,8 +84,8 @@ const RegistrationForm = () => {
   };
 
   const checkPasswordStrength = (password) => {
-    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
-    return strongPasswordRegex.test(password) ? 'strong' : 'weak';
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{7,}$/;
+    return passwordRegex.test(password) ? 'strong' : 'weak';
   };
 
   const handleSubmit = async (event) => {
