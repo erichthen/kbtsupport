@@ -90,11 +90,11 @@ const AdminDashboard = () => {
 
   const handleSendInvite = async () => {
     const actionCodeSettings = {
-      url: 'http://localhost:3000/register',
+      url: 'https://kbt-reading-support.web.app/register',
       handleCodeInApp: true,
     };
 
-    const message = 'Hello, you have been invited to register to the KBT Reading Support website! Click the below link to do so.';
+    const message = 'Hello, you have been invited to register to the KBT Reading Support website! Click the below link to do so. It is highly reccomended to view and use this website on a laptop or computer.';
 
     try {
       setLoading(true);
