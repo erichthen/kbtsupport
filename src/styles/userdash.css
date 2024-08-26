@@ -1,5 +1,18 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
 .user-dashboard .outer-container {
-  background-color: rgba(255, 255, 255, 0.7); 
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(0.90);
+  transform-origin: center; 
 }
 
 .user-dashboard .main-container {
@@ -11,9 +24,26 @@
   background-color: rgb(237, 226, 226);
 }
 
+.user-dashboard .cancel-reschedule-button {
+  margin-top: 15px;
+  margin-bottom: 0px;
+  margin-right: 16px;
+  padding: 10px 20px;
+  width: 60%;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: rgb(83, 52, 73);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
 .user-dashboard .logout-button {
   margin-top: 10px;
   margin-right: 16px;
+  margin-bottom: 50px;
+  width: 60%;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
@@ -31,7 +61,7 @@
 .user-dashboard .reschedule-title {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   text-decoration: underline;
 }
 
@@ -39,7 +69,7 @@
 .user-dashboard .select-session,
 .user-dashboard .select-new-date,
 .user-dashboard .select-new-time {
-  margin-bottom: 20px; /* Space between label and dropdown */
+  margin-bottom: -10px; /* Space between label and dropdown */
 }
 
 .user-dashboard .session-dropdown {
@@ -203,20 +233,6 @@
   margin-top: 10px;
 }
 
-.user-dashboard .cancel-reschedule-button {
-  margin-top: 15px;
-  margin-bottom: 0px;
-  margin-right: 16px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: rgb(83, 52, 73);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
 .user-dashboard .cancel-reschedule-button:hover {
   background-color: #7a218b;
 }
@@ -227,19 +243,21 @@
 
 .user-dashboard .options-buttons {
   display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  justify-content: center; /* Centers the buttons horizontally */
+  align-items: center; /* Centers the buttons vertically */
+  flex-direction: column;
+  width: 100%; /* Ensure the container takes full width */
 }
 
 .user-dashboard .option-button {
-  margin: 0 10px;
+  margin: 10px; /* Adjust the margin for even spacing */
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
   background-color: rgb(83, 52, 73);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   transition: background-color 0.3s ease;
   width: 150px; 
   text-align: center;
@@ -250,7 +268,10 @@
 }
 
 .user-dashboard .back-button {
-  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  margin: 30px auto 50px auto;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
@@ -259,6 +280,7 @@
   border: none;
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  text-align: center; /* Ensures the text is centered */
 }
 
 .user-dashboard .back-button:hover {
@@ -272,6 +294,7 @@
 .user-dashboard .reschedule-button {
   width: 80%;
   margin-bottom: -20px;
+  margin-top: -10px;
 }
 
 .user-dashboard .report-issue-link {
@@ -288,12 +311,13 @@
   color: darkblue;
 }
 
-.cancel-all-popup {
+.user-dashboard .cancel-all-popup {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  padding: 5px 5px;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -334,7 +358,7 @@
 
 .reschedule-all-title {
   font-size: 30px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
 .user-dashboard .res-session-dropdown {
@@ -347,4 +371,17 @@
   width: 200px;
   padding: 5px 20px;
   margin-bottom: -10px;
+}
+
+@media (max-width: 768px) {
+  .user-dashboard .outer-container {
+    transform: scale(0.75); /* Scale down further for tablets */
+  }
+}
+
+/* For screens less than or equal to 480px (mobile phones) */
+@media (max-width: 480px) {
+  .user-dashboard .outer-container {
+    transform: scale(0.75); /* Scale down further for mobile phones */
+  }
 }

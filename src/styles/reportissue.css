@@ -4,6 +4,8 @@
     max-width: 600px;
     margin: 0 auto;
     text-align: center;
+    transform: scale(0.7);
+    transform-origin: center;
   }
   
 .report-issue .report-issue-textarea {
@@ -18,6 +20,10 @@
     border-radius: 5px;
     box-sizing: border-box;
   }
+
+.report-issue p {
+  font-size: 16px;
+}
   
 .report-issue button {
     margin-top: 10px;
@@ -32,7 +38,8 @@
     background-color: rgb(56, 34, 49);
   }
 
-.report-issue .back-button {
+.report-issue .report-back-button {
+    width: 30%;
     background-color: rgb(83, 52, 73);
     margin-top: 20px;
     padding: 10px 20px;
@@ -41,4 +48,37 @@
     cursor: pointer;
     border-radius: 5px;
 }
+
+@media (max-width: 768px) {
+  .report-issue .report-issue-textarea {
+      width: 90%;
+  }
+
+  .report-issue .report-back-button {
+      width: 40%;
+      padding: 10px 20px;
+      font-size: 14px;
+  }
+
+  .report-issue .report-submit-button {
+    width: 60%;
+  }
+}
+
+@media (max-width: 480px) {
+  .report-issue .report-issue-textarea {
+      width: 100%;
+  }
+
+  .report-issue .report-back-button {
+      width: 40%;
+      padding: 10px 20px;
+      font-size: 12px;
+  }
+
+  .report-issue .report-submit-button {
+    width: 60%;
+  }
+}
+
 

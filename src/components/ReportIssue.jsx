@@ -78,7 +78,7 @@ const ReportIssue = () => {
               value={issue}
               onChange={(e) => setIssue(e.target.value)}
             />
-            <button type="submit" disabled={loading}>
+            <button className="report-submit-button" type="submit" disabled={loading}>
               {loading ? "Submitting..." : "Submit"}
             </button>
           </form>
@@ -87,7 +87,7 @@ const ReportIssue = () => {
       )}
 
       <button
-        className="back-button"
+        className="report-back-button"
         onClick={() => history.push("/dashboard")}
       >
         Back to Dashboard

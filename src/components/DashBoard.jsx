@@ -659,7 +659,7 @@ const DashBoard = () => {
           <div className="cancel-container">
             <h2 className="cancel-title">Cancel a Session</h2>
   
-            <p className="select-date-title">Select day of session</p>
+            <p className="cancel-select-date-title">Select day of session</p>
             <select className="session-dropdown" onChange={handleDayToCancelSelect}>
               <option value="">-- Select a Day --</option>
               {sortedSessions.map((session, index) => (

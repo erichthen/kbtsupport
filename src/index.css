@@ -1,14 +1,16 @@
-/* index.css */
-body {
+html, body {
+  height: 100%; /* Ensure the body and html take up the full height */
   margin: 0;
+  padding: 0;
   font-family: Arial, sans-serif;
-  background-image: url('/backdrop.jpeg'); /* Absolute path from the public directory */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 100vh;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 #root {
-  padding: 20px;
+  flex-grow: 1; /* Ensure root takes up available space */
 }

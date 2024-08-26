@@ -90,7 +90,8 @@ const AdminDashboard = () => {
 
   const handleSendInvite = async () => {
     const actionCodeSettings = {
-      url: 'https://kbt-reading-support.web.app/register',
+      // url: 'https://kbt-reading-support.web.app/register',
+      url: 'http://localhost:3000/register',
       handleCodeInApp: true,
     };
     
@@ -551,7 +552,7 @@ const AdminDashboard = () => {
               {showInviteForm && (
                 <div className="input-group">
                   <input
-                    className="email-input"
+                    className="client-email-input"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}

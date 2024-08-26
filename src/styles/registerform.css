@@ -18,6 +18,8 @@ body.registration-form {
 }
 
 .registration-form .outer-container {
+  transform: scale(0.8);
+  transform-origin: center;
   background-color: rgba(255, 255, 255, 0.7); 
   padding: 60px;
   border-radius: 10px;
@@ -35,17 +37,20 @@ body.registration-form {
 
 .registration-form h1,
 .registration-form h2 {
-  margin-bottom: 40px;
   text-decoration: underline;
   text-decoration-color: rgb(83, 52, 73);
 }
 
 .registration-form h1 {
+  margin-top: 80px;
   font-size: 36px;
+  margin-bottom: -60px;
 }
 
 .registration-form h2 {
+  color: rgb(83, 52, 73);
   font-size: 30px;
+  margin-bottom: 40px;
 }
 
 .registration-form input,
@@ -139,4 +144,70 @@ body.registration-form {
   margin: 10px;
   padding: 20px;
   font-size: 24px;
+}
+
+/* Media queries for smaller screens */
+
+/* For tablets (max-width: 768px) */
+@media (max-width: 768px) {
+  .registration-form .outer-container {
+    padding: 40px;
+  }
+
+  .registration-form .container {
+    width: 80%;
+  }
+
+  .registration-form h1 {
+    font-size: 28px;
+  }
+
+  .registration-form h2 {
+    font-size: 24px;
+  }
+
+  .registration-form input,
+  .registration-form select {
+    font-size: 20px;
+  }
+
+  .registration-form button {
+    width: 60%;
+    font-size: 20px;
+  }
+}
+
+/* For mobile phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .registration-form .outer-container {
+    padding: 50px;
+  }
+
+  .registration-form .container {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .registration-form h1 {
+    font-size: 18px;
+  }
+
+  .registration-form h2 {
+    font-size: 20px;
+  }
+
+  .registration-form input,
+  .registration-form select {
+    font-size: 18px;
+  }
+
+  .registration-form button {
+    width: 80%;
+    font-size: 18px;
+    padding: 15px;
+  }
+
+  .nav-buttons button {
+    font-size: 18px;
+  }
 }

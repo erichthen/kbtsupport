@@ -3,7 +3,7 @@ import React from 'react';
 const Step1 = ({ name, child, setName, setChild, goToNextStep, isFirstStepValid }) => {
   return (
     <>
-      <h1>Welcome!</h1>
+      <h2>Welcome!</h2>
       <div className="input-container">
         <input
           id="name"

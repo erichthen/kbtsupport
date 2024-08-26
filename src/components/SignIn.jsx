@@ -3,7 +3,6 @@ import { useHistory, Redirect } from 'react-router-dom';
 import { loginUser, sendPasswordResetEmail } from '../services/auth'; 
 import { useAuth } from '../context/authContext';
 import '../styles/signin.css'; 
-import '../styles/forgotpassword.css';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -16,6 +15,13 @@ const SignIn = () => {
   const [resetEmailSent, setResetEmailSent] = useState(false);
   
   const history = useHistory();
+
+  useEffect(() => {
+  document.body.classList.add('sign-in');
+  return () => {
+    document.body.classList.remove('sign-in');
+    };
+  }, []);
 
   useEffect(() => {
     setIsFormValid(email.trim() !== '' && password.trim() !== '');
@@ -70,18 +76,17 @@ const SignIn = () => {
       <h1>KBT Reading Support</h1>
       <div className="outer-container">
         <div className="container">
-          <h2>Login</h2>
           <form onSubmit={handleSubmit}>
             <div>
               <input
                 id="email"
+                className="email-input"
                 name="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
-                autoComplete='off'
               />
             </div>
             <div>
@@ -93,7 +98,6 @@ const SignIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 required
-                autoComplete='off'
               />
             </div>
             {error && <div className="error">{error}</div>}
