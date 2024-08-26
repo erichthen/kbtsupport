@@ -552,7 +552,7 @@ const DashBoard = () => {
         {showCancelAllPopup && (
           <div className="cancel-all-popup">
             <div className="popup-content">
-              <p>Are you sure you want to cancel all sessions? <br />You will not be able to undo this action. <br />Please do this only if your child will no longer be attending sessions.</p>
+              <p>Are you sure you want to cancel all sessions? <br />This action cannot be undone.</p>
               <button className="yes-button" onClick={cancelAllSessions} disabled={loading}>
                 {loading ? "Processing..." : "Yes"}
               </button>

@@ -60,6 +60,7 @@ body.registration-form {
   margin: 20px 0;
   border: none;
   border-bottom: 4px solid #590a6d;
+  border-radius: 0px;
   background-color: transparent;
   font-size: 24px;
   color: #333;

@@ -53,7 +53,6 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchSlotsForRescheduleToDay = async () => {
       if (!selectedDayToRescheduleTo) {
-        console.error("No selected day to reschedule to");
         return; // Wait until a valid day is selected
       }
   
@@ -479,7 +478,7 @@ const AdminDashboard = () => {
         ) : showCancel ? (
           <div className="cancel-container">
             <h2 className="cancel-title">Cancel a Session</h2>
-            <p className="cancel-note">If you would like to cancel<br /> <strong>a day of sessions</strong>, you can do so<br/>by clicking the day on the calendar.</p>
+            <p className="cancel-note">If you would like to cancel<br /> <strong>a day of sessions,</strong> <br />you can do so<br/>by clicking the day <br />on the calendar.</p>
             <select className="cancel-session-dropdown" onChange={handleDaySelect}>
               <option value="">-- Select a Day --</option>
               {sessions

@@ -1,6 +1,6 @@
 import { sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth } from '../firebaseConfig';
-import { sendPasswordResetEmail as firebasesendPasswordResetEmail } from "firebase/auth";
+import {auth} from '../firebaseConfig';
+import {sendPasswordResetEmail as sendPasswordReset} from "firebase/auth";
 
 export const sendSignInLink = async (email, actionCodeSettings) => {
     try {
@@ -13,13 +13,16 @@ export const sendSignInLink = async (email, actionCodeSettings) => {
   };
 
 export const sendPasswordResetEmail = async (email) => {
-    try {
-        await firebasesendPasswordResetEmail(auth, email);
+  try {
+    await sendPasswordReset(email);
+    return {success: true};
+  }
+  catch (error) {
+    if (error.code === 'auth/user-not-found') {
+      return {success: false, error: 'No account matches this email address.'};
     }
-    catch(error) {
-        console.error('Error sending password reset email: ', error);
-        throw error;
-    }
+    return {success: false, error: 'Error sending password reset email.'};
+  }
 };
 
 export const loginUser = async (email, password) => {

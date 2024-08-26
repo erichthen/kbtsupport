@@ -352,6 +352,7 @@ body.admin-dashboard {
 
 .admin-dashboard .cancel-container {
   background-color: rgb(221, 195, 199);
+  padding: 50px 40px;
 }
 
 .admin-dashboard .cancel-title {

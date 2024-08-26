@@ -1,5 +1,6 @@
 body {
   display: flex;
+  background-color: rgb(237, 226, 226);
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -11,8 +12,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: scale(0.90);
+  transform: scale(0.80);
   transform-origin: center; 
+}
+
+h2 {
+  color: rgb(83, 52, 73);
 }
 
 .user-dashboard .main-container {
@@ -21,7 +26,7 @@ body {
   margin: 0 auto;
   padding: 20px;
   text-align: center;
-  background-color: rgb(237, 226, 226);
+  background-color: rgb(225, 197, 202);
 }
 
 .user-dashboard .cancel-reschedule-button {

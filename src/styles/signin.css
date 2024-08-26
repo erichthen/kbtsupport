@@ -52,20 +52,88 @@ input {
   margin-bottom: 25px;
 }
 
+.forgot-password-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(225, 197, 202);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  text-align: center;
+}
+
+.forgot-password-link {
+  background-color: transparent;
+  text-decoration: underline;
+  color: rgb(83, 52, 73);
+  white-space: nowrap;
+}
+
+.forgot-password-link:hover {
+  background-color: transparent;
+}
+
 .forgot-password-form {
-  width: 65%;
-  margin-left: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
 }
 
 .forgot-password-form .emailforreset {
-  margin-left: -6px;
-  margin-top: -20px;
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  margin: 12px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+.forgot-pass-submit { 
+  width: 80%;
+  margin-top: 30px;
+  margin-bottom: 0px;
+}
+
+.back-button {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: rgb(83, 52, 73);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.forgot-password-form .emailforreset {
+  margin-top: 20px;
   font-size: 20px;
 }
 
 .email-input {
   margin-top: 20px;
 }
+
+input[type="email"]::placeholder {
+  font-size: 16px;
+}
+
+input[type="password"]::placeholder {
+  font-size: 16px;
+}
+
+
+
 
 button {
   width: 45%;
@@ -102,7 +170,20 @@ button:hover {
   }
 
   .container {
+    width: 100%;
+  }
+
+  .forgot-password-container {
     width: 80%;
+  }
+
+  .forgot-password-form .emailforreset {
+    font-size: 18px;
+  }
+
+  .forgot-pass-submit {
+    width: 80%;
+    font-size: 16px;
   }
 
   h1 {
@@ -127,6 +208,20 @@ button:hover {
 
   .container {
     width: 100%;
+  }
+
+  .forgot-password-container {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .forgot-password-form .emailforreset {
+    font-size: 16px;
+  }
+
+  .forgot-pass-submit {
+    width: 85%;
+    font-size: 14px;
   }
 
   h1 {
