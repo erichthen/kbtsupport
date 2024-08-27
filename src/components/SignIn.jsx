@@ -12,7 +12,6 @@ const SignIn = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
-  const [resetEmailSent, setResetEmailSent] = useState(false);
   
   const history = useHistory();
 
@@ -45,16 +44,17 @@ const SignIn = () => {
   };
 
   const handleForgotPassword = async (event) => {
-    event.preventDefault(); //prevents defualt browser behavior (reloading on form submission)
+    event.preventDefault(); 
+
     const response = await sendPasswordResetEmail(forgotPasswordEmail);
 
     if (response.success) {
-      setResetEmailSent(true);
+      alert('Password reset email sent. Please check your inbox.');
       setShowForgotPassword(false);
       setError('');
     }
     else {
-      setResetEmailSent(false);
+      alert(response.error);
       setError(response.error);
     }
   };
@@ -82,10 +82,8 @@ const SignIn = () => {
                 placeholder="Enter your email"
                 required
               />
-              {error && <div className="error">{error}</div>}
               <button className="forgot-pass-submit" type="submit">Send Password Reset Email</button>
             </form>
-            {resetEmailSent && <div className="success">Password reset email sent. Please check your inbox.</div>}
             <button className="back-button" onClick={() => setShowForgotPassword(false)}>Back</button>
           </div>
         ) : (
@@ -100,7 +98,6 @@ const SignIn = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  auto
                   required
                 />
               </div>

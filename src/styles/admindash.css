@@ -1,4 +1,6 @@
 body.admin-dashboard {
+  transform: scale(0.85);
+  transform-origin: center;
   font-family: Arial, sans-serif;
   background-color: rgb(237, 226, 226);
   display: flex;

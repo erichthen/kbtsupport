@@ -104,7 +104,7 @@ exports.sendReminderEmails = functions.pubsub
 
         const message = `
           Dear Parent,<br>
-          This is a reminder for your child's session on ${sessionTime}.<br>
+          This is a reminder for your child"s session on ${sessionTime}.<br>
           <a href="https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09">Join Zoom</a><br>
           Meeting ID: ${MEETING_ID}<br>
           Meeting Password: ${MEETING_PASSWORD}<br>
@@ -320,7 +320,7 @@ exports.sendCancelAllSession = functions.https.onCall(async (data, context) => {
 
   const mailOptions = {
     from: "kelli.b.then@gmail.com",
-    to: "kelli.b.then@gmail.com", // Can be your or another admin's email
+    to: "kelli.b.then@gmail.com", // Can be your or another admin"s email
     subject: `${user} has canceled all of their sessions`,
     text: `${user} has canceled all sessions from their dashboard.`,
   };
@@ -353,6 +353,23 @@ exports.sendRescheduleAll = functions.https.onCall(async (data, context) => {
   } catch (error) {
     console.error("Error sending email:", error);
     return {success: false, error: error.message};
+  }
+});
+
+
+exports.checkEmailSendReset = functions.https.onCall(async (data, context) => {
+  const {email} = data;
+
+  try {
+    await admin.auth().getUserByEmail(email);
+
+    await admin.auth().generatePasswordResetLink(email);
+    return {success: true};
+  } catch (error) {
+    if (error.code === "auth/user-not-found") {
+      return {success: false, error: "No account matches this email address."};
+    }
+    return {success: false, error: "Error sending password reset email."};
   }
 });
 
