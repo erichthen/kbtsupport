@@ -450,7 +450,7 @@ const AdminDashboard = () => {
                 </option>
               ))}
             </select>
-  
+            <p>An email will be sent to the parent</p>
             <button className="reschedule-session-button" onClick={handleRescheduleSession} disabled={loading}>
               {loading ? 'Rescheduling...' : 'Reschedule Session'}
             </button>
@@ -509,6 +509,7 @@ const AdminDashboard = () => {
                 <option>No sessions available</option>
               )}
             </select>
+            <p>An email will be sent to the parent</p>
             <div className="cancel-session-buttons">
               <button className="cancel-button" onClick={submitCancelSession} disabled={loading}>
                {loading ? 'Canceling...' : 'Cancel Selected Session'}
@@ -587,7 +588,7 @@ const AdminDashboard = () => {
         {showCancelConfirmation && (
           <div className="cancel-confirmation-overlay">
             <div className="cancel-confirmation-popup">
-              <p>Are you sure you want to cancel these sessions?</p>
+              <p>Are you sure you want to cancel these sessions? <br /> An email will be sent to the parent</p>
               <div className="cancel-confirmation-buttons">
                 <button className="sessions-confirm-button" onClick={confirmCancelSessions}>Yes</button>
                 <button className="sessions-cancel-button" onClick={handleCloseCancelConfirmation}>No</button>
