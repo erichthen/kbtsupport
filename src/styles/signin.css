@@ -14,11 +14,17 @@ body {
   width: 100%;
 }
 
+.welcome-message {
+  margin-top: -20px;
+  color: rgb(83, 52, 73);
+}
+
 .outer-container {
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   padding: 50px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -52,6 +58,10 @@ input {
   margin-bottom: 25px;
 }
 
+.forgot-password {
+  margin-top: -20px;
+  margin-bottom: -20px;
+}
 .forgot-password-container {
   text-align: center;
   display: flex;
@@ -101,13 +111,13 @@ input {
 }
 
 .back-button {
-  width: 100%;
+  width: 50%;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
-  padding: 10px;
+  margin-top: 40px;
+  margin-bottom: 20px;
   background-color: rgb(83, 52, 73);
   color: white;
   border: none;

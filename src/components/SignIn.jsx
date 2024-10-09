@@ -12,6 +12,8 @@ const SignIn = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+  const [isEmailValid, setIsEmailValid] = useState(false); 
+  const [disableButtonAfterError, setDisableButtonAfterError] = useState(false);
   
   const history = useHistory();
 
@@ -24,7 +26,16 @@ const SignIn = () => {
 
   useEffect(() => {
     setIsFormValid(email.trim() !== '' && password.trim() !== '');
+    setDisableButtonAfterError(false);
   }, [email, password]);
+
+  useEffect(() => {
+    setIsEmailValid(forgotPasswordEmail.includes('@'));
+  }, [forgotPasswordEmail]);
+
+  useEffect(() => {
+    setIsFormValid(email.trim() !== '' && password.trim() !== '');
+  }, [email, password, error]); 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -38,24 +49,22 @@ const SignIn = () => {
         history.push('/dashboard'); 
       }
     } catch (error) {
-      // Always show 'Invalid Credentials' for any error
       setError('Invalid Credentials');
+      setDisableButtonAfterError(true);
     }
   };
 
   const handleForgotPassword = async (event) => {
     event.preventDefault(); 
-
+  
     const response = await sendPasswordResetEmail(forgotPasswordEmail);
-
+  
     if (response.success) {
-      alert('Password reset email sent. Please check your inbox.');
+      setError(''); // Clear any existing errors
       setShowForgotPassword(false);
-      setError('');
-    }
-    else {
-      alert(response.error);
-      setError(response.error);
+      alert('Password reset email sent. Please check your inbox.');
+    } else {
+      setError(response.error); // Set error message if no account matches
     }
   };
   
@@ -68,11 +77,26 @@ const SignIn = () => {
   }
 
   return (
+
     <div className="main-container">
+
       <h1>KBT Reading Support</h1>
+
       <div className="outer-container">
+
+        {showForgotPassword ? (
+            <h3 className="welcome-message">Password Reset</h3>
+          ) : (
+            <h4 className="welcome-message">
+              Welcome! Please enter the credentials you set <br />
+              up while registering. Registration is invite-only.
+            </h4>
+          ) 
+        }
+
         {showForgotPassword ? (
           <div className="forgot-password-container">
+
             <form className="forgot-password-form" onSubmit={handleForgotPassword}>
               <input
                 type="email"
@@ -82,13 +106,26 @@ const SignIn = () => {
                 placeholder="Enter your email"
                 required
               />
-              <button className="forgot-pass-submit" type="submit">Send Password Reset Email</button>
+              {error && <div className="error">{error}</div>} 
+              <button className="forgot-pass-submit" type="submit" disabled={!isEmailValid}>Send Password Reset Email</button>
             </form>
-            <button className="back-button" onClick={() => setShowForgotPassword(false)}>Back</button>
+
+            <button 
+              className="back-button" 
+              onClick={() => {
+                setShowForgotPassword(false);
+                setError('');
+              }}
+            >Go Back</button>
+
           </div>
+
         ) : (
+
           <div className="container">
+
             <form onSubmit={handleSubmit}>
+
               <div>
                 <input
                   id="email"
@@ -96,33 +133,47 @@ const SignIn = () => {
                   name="email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setError(''); 
+                  }}
+                  placeholder="Email"
                   required
                 />
-              </div>
-              <div>
                 <input
                   className=""
                   id="password"
                   name="password"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  autoComplete='new-password'
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setError('');
+                  }}
+                  placeholder="Password"
+                  autoComplete="new-password"
                   required
                 />
               </div>
+
               {error && <div className="error">{error}</div>}
-              <button type="submit" disabled={!isFormValid}>Sign In</button>
+              <button type="submit" disabled={!isFormValid || disableButtonAfterError}>Sign In</button>
+
             </form>
+
             <div className="forgot-password">
-              <button className="forgot-password-link" onClick={() => setShowForgotPassword(true)}>Forgot Password?</button>
+              <button className="forgot-password-link" 
+                onClick={() => {
+                  setShowForgotPassword(true);
+                  setError(false);
+                }}
+              >Forgot Password?</button>
             </div>
+
           </div>
         )}
       </div>
+
     </div>
   );
 };
