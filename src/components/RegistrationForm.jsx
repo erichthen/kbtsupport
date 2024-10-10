@@ -163,7 +163,7 @@ const RegistrationForm = () => {
 
   return (
     <div className="main-container">
-      <h1>Register for KBT Reading Support</h1>
+      <h1 className="register-title">Register for KBT Reading Support</h1>
       <div className="outer-container">
         <div className={`container ${currentStep === 2 ? 'second-portion' : ''}`}>
           <form onSubmit={handleSubmit}>

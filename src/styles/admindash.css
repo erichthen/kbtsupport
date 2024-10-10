@@ -2,7 +2,7 @@ body.admin-dashboard {
   transform: scale(0.85);
   transform-origin: center;
   font-family: Arial, sans-serif;
-  background-color: rgb(237, 226, 226);
+  background-color: rgb(83, 52, 72);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,41 +11,39 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .main-container {
-  background-color: rgba(255, 255, 255, 0.7); 
+  outline: 10px solid black;
+  background-color: rgb(255, 255, 255); 
   border-radius: 20px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   width: auto;
   padding: 60px;
-  padding-bottom: 100px;
-  padding-top: 40px;
+  padding-bottom: 70px;
+  padding-top: 80px;
 }
 
-.admin-dashboard .outer-container {
-  background-color: rgb(237, 226, 226);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-top: 30px;
+.admin-dashboard .greeting {
+  position: absolute;
+  top: 300px;
+  margin-left: 277px;
 }
 
 .admin-dashboard .container {
-  background-color: rgb(225, 197, 202);
-  margin-left: 10px;
-  padding: 20px;
+  outline: 3px solid rgb(83, 52, 73);
   border-radius: 10px;
+  background-color: rgb(225, 197, 202);
+  margin-left: 10px;  
+  padding: 36px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 300px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 30px;
 }
+
 
 .admin-dashboard h1 {
   margin-bottom: 20px;
@@ -110,30 +108,45 @@ body.admin-dashboard {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  outline: 3px solid rgb(83, 52, 73);
   background-color: rgb(225, 197, 202);
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 350px;
   text-align: center;
+  margin-top: 20px;
 }
 
 .admin-dashboard .add-client-title {
+  top: 350px;
+  text-decoration: underline;
+  text-decoration-color: rgb(83, 52, 73);
+  margin-left: 111px;
+  position: absolute;
   font-size: 30px;
   text-align: center;
   color: rgb(83, 52, 73);
-  margin-top: 0px;
 }
 
 .admin-dashboard .send-button {
-  width: 70%;
+  width: 80%;
   margin-bottom: 0px;
   margin-top: 20px;
 }
 
 
 .admin-dashboard .client-email-input {
+  font-size: 18px;
+  width: 120%;
   margin-top: 20px;
+  margin-left: -30px;
+
+}
+
+.admin-dashboard .client-email-input::placeholder {
+  text-align: center;
+  font-size: 20px;
 }
 
 .admin-dashboard .success-message {
@@ -174,8 +187,9 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .calendar-container {
-  margin-top: 0px;
+  margin-top: 32px;
   margin-left: 40px;
+  margin-bottom: 0px;
 }
 
 .admin-dashboard .react-datepicker {
@@ -258,32 +272,40 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .reschedule-container {
+  background-color: rgb(225, 197, 202);
   position: relative;
+  outline: 3px solid black;
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Ensures that content is spaced between top and bottom */
   height: 100%;
-  padding: 20px;
   text-align: center;
+  margin-top: 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
-.admin-dashboard .reschedule-container .reschedule-title {
-  font-size: 22px;
-  margin-top: -40px;
+.admin-dashboard .reschedule-title {
+  position: absolute;
+  top: -85px; /* Adjust as needed to position the title above the container */
+  font-size: 27px;
   font-weight: bold;
   text-align: center;
   color: rgb(83, 52, 73);
   text-decoration: underline;
   text-decoration-color: rgb(83, 52, 73);
+  margin-left: -21px;
 }
 
 .admin-dashboard .reschedule-container p{
   color: black;
 }
 
-.admin-dashboard .reschedule-container .back-button {
+.admin-dashboard .reschedule-back-button {
   align-self: center;
-  margin-bottom: -25px;
+  margin-bottom: 0px;
   margin-top: 25px;
   color: black;
   background-color: white;
@@ -310,6 +332,7 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .options-container {
+  outline: 3px solid black;
   background-color: rgb(221, 195, 199);
   display: flex;
   flex-direction: column;
@@ -339,15 +362,14 @@ body.admin-dashboard {
 
 /* Make option buttons align in a row */
 .admin-dashboard .options-container {
-  justify-content: flex-start; /* Align content at the top */
+  padding: 1px px;
 }
 
 .admin-dashboard .options-buttons {
   width: 400px;
   display: flex;
   justify-content: center;
-  gap: 20px; /* Space between buttons */
-  margin-bottom: 20px; /* Add space below the buttons */
+  margin-bottom: 10px; /* Add space below the buttons */
 }
 
 .admin-dashboard .options-back-button {
@@ -370,7 +392,8 @@ body.admin-dashboard {
 
 .admin-dashboard .session-dropdown {
   width: 80%;
-  padding: 12px;
+  text-align: center;
+  padding-top: 12px;
   margin-left: 22px;
   margin-bottom: 20px;
   border-radius: 5px;
@@ -395,13 +418,19 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .cancel-container {
+  outline: 3px solid black;
   background-color: rgb(221, 195, 199);
-  padding: 50px 40px;
+  padding: 30px 20px;
 }
 
 .admin-dashboard .cancel-title {
+  position: absolute;
+  font-size: 27px;
+  text-decoration: underline;
+  text-decoration-color:rgb(83, 52, 72);
+  top: 250px;
+  margin-left: 11px;
   text-align: center;
-  margin-left: 7px;
 }
 .admin-dashboard .cancel-session-buttons {
   display: flex;

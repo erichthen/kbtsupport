@@ -1,6 +1,6 @@
 body.registration-form {
   font-family: Arial, sans-serif;
-  background-color: rgb(237, 226, 226);
+  background-color: rgb(83, 52, 73);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,6 +15,10 @@ body.registration-form {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.registration-form .register-title {
+  color: white;
 }
 
 .registration-form .outer-container {

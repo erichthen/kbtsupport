@@ -83,7 +83,7 @@ const SignIn = () => {
 
     <div className="main-container">
 
-      <h1>KBT Reading Support</h1>
+      <h1 className="title">KBT Reading Support</h1>
 
       <div className="outer-container">
 
@@ -118,7 +118,7 @@ const SignIn = () => {
             </form>
 
             <button 
-              className="back-button" 
+              className="forgot-back-button" 
               onClick={() => {
                 setShowForgotPassword(false);
                 setError('');

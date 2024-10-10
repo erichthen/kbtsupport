@@ -92,8 +92,8 @@ const AdminDashboard = () => {
   const handleSendInvite = async (e) => {
     e.preventDefault();
     const actionCodeSettings = {
-      url: 'https://kbt-reading-support.web.app/register',
-      // url: 'http://localhost:3000/register',
+      // url: 'https://kbt-reading-support.web.app/register',
+      url: 'http://localhost:3000/register',
       handleCodeInApp: true,
     };
     
@@ -399,22 +399,20 @@ const AdminDashboard = () => {
 
   return (
     <div className="main-container">
-      {!(showReschedule || showSessions || showCancel || showOptions || showInviteForm) && <h1>Hello, Kelli!</h1>}
-      <div className="outer-container">
+      {!(showReschedule || showSessions || showCancel || showOptions || showInviteForm) && <h1 className="greeting">Hello, Kelli!</h1>}
         {showReschedule ? (
           <div className="reschedule-container">
-            <h2 className="reschedule-title">Reschedule a Session</h2>
+              <h2 className="reschedule-title">Reschedule a Session</h2>
             <select className="session-dropdown" onChange={handleDaySelect}>
-              <option value="">-- Select a Day --</option>
-              {sessions
-                .sort((a, b) => new Date(a.session_time) - new Date(b.session_time))
-                .map((session, index) => (
-                  <option key={index} value={session.session_time}>
-                    {getFormattedDate(new Date(session.session_time))}
-                  </option>
-                ))}
-            </select>
-  
+                <option value="">-- Select a Day --</option>
+                {sessions
+                  .sort((a, b) => new Date(a.session_time) - new Date(b.session_time))
+                  .map((session, index) => (
+                    <option key={index} value={session.session_time}>
+                      {getFormattedDate(new Date(session.session_time))}
+                    </option>
+                  ))}
+              </select>
             <select className="session-dropdown" onChange={(e) => {
               const sessionId = e.target.value;
               const session = sessionsForSelectedDay.find(s => s.id === sessionId);
@@ -437,7 +435,7 @@ const AdminDashboard = () => {
             </select>
   
             <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
-              <option value="">-- Select a Day --</option>
+              <option className="day-select" value="">-- Select a Day --</option>
               {getAllWeekends().map((day, index) => (
                 <option key={index} value={day.toISOString()}>
                   {getFormattedDate(new Date(day))}
@@ -457,8 +455,7 @@ const AdminDashboard = () => {
             <button className="reschedule-session-button" onClick={handleRescheduleSession} disabled={loading}>
               {loading ? 'Rescheduling...' : 'Reschedule Session'}
             </button>
-    
-            <button className="back-button" onClick={() => setShowReschedule(false)}>Back</button>
+            <button className="reschedule-back-button" onClick={() => setShowReschedule(false)}>Back</button>
           </div>
         ) : showSessions ? (
           <div className="session-container">
@@ -561,7 +558,7 @@ const AdminDashboard = () => {
                       setEmail(e.target.value);
                       setSuccessMessage('');
                     }}
-                    placeholder="Client email"
+                    placeholder="Parent email"
                     required
                   />
                   <div className={`success-message ${successMessage ? 'visible' : ''}`}>
@@ -569,7 +566,7 @@ const AdminDashboard = () => {
                   </div>
                   {error && <div className="error">{error}</div>}
                   <button className="send-button" type="submit" disabled={loading}>
-                    {loading ? 'Sending...' : 'Send Registration Email'}
+                    {loading ? 'Sending...' : 'Send Registration Form'}
                   </button>
                 </form>
                 <button className="addclient-back-button" onClick={() => {
@@ -622,8 +619,7 @@ const AdminDashboard = () => {
                 </div>
               </div>
             )}
-          </div>
-        </div>
+      </div>
   );
 };
 

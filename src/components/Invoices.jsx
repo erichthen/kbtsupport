@@ -13,6 +13,13 @@ const Invoices = () => {
   const history = useHistory();
 
   useEffect(() => {
+    document.body.classList.add('invoices-page');
+    return () => {
+      document.body.classList.remove('invoices-page');
+    };
+  }, []);
+
+  useEffect(() => {
   const fetchInvoices = async () => {
     const invoicesData = await getParents();
     const filteredInvoices = invoicesData.filter(invoice => !invoice.invoice_status);
