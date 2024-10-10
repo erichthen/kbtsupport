@@ -70,10 +70,6 @@ body.admin-dashboard {
   border-radius: 5px;
 }
 
-.admin-dashboard .client-email-input {
-  margin-top: 30px;
-}
-
 .admin-dashboard button {
   padding: 10px;
   border: none;
@@ -108,6 +104,44 @@ body.admin-dashboard {
   background-color: #3a1a28;
 }
 
+.admin-dashboard .add-client-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(225, 197, 202);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  text-align: center;
+}
+
+.admin-dashboard .add-client-title {
+  font-size: 30px;
+  text-align: center;
+  color: rgb(83, 52, 73);
+  margin-top: 0px;
+}
+
+.admin-dashboard .send-button {
+  width: 70%;
+  margin-bottom: 0px;
+  margin-top: 20px;
+}
+
+
+.admin-dashboard .client-email-input {
+  margin-top: 20px;
+}
+
+.admin-dashboard .success-message {
+  color: green;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 .admin-dashboard .add-client-button {
   background-color: rgb(83, 52, 73);
   color: white;
@@ -116,6 +150,14 @@ body.admin-dashboard {
 
 .admin-dashboard .add-client-button:hover {
   background-color: rgb(83, 52, 73);
+}
+
+.admin-dashboard .addclient-back-button {
+  background-color: rgb(83, 52, 73);
+  color: white;
+  width: 20%; 
+  margin-top: 30px;
+  margin-bottom: 0px;
 }
 
 .admin-dashboard .invoices-button {

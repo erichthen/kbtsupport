@@ -14,6 +14,7 @@ const SignIn = () => {
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(false); 
   const [disableButtonAfterError, setDisableButtonAfterError] = useState(false);
+  const [disableResetButtonAfterError, setDisableResetButtonAfterError] = useState(false);
   
   const history = useHistory();
 
@@ -61,10 +62,12 @@ const SignIn = () => {
   
     if (response.success) {
       setError(''); // Clear any existing errors
+      setDisableResetButtonAfterError(false);
       setShowForgotPassword(false);
       alert('Password reset email sent. Please check your inbox.');
     } else {
-      setError(response.error); // Set error message if no account matches
+      setError(response.error); 
+      setDisableResetButtonAfterError(true);
     }
   };
   
@@ -102,12 +105,16 @@ const SignIn = () => {
                 type="email"
                 className="emailforreset"
                 value={forgotPasswordEmail}
-                onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                onChange={(e) => {
+                  setForgotPasswordEmail(e.target.value);
+                  setError('');
+                  setDisableResetButtonAfterError(false);
+                }}
                 placeholder="Enter your email"
                 required
               />
               {error && <div className="error">{error}</div>} 
-              <button className="forgot-pass-submit" type="submit" disabled={!isEmailValid}>Send Password Reset Email</button>
+              <button className="forgot-pass-submit" type="submit" disabled={!isEmailValid || disableResetButtonAfterError}>Send Password Reset Email</button>
             </form>
 
             <button 

@@ -85,22 +85,24 @@ const Invoices = () => {
   return (
     <div className="invoices-main-container">
       {!selectedParent ? (
-        <div className="invoices-section">
-          <h2>Invoices for {new Date().toLocaleString('default', { month: 'long' })}</h2>
-          <ul>
-            {invoices.length === 0 ? (
-              <p className="no-invoices-message">No more invoices for the month!</p>
-            ) : (
-            invoices.map(invoice => (
-            <li key={invoice.id}>
-              <span>{invoice.parent_name} - {invoice.child_name}</span>
-              <button className="send-invoice-button" onClick={() => handleSendInvoiceClick(invoice)}>Send Invoice</button>
-            </li>
-            ))
-          )}
-          </ul>
-          <button className="back-button" onClick={handleBackToAdmin}>Back</button>
-        </div>
+        <>
+          <h2 className="invoice-title">Invoices for {new Date().toLocaleString('default', { month: 'long' })}</h2>
+          <div className="invoices-section">
+            <ul>
+              {invoices.length === 0 ? (
+                <p className="no-invoices-message">No more invoices for the month! <br /> Invoice statuses will be reset at 11:59 p.m. on the first day of the month.</p>
+              ) : (
+              invoices.map(invoice => (
+              <li key={invoice.id}>
+                <span>{invoice.parent_name} - {invoice.child_name}</span>
+                <button className="send-invoice-button" onClick={() => handleSendInvoiceClick(invoice)}>Send Invoice</button>
+              </li>
+              ))
+            )}
+            </ul>
+            <button className="invoice-back-button" onClick={handleBackToAdmin}>Back</button>
+          </div>
+        </>
       ) : (
         <div className="invoice-upload-section">
           <h2>Send Invoice to {selectedParent.parent_name}</h2>
@@ -110,7 +112,7 @@ const Invoices = () => {
           {file && <p>Uploaded File: {file.name}</p>}
           <p>This email will be sent to: {selectedParent.email}</p>
           <div className="buttons-container">
-            <button className="back-button" onClick={handleBackToInvoices}>Back</button>
+            <button className="invoice-back-button" onClick={handleBackToInvoices}>Back</button>
             <button className="send-invoice-button" onClick={handleSendInvoice} disabled={loading}>
               {loading ? 'Sending...' : 'Send Invoice'}
             </button>

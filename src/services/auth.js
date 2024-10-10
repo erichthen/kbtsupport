@@ -4,14 +4,15 @@ import {httpsCallable} from "firebase/functions";
 import {functions} from '../firebaseConfig';
 
 export const sendSignInLink = async (email, actionCodeSettings) => {
-    try {
-      await sendSignInLinkToEmail(auth, email, actionCodeSettings);
-      window.localStorage.setItem('emailForSignIn', email);
-    } catch (error) {
-      console.error('Error sending sign-in link:', error);
-      throw error;
-    }
-  };
+  try {
+    await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+    window.localStorage.setItem('emailForSignIn', email);
+    console.log('Sign-in link sent successfully');
+  } catch (error) {
+    console.error('Error sending sign-in link:', error);
+    throw error;
+  }
+};
 
 export const sendPasswordResetEmail = async (email) => {
     const checkEmailAndSendReset = httpsCallable(functions, 'checkEmailSendReset');

@@ -9,7 +9,7 @@ body.invoices-page {
 }
 
 .invoices-main-container {
-  width: 90%;
+  width: 70%;
   max-width: 1200px;
   padding: 50px 80px;
   background-color: rgba(255, 255, 255, 0.7); 
@@ -33,10 +33,12 @@ body.invoices-page {
   margin-bottom: 20px;
 }
 
-.invoices-section h2, .invoice-upload-section h2 {
-  margin-bottom: 20px;
+.invoice-title {
+  color: rgb(83, 52, 73);
   text-decoration: underline;
   text-decoration-color: rgb(83, 52, 73);
+  margin-top: -10px;
+  margin-bottom: 30px;
 }
 
 .invoices-section ul {
@@ -91,18 +93,19 @@ body.invoices-page {
   width: 100%;
 }
 
-.back-button {
+.invoice-back-button {
   background-color: rgb(83, 52, 73);
   color: white;
-  width: 30%;
-  padding: 10px 20px;
+  width: 15%;
+  padding: 5px 10px;
   border: none;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
+  margin-bottom: -20px;
 }
 
-.back-button:hover {
+.invoice-back-button:hover {
   background-color: rgb(131, 102, 107);
 }
 
@@ -130,7 +133,8 @@ body.invoices-page {
 
 .no-invoices-message {
   text-align: center;
-  color: rgb(83, 52, 73); /* Adjust color as needed */
+  color: rgb(83, 52, 73);
   font-weight: bold;
-  margin-top: 35px; /* Adjust spacing as needed */
+  margin-top: 15px; 
+  margin-bottom: -3px;
 }

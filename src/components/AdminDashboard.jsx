@@ -29,6 +29,8 @@ const AdminDashboard = () => {
   const [showOptions, setShowOptions] = useState(false);  // For toggling between Reschedule/Cancel options
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false); // For showing/hiding the cancel confirmation popup
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     document.body.classList.add('admin-dashboard');
@@ -87,7 +89,8 @@ const AdminDashboard = () => {
     history.push('/login');
   };
 
-  const handleSendInvite = async () => {
+  const handleSendInvite = async (e) => {
+    e.preventDefault();
     const actionCodeSettings = {
       url: 'https://kbt-reading-support.web.app/register',
       // url: 'http://localhost:3000/register',
@@ -97,11 +100,11 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       await sendSignInLink(email, actionCodeSettings);
-      alert('Registration link sent.');
-      setShowInviteForm(false);
+      setSuccessMessage('Registration email sent successfully.');
       setEmail('');
     } catch (error) {
-      console.error();
+      setError(error);
+      console.error('Error sending sign-in link:', error);
       alert('Error sending registration link.');
     }
     finally {
@@ -396,7 +399,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="main-container">
-      {!(showReschedule || showSessions || showCancel || showOptions) && <h1>Hello, Kelli!</h1>}
+      {!(showReschedule || showSessions || showCancel || showOptions || showInviteForm) && <h1>Hello, Kelli!</h1>}
       <div className="outer-container">
         {showReschedule ? (
           <div className="reschedule-container">
@@ -411,7 +414,7 @@ const AdminDashboard = () => {
                   </option>
                 ))}
             </select>
-
+  
             <select className="session-dropdown" onChange={(e) => {
               const sessionId = e.target.value;
               const session = sessionsForSelectedDay.find(s => s.id === sessionId);
@@ -432,7 +435,7 @@ const AdminDashboard = () => {
                 <option>No sessions available</option>
               )}
             </select>
-
+  
             <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
               <option value="">-- Select a Day --</option>
               {getAllWeekends().map((day, index) => (
@@ -441,7 +444,7 @@ const AdminDashboard = () => {
                 </option>
               ))}
             </select>
-
+  
             <select className="session-dropdown" onChange={(e) => setSelectedTimeSlot(e.target.value)}>
               <option value="">-- Select a Time --</option>
               {filteredSlots.map((slot, index) => (
@@ -454,7 +457,7 @@ const AdminDashboard = () => {
             <button className="reschedule-session-button" onClick={handleRescheduleSession} disabled={loading}>
               {loading ? 'Rescheduling...' : 'Reschedule Session'}
             </button>
-  
+    
             <button className="back-button" onClick={() => setShowReschedule(false)}>Back</button>
           </div>
         ) : showSessions ? (
@@ -512,7 +515,7 @@ const AdminDashboard = () => {
             <p>An email will be sent to the parent</p>
             <div className="cancel-session-buttons">
               <button className="cancel-button" onClick={submitCancelSession} disabled={loading}>
-               {loading ? 'Canceling...' : 'Cancel Selected Session'}
+                {loading ? 'Canceling...' : 'Cancel Selected Session'}
               </button>
               <button className="cancel-back-button" onClick={() => setShowCancel(false)}>Back</button>
             </div>
@@ -545,60 +548,85 @@ const AdminDashboard = () => {
           </div>
         ) : (
           <>
-            <div className="container">
-              {!showInviteForm && (
-                <button className="add-client-button" onClick={() => setShowInviteForm(true)}>Add Client</button>
-              )}
-              {showInviteForm && (
-                <div className="input-group">
-                  <input
+            {showInviteForm ? (
+              <div>
+              <h2 className="add-client-title">Add A Client</h2>
+              <div className="add-client-container">
+                <form className="add-client-form" onSubmit={handleSendInvite}>
+                  <input 
                     className="client-email-input"
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setSuccessMessage('');
+                    }}
                     placeholder="Client email"
+                    required
                   />
-                  <button className="send-button" onClick={handleSendInvite} disabled={loading}>
-                    {loading ? 'Sending...' : 'Send Invite'}
+                  <div className={`success-message ${successMessage ? 'visible' : ''}`}>
+                    {successMessage}
+                  </div>
+                  {error && <div className="error">{error}</div>}
+                  <button className="send-button" type="submit" disabled={loading}>
+                    {loading ? 'Sending...' : 'Send Registration Email'}
                   </button>
+                </form>
+                <button className="addclient-back-button" onClick={() => {
+                  setShowInviteForm(false);
+                  setEmail(''); 
+                  setError(''); 
+                  setSuccessMessage(''); 
+                }}>
+                  Back
+                </button>
                 </div>
-              )}
-              <button className="zoom-button" onClick={() => window.open("https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09&omn=74404485715", "_blank", "noopener noreferrer")}>Join Zoom Meeting</button>
-              <button className="invoices-button" onClick={handleInvoicesClick}>Invoices</button>
-              <button
-                className="reschedule-button"
-                onClick={handleRescheduleClick}
-              >
-                Reschedule/Cancel a Session
-              </button>
-              <button className="logout-button" onClick={handleLogout}>Logout</button>
-            </div>
-            <div className="calendar-container">
-              <DatePicker
-                inline
-                highlightDates={sessions.map(session => new Date(session.session_time))}
-                dayClassName={date => isDayWithSession(date) ? 'session-day' : undefined}
-                onChange={handleDayClick}
-              />
-            </div>
+              </div>
+            ) : (
+              <>
+                <div className="container">
+                  <button className="add-client-button" onClick={() => setShowInviteForm(true)}>
+                    Add Client
+                  </button>
+                  <button className="zoom-button" onClick={() => window.open("https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09&omn=74404485715", "_blank", "noopener noreferrer")}>Join Zoom Meeting</button>
+                  <button className="invoices-button" onClick={handleInvoicesClick}>Invoices</button>
+                  <button
+                    className="reschedule-button"
+                    onClick={handleRescheduleClick}
+                  >
+                    Reschedule/Cancel a Session
+                  </button>
+                  <button className="logout-button" onClick={handleLogout}>Logout</button>
+                </div>
+                <div className="calendar-container">
+                  <DatePicker
+                    inline
+                    highlightDates={sessions.map(session => new Date(session.session_time))}
+                    dayClassName={date => isDayWithSession(date) ? 'session-day' : undefined}
+                    onChange={handleDayClick}
+                  />
+                </div>
+              </>
+            )}
           </>
         )}
-  
-        {/* New Cancel Confirmation Popup */}
+
         {showCancelConfirmation && (
-          <div className="cancel-confirmation-overlay">
-            <div className="cancel-confirmation-popup">
-              <p>Are you sure you want to cancel these sessions? <br /> An email will be sent to the parent</p>
-              <div className="cancel-confirmation-buttons">
-                <button className="sessions-confirm-button" onClick={confirmCancelSessions}>Yes</button>
-                <button className="sessions-cancel-button" onClick={handleCloseCancelConfirmation}>No</button>
+              <div className="cancel-confirmation-overlay">
+                <div className="cancel-confirmation-popup">
+                  <p>Are you sure you want to cancel these sessions? <br /> An email will be sent to the parent</p>
+                  <div className="cancel-confirmation-buttons">
+                    <button className="sessions-confirm-button" onClick={confirmCancelSessions}>Yes</button>
+                    <button className="sessions-cancel-button" onClick={handleCloseCancelConfirmation}>No</button>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
-        )}
-      </div>
-    </div>
+        </div>
   );
 };
 
-export default AdminDashboard;
+  
+
+  export default AdminDashboard;
