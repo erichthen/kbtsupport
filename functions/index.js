@@ -263,7 +263,7 @@ exports.sendAdminCancel = functions.https.onCall(async (data, context) => {
 });
 
 exports.resetInvoiceStatus = functions.pubsub
-    .schedule("59 23 1 * *") //11:59 pm on first day of each month
+    .schedule("59 23 1 * *") // 11:59 pm on first day of each month
     .timeZone("America/New_York")
     .onRun(async (context) => {
       const db = admin.firestore();
