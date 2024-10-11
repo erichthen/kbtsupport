@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import '../styles/steps.css';
 
 const Step1 = ({ name, child, setName, setChild, goToNextStep, isFirstStepValid }) => {
+
+  useEffect(() => {
+    document.body.classList.add('step1');
+    return () => {
+      document.body.classList.remove('step1');
+    };
+  }, []);
+
   return (
     <>
-      <h2>Welcome!</h2>
+      <h2 className="welcome">Welcome!</h2>
       <div className="input-container">
         <input
           id="name"
@@ -26,15 +35,15 @@ const Step1 = ({ name, child, setName, setChild, goToNextStep, isFirstStepValid 
           aria-label="Enter your child's name"
         />
       </div>
-      <div className="nav-buttons">
         <button
+          className="step1-next"
           type="button"
           onClick={goToNextStep}
           disabled={!isFirstStepValid} 
         >
           Next
         </button>
-      </div>
+      <p className="step-number">Step 1 of 3</p>
     </>
   );
 };

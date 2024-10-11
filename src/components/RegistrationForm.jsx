@@ -122,6 +122,7 @@ const RegistrationForm = () => {
           let hours = parseInt(timeParts[0], 10);
           const minutes = parseInt(timeParts[1], 10);
 
+          //store the time in 24 hour format
           if (selectedTime.includes('PM') && hours !== 12) {
             hours += 12;
           } else if (selectedTime.includes('AM') && hours === 12) {
@@ -163,8 +164,8 @@ const RegistrationForm = () => {
 
   return (
     <div className="main-container">
-      <h1 className="register-title">Register for KBT Reading Support</h1>
       <div className="outer-container">
+      <h1 className="register-title">Register for KBT Reading Support</h1>
         <div className={`container ${currentStep === 2 ? 'second-portion' : ''}`}>
           <form onSubmit={handleSubmit}>
             {currentStep === 1 && (

@@ -18,21 +18,26 @@ body.registration-form {
 }
 
 .registration-form .register-title {
-  color: white;
+  text-align: center;
+  font-size: 27px;
+  margin-bottom: 30px;
+  color: rgb(83, 52, 73);
+  margin-top: -10px;
 }
 
 .registration-form .outer-container {
   transform: scale(0.8);
   transform-origin: center;
-  background-color: rgba(255, 255, 255, 0.7); 
-  padding: 60px;
+  background-color: white;
+  padding: 40px;
+  height: auto;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .registration-form .container {
   background-color: rgb(225, 197, 202);
-  padding: 40px;
+  padding: 40px 30px;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 400px;
@@ -74,10 +79,6 @@ body.registration-form {
 .registration-form select:focus {
   outline: none;
   border-bottom-color: #590a6d;
-}
-
-.email-input {
-  font-size: 16px;
 }
 
 .registration-form button {
@@ -128,10 +129,6 @@ body.registration-form {
 
 .password-strength.weak {
   color: red;
-}
-
-.password-strength.strong {
-  color: green;
 }
 
 .password-match {

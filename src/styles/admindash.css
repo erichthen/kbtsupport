@@ -138,10 +138,9 @@ body.admin-dashboard {
 
 .admin-dashboard .client-email-input {
   font-size: 18px;
-  width: 120%;
+  width: 222px;
   margin-top: 20px;
-  margin-left: -30px;
-
+  margin-left: 3px;
 }
 
 .admin-dashboard .client-email-input::placeholder {
