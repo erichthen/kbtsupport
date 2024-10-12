@@ -4,6 +4,7 @@ import '../styles/steps.css';
 const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChange, setConfirmPassword, passwordStrength, goToPreviousStep, goToNextStep }) => {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [isStep2Valid, setIsStep2Valid] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     document.body.classList.add('step2');
@@ -12,13 +13,12 @@ const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChang
     };
   }, []);
 
-
   useEffect(() => {
     setPasswordMatch(password === confirmPassword);
   }, [password, confirmPassword]);
 
   useEffect(() => {
-    setIsStep2Valid(passwordMatch && passwordStrength !== 'weak' && email.trim() !== '');
+    setIsStep2Valid(password.length !== 0 && passwordMatch && passwordStrength !== 'weak' && email.trim() !== '');
   }, [passwordMatch, passwordStrength, email, password]);
 
   return (
@@ -42,7 +42,7 @@ const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChang
             className="password-input"
             id="password"
             name="password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={handlePasswordChange}
             placeholder="Create a password"
@@ -50,11 +50,10 @@ const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChang
             autoComplete="new-password"
           />
         </div>
-        {password && (
-          <span className={`password-strength ${passwordStrength}`}>
-            {passwordStrength === 'weak' && 'Password is too weak'}
-          </span>
-        )}
+        <button className="view-password" type="button" onClick={() => setShowPassword(!showPassword)}>View password</button>
+        <span className={`password-strength ${passwordStrength}`}>
+          {(passwordStrength === 'weak' && password.length !== 0) ? 'Password is too weak' : ''}
+        </span> 
       </div>
       <div className="input-container">
         <div className="password-input-container">
@@ -62,7 +61,7 @@ const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChang
             className="confirm-password-input"
             id="confirmPassword"
             name="confirmPassword"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Confirm password"
@@ -70,9 +69,9 @@ const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChang
             autoComplete="new-password"
           />
         </div>
-        {!passwordMatch && (
-          <span className="password-match">Passwords do not match</span>
-        )}
+        <span className='passwords-match'>
+          {!passwordMatch ? 'Passwords do not match': ''}
+        </span>
       </div>
       <div className="nav">
         <button type="button" className="nav-buttons" onClick={goToPreviousStep}>Prev</button>

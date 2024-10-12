@@ -2,9 +2,7 @@
 
 ## TODO ATM  
 
-- **Test the appointment reminder function**
-- **Ensure no autofilling for passwords, ESPECIALLY for admin credentials
-- **Reset invoice statuses at the end of the month**
+-**Think about implementing a report issue if a user cannot register**  
 
 
 **Emailing**
@@ -28,6 +26,7 @@ An email will be sent:
 - appointment reminder function  
 - when client cancels or reschedules, available slots must be updated to accomidate the opening  
 - invoice sending (parents invoice goes away for the month when invoice is sent, also resets at beginning of each new month)
+- Test adding a client with an email, and registering with a different email than the one added
 
 
 ### hosting and transitioning

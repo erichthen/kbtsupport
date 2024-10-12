@@ -179,6 +179,39 @@ body.registration-form {
   }
 }
 
+.registered-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.registered-message {
+  outline: 3px solid black;
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 8px;
+  width: 60%;
+}
+
+.successful-register-message {
+  text-align: center;
+  color: green;
+  font-size: 27px;
+}
+
+.registered-message .registered-login {
+  margin-bottom: 30px;
+  margin-left: 93px;
+}
+
+
 /* For mobile phones (max-width: 480px) */
 @media (max-width: 480px) {
   .registration-form .outer-container {

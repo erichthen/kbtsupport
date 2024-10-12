@@ -14,7 +14,7 @@ const RegistrationForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
   const [child, setChild] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState('');
   const [filteredSlots, setFilteredSlots] = useState([]);
   const [passwordStrength, setPasswordStrength] = useState('');
@@ -22,6 +22,8 @@ const RegistrationForm = () => {
   const [isFirstStepValid, setIsFirstStepValid] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);  
+  const [registered, setRegistered] = useState(false);
+  const [registerError, setRegisterError] = useState('');
   const history = useHistory();
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const RegistrationForm = () => {
       document.body.classList.remove('registration-form');
     };
   }, []);
+
 
   useEffect(() => {
     if (!startDate) {
@@ -48,19 +51,18 @@ const RegistrationForm = () => {
   }, [startDate]); // Only trigger when startDate is set
 
   const checkFormValidity = useCallback(() => {
-    const requiredFields = [email, password, confirmPassword, name, child, selectedTime];
+    const requiredFields = [email, password, confirmPassword, name, child, selectedTime, startDate];
     const areFieldsFilled = requiredFields.every(field => field);
-    const isPasswordStrong = passwordStrength === 'strong';
-    setIsFormValid(isPasswordStrong && areFieldsFilled);
-  }, [email, password, confirmPassword, name, child, selectedTime, passwordStrength]);
-
-  useEffect(() => {
-    checkFormValidity();
-  }, [checkFormValidity]);
+    setIsFormValid(areFieldsFilled);
+  }, [email, password, confirmPassword, name, child, selectedTime, startDate]);
 
   useEffect(() => {
     setIsFirstStepValid(name.trim() !== '' && child.trim() !== '');
   }, [name, child]);
+
+  useEffect(() => {
+    checkFormValidity();
+  }, [checkFormValidity]);
 
   const handleDateChange = async (date) => {
     setStartDate(date);
@@ -90,11 +92,6 @@ const RegistrationForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
-    if (password !== confirmPassword) {
-      alert('Passwords do not match.');
-      return;
-    }
   
     try {
       setLoading(true);
@@ -143,12 +140,19 @@ const RegistrationForm = () => {
         }
         currentDate.setDate(currentDate.getDate() + 7); // Move to the same day next week
       }
-      alert('Registration complete. You can now log in with your email and password.');
-      history.push('/login');
+      setRegistered(true);
 
     } catch (error) {
-      console.error("Error during registration: ", error.message, error.code);
-      alert(`Error during registration: ${error.message}`);
+      console.error('Error during registration: ', error.message, error.code);
+      let errorMessage = 'An unexpected error occurred. Please try again.';
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'The email address is already in use by another account.';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'The email address is not valid.';
+      } else {
+        errorMessage = error.message;
+      }
+      setRegisterError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -165,49 +169,64 @@ const RegistrationForm = () => {
   return (
     <div className="main-container">
       <div className="outer-container">
-      <h1 className="register-title">Register for KBT Reading Support</h1>
-        <div className={`container ${currentStep === 2 ? 'second-portion' : ''}`}>
-          <form onSubmit={handleSubmit}>
-            {currentStep === 1 && (
-              <Step1 
-                name={name} 
-                child={child} 
-                setName={setName} 
-                setChild={setChild} 
-                goToNextStep={goToNextStep} 
-                isFirstStepValid={isFirstStepValid} 
-              />
-            )}
-            {currentStep === 2 && (
-              <Step2 
-                email={email} 
-                password={password} 
-                confirmPassword={confirmPassword} 
-                setEmail={setEmail} 
-                handlePasswordChange={handlePasswordChange} 
-                setConfirmPassword={setConfirmPassword} 
-                passwordStrength={passwordStrength} 
-                goToPreviousStep={goToPreviousStep} 
-                goToNextStep={goToNextStep} 
-              />
-            )}
-            {currentStep === 3 && (
-              <Step3 
-                startDate={startDate} 
-                handleDateChange={handleDateChange} 
-                selectedTime={selectedTime} 
-                setSelectedTime={setSelectedTime} 
-                filteredSlots={filteredSlots} 
-                goToPreviousStep={goToPreviousStep} 
-                isFormValid={isFormValid} 
-                loading={loading}
-              />
-            )}
-          </form>
+        {registered && (
+        <div className="registered-overlay">
+          <div className="registered-message">
+            <h3 className='successful-register-message'>Registration was successful!</h3>
+            <button className="registered-login" type="button" onClick={() => history.push('/login')}>Login</button>
+          </div>
+        </div>
+        )}
+        {registerError && (
+          <div className="register-error-container">
+            <div className="register-error-overlay">
+              <h3 className='error-register-message'>Uh Oh! Error during registration: {registerError}</h3>
+            </div>
+          </div>
+        )}
+        <h1 className="register-title">Register for KBT Reading Support</h1>
+          <div className={`container ${currentStep === 2 ? 'second-portion' : ''}`}>
+            <form onSubmit={handleSubmit}>
+              {currentStep === 1 && (
+                <Step1 
+                  name={name} 
+                  child={child} 
+                  setName={setName} 
+                  setChild={setChild} 
+                  goToNextStep={goToNextStep} 
+                  isFirstStepValid={isFirstStepValid} 
+                />
+              )}
+              {currentStep === 2 && (
+                <Step2 
+                  email={email} 
+                  password={password} 
+                  confirmPassword={confirmPassword} 
+                  setEmail={setEmail} 
+                  handlePasswordChange={handlePasswordChange} 
+                  setConfirmPassword={setConfirmPassword} 
+                  passwordStrength={passwordStrength} 
+                  goToPreviousStep={goToPreviousStep} 
+                  goToNextStep={goToNextStep} 
+                />
+              )}
+              {currentStep === 3 && (
+                <Step3 
+                  startDate={startDate} 
+                  handleDateChange={handleDateChange} 
+                  selectedTime={selectedTime} 
+                  setSelectedTime={setSelectedTime} 
+                  filteredSlots={filteredSlots} 
+                  goToPreviousStep={goToPreviousStep} 
+                  isFormValid={isFormValid} 
+                  loading={loading}
+                />
+              )}
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default RegistrationForm;

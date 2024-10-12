@@ -28,6 +28,7 @@ const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, fil
         <DatePicker
           id="start-date"
           selected={startDate}
+          value={startDate}
           onChange={handleDateChange}
           dateFormat="yyyy/MM/dd"
           aria-label="Select start date"
@@ -65,7 +66,7 @@ const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, fil
       <div className="modal-overlay">
         <div className="modal-content">
           <h3 className="instructions-text-1">
-            Please select the day of your <u>next</u> session with Kelli on the calendar. For the time being, sessions are only on the weekends.
+            Please select the day of your <u>upcoming</u> session with Kelli on the calendar. For the time being, sessions are only on the weekends.
             Then, select the time of the session. The selected day of the week and time will be used to schedule your sessions for the school year.      
           </h3>
           <h3 className="instructions-text-2">
@@ -73,9 +74,12 @@ const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, fil
           </h3>
           <h3 className="instructions-text-3"> 
             If you need it, you can use this <br />
-            <a href="https://dateful.com/time-zone-converter" target="_blank" rel="noopener noreferrer">
-            time zone converter
+            <a href="https://dateful.com/time-zone-converter" target="_blank" className="converter-link" rel="noopener noreferrer">
+            time zone converter.
             </a>
+          </h3>
+          <h3 className="instructions-text-4">
+            You will be able to reschedule or cancel your sessions anytime. 
           </h3>
           <button className="close-button" onClick={() => setIsModalOpen(false)}>Close</button>
         </div>

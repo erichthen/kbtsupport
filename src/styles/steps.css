@@ -1,8 +1,3 @@
-.step1 .step1-next {
-  padding: 8px;
-  width: 150px;
-  margin-bottom: 40px;
-}
 
 .step-number {
   margin-bottom: -10px;
@@ -12,8 +7,26 @@
   margin-top: -5px;
 }
 
+.step1 .name-input {
+  text-align: center;
+  font-size: 25px;
+}
+
+.step1 .child-name-input {
+  text-align: center;
+  font-size : 25px;
+}
+
+.step1 .step1-next {
+  padding: 8px;
+  width: 150px;
+  margin-bottom: 40px;
+  margin-top: 0px;
+}
+
 .step2 .email-input {
-  margin-top: 5px;
+  font-size: 25px;
+  margin-top: 0px;
 }
 
 .step2 .nav {
@@ -26,6 +39,25 @@
 .step2 .nav-buttons {
   padding: 10px 20px;
   font-size: 20px;
+  margin-top: 50px;
+}
+
+.step2 .view-password {
+  top: 150px;
+  width: 150px;
+  padding: 5px 5px;
+  padding-top: 10px;
+  margin-left: -75px;
+  position: absolute;
+  background-color: rgb(225, 197, 202);
+  color: rgb(83, 52, 73);
+  font-size: 15px;
+}
+
+.step2 .view-password:hover {
+  background-color: rgb(225, 197, 202);
+  text-decoration: underline; 
+  text-decoration-color: rgb(83, 52, 73);
 }
 
 .step3 .step-number {
@@ -33,33 +65,62 @@
 }
 
 .step2 .password-input {
-  font-size: 20px;
+  margin-top: -20px;
+  font-size: 25px;
 }
 
 .step2 .confirm-password-input {
-  font-size: 20px;
+  font-size: 25px;
+  margin-bottom: 30px;
+  margin-top: -20px;
 }
 
 .step2 .email-input {
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .step2 .email-input::placeholder {
-  font-size: 27px;
+  font-size: 22px;
   text-align: center;
   margin-right: 10px;
 }
 
 .step2 .password-input::placeholder {
-  font-size: 27px;
+  font-size: 22px;
   text-align: center;
   margin-right: 10px;
 }
 
 .step2 .confirm-password-input::placeholder {
-  font-size: 27px;
+  font-size: 22px;
   text-align: center;
   margin-right: 10px;
+}
+
+.password-strength,
+.passwords-match {
+  position: absolute;
+  display: block;
+  height: 20px; /* Adjust based on your desired space */
+  color: red; /* Or any color you prefer */
+  font-size: 15px; /* Adjust as needed */
+}
+
+.password-strength {
+  top: 12px;
+  margin-top: 30px;
+  margin-left: 0px;
+}
+
+.passwords-match {
+  margin-top: -100px;
+  top: 142px;
+  margin-left: 0px;
+}
+
+.password-strength:empty,
+.password-match:empty {
+  visibility: hidden;
 }
 
 .step3 .instructions-link {
@@ -171,7 +232,7 @@
 }
 
 .step3 .instructions-text-1 {
-  margin-top: 50px;
+  margin-top: 65px;
 }
 
 .step3 .instructions-button:hover {
@@ -181,7 +242,23 @@
 }
 
 .step3 .close-button {
-  width: 100px;
-  padding: 5px 5px;
-  margin-top: 30px;
+  background-color: white;
+  color: red;
+  position: absolute;
+  top: 250px;
+  font-size: 20px;
+  width: 40px;
+  padding: 1px;
+  margin-top: -10px;
+  margin-left: -244px;
+}
+
+.step3 .converter-link {
+  color: blue;
+}
+
+.step3 .close-button:hover {
+  background-color: white;
+  text-decoration: underline;
+  text-decoration-color: red;
 }

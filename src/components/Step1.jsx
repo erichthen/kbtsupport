@@ -15,6 +15,7 @@ const Step1 = ({ name, child, setName, setChild, goToNextStep, isFirstStepValid 
       <h2 className="welcome">Welcome!</h2>
       <div className="input-container">
         <input
+          className="name-input"
           id="name"
           name="name"
           type="text"
@@ -26,6 +27,7 @@ const Step1 = ({ name, child, setName, setChild, goToNextStep, isFirstStepValid 
       </div>
       <div className="input-container">
         <input
+          className="child-name-input"
           id="child"
           name="child"
           type="text"
