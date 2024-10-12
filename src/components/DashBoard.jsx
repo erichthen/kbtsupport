@@ -488,8 +488,8 @@ const DashBoard = () => {
       <div className="main-container">
         {!showOptions && !showReschedule && !showCancel && !showRescheduleAllForm && (
           <>
-            <h1>Hello, {parentName || 'Loading...'}!</h1>
-            <p className="schedule-details">Below is your schedule, click on a shaded day to see session details.</p>
+            <h1 className="greeting">Hello, {parentName || 'Loading...'}!</h1>
+            <p className="schedule-details">Below is your schedule.<br />Hover over a shaded day to see the time of your session.</p>
             <div className="calendar-container">
               <DatePicker
                 inline
@@ -515,37 +515,44 @@ const DashBoard = () => {
                 href="https://us04web.zoom.us/j/8821932666?pwd=c08ydWNqQld0VzFFRVJDcm1IcTBUdz09&omn=74404485715"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link"
+                className="zoom-link"
               >
-                Join Zoom Session
+                Zoom Link
               </a>
-              <p>Meeting ID: 882 193 2666 - Password: 689887</p>
+              <p className="zoom-info"><b>Meeting ID:</b>  882 193 2666<br /><b>Password:</b> 689887</p>
             </div>
             <button className="cancel-reschedule-button" onClick={handleShowOptions}>
               Cancel/Reschedule
             </button>
             <button className="logout-button" onClick={handleLogout}>Logout</button>
+            <Link to="/report-an-issue" className="report-issue-link">
+              Report an issue
+            </Link>
           </>
         )}
   
         {showOptions && !showReschedule && !showCancel && !showRescheduleAllForm && (
           <div className="options-container">
-            <h2>Do you want to...</h2>
-            <div className="options-buttons">
-              <button className="option-button" onClick={navigateToCancelForm}>
-                Cancel a session
-              </button>
-              <button className="option-button" onClick={showRescheduleSession}>
-                Reschedule a session
-              </button>
-              <button className="option-button" onClick={openCancelAllPopup}>
-                Cancel all sessions
-              </button>
-              <button className="option-button" onClick={handleShowRescheduleAllForm}>
-                Reschedule all sessions
-              </button>
+            <h2 className="do-you-want">Do you want to...</h2>
+            <div className="options-outer-container">
+              <div className="inner-container1">
+                <button className="option-button" onClick={navigateToCancelForm}>
+                  Cancel a session
+                </button>
+                <button className="option-button" onClick={showRescheduleSession}>
+                  Reschedule a session
+                </button>
+              </div>
+              <div className="inner-container2">
+                <button className="option-button" onClick={openCancelAllPopup}>
+                  Cancel all sessions
+                </button>
+                <button className="option-button" onClick={handleShowRescheduleAllForm}>
+                  Reschedule all sessions
+                </button>
+              </div>
             </div>
-            <button className="back-button" onClick={handleGoBack}>Back</button>
+            <button className="options-back-button" onClick={handleGoBack}>Back</button>
           </div>
         )}
   
@@ -689,10 +696,6 @@ const DashBoard = () => {
             <button className="back-button" onClick={() => { setShowCancel(false); setShowOptions(true); }}>Back</button>
           </div>
         )}
-  
-        <Link to="/report-an-issue" className="report-issue-link">
-          Report an issue
-        </Link>
       </div>
     </div>
   );

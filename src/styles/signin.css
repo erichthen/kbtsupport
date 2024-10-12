@@ -16,24 +16,24 @@ body.sign-in {
 }
 
 .welcome-message {
-  margin-top: -20px;
+  margin-top: -10px;
   color: rgb(83, 52, 73);
 }
 
 .sign-in .title {
   color: white;
   position: absolute;
-  top: 220px;
+  top: 260px;
 }
 
 .outer-container {
   outline: 5px solid black;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 50px;
+  padding: 30px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-top: 35px;
@@ -107,9 +107,9 @@ input {
 
 .forgot-password-form .emailforreset {
   width: 100%;
-  text-align: left;
+  text-align: center;
   padding: 12px;
-  margin: 12px 0;
+  margin-bottom: 0px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 20px;
@@ -122,7 +122,7 @@ input {
 }
 
 .back-button {
-  width: 50%;
+  width: 20%;
   text-align: center;
   display: flex;
   justify-content: center;

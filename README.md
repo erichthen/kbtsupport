@@ -3,7 +3,11 @@
 ## TODO ATM  
 
 -**Think about implementing a report issue if a user cannot register**  
-
+-**increase sign in message font size and make outer container white**
+-**Upon success message for registering, tell the parent what their dashbaord will be for/what they can do**
+-**Report issue styling and remove email requirement**-
+-**change the session pop up to be hovering over the day, and seeing the time.**
+-**Add an upcoming session section, place it to the right of the zoom link and ID**
 
 **Emailing**
 

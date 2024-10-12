@@ -1,6 +1,6 @@
-body {
+body.user-dashboard {
   display: flex;
-  background-color: rgb(237, 226, 226);
+  background-color: rgb(83, 52, 72);
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -8,7 +8,8 @@ body {
 }
 
 .user-dashboard .outer-container {
-  background-color: rgba(255, 255, 255, 0.7);
+  outline: 10px solid black;
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,21 +17,23 @@ body {
   transform-origin: center; 
 }
 
-h2 {
+.user-dashboard .greeting {
   color: rgb(83, 52, 73);
+  margin-top: 5px;
 }
 
+
 .user-dashboard .main-container {
+  outline: 3px solid black;
   position: relative;
   max-width: 800px;
-  margin: 0 auto;
   padding: 20px;
   text-align: center;
   background-color: rgb(225, 197, 202);
 }
 
 .user-dashboard .cancel-reschedule-button {
-  margin-top: 15px;
+  margin-top: 17px;
   margin-bottom: 0px;
   margin-right: 16px;
   padding: 10px 20px;
@@ -47,11 +50,15 @@ h2 {
 .user-dashboard .logout-button {
   margin-top: 10px;
   margin-right: 16px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   width: 60%;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+}
+
+.user-dashboard .logout-button:hover {
+  background-color: #997d8b;
 }
 
 .user-dashboard .reschedule-container {
@@ -131,7 +138,7 @@ h2 {
 }
 
 .user-dashboard .back-button:hover {
-  background-color: #4A2955;
+  background-color: #997d8b;
 }
 
 .user-dashboard .calendar-container {
@@ -226,32 +233,47 @@ h2 {
 }
 
 .user-dashboard .zoom-link {
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-left: -10px;
+  font-size: 20px;
 }
 
 .user-dashboard .zoom-link a {
   text-decoration: underline;
-  color: rgb(40, 55, 221);
+  color: blue;
 }
 
 .user-dashboard .zoom-link p {
   margin-top: 10px;
+  font-size: 18px;
 }
 
+
+
 .user-dashboard .cancel-reschedule-button:hover {
-  background-color: #7a218b;
+  background-color: #997d8b;
 }
 
 .user-dashboard .options-container {
   margin-top: 20px;
 }
 
-.user-dashboard .options-buttons {
+.user-dashboard .options-outer-container {
   display: flex;
   justify-content: center; /* Centers the buttons horizontally */
   align-items: center; /* Centers the buttons vertically */
-  flex-direction: column;
+  flex-direction: row;
   width: 100%; /* Ensure the container takes full width */
+}
+
+.user-dashboard .inner-container1 {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-dashboard .inner-container2 {
+  display: flex;
+  flex-direction: column;
 }
 
 .user-dashboard .option-button {
@@ -269,18 +291,18 @@ h2 {
 }
 
 .user-dashboard .option-button:hover {
-  background-color: #7a218b;
+  background-color: #997d8b;
 }
 
-.user-dashboard .back-button {
+.user-dashboard .options-back-button {
   display: flex;
   justify-content: center;
   align-items: center;  
-  margin: 30px auto 50px auto;
-  padding: 10px 20px;
+  margin-top: 40px;
+  margin-left: 90px;
+  padding: 5px 10px;
   font-size: 16px;
   cursor: pointer;
-  background-color: rgb(83, 52, 73);
   color: white;
   border: none;
   border-radius: 4px;
@@ -288,11 +310,12 @@ h2 {
   text-align: center; /* Ensures the text is centered */
 }
 
-.user-dashboard .back-button:hover {
-  background-color: #7a218b;
+.user-dashboard .options-back-button:hover {
+  background-color: #997d8b;
 }
 
 .user-dashboard .schedule-details {
+  margin-top: -10px;
   margin-bottom: 20px;
 }
 
@@ -302,13 +325,22 @@ h2 {
   margin-top: -10px;
 }
 
+.user-dashboard .do-you-want {
+  font-size: 27px;
+  text-decoration: underline;
+  text-decoration-color: rgb(83, 52, 72);
+  margin-bottom: 30px;
+  margin-top: 0px;
+}
+
 .user-dashboard .report-issue-link {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+
+  bottom: 12px;
+  right: 12px;
   color: blue;
   text-decoration: underline;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
 }
 
@@ -350,7 +382,7 @@ h2 {
 
 .yes-button:hover,
 .no-button:hover {
-  background-color: #361f30;
+  background-color: #997d8b;
 }
 
 .user-dashboard .reschedule-all-container {
