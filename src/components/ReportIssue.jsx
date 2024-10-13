@@ -5,10 +5,8 @@ import { useHistory } from "react-router-dom";
 import '../styles/reportissue.css';
 
 const ReportIssue = () => {
-  const [email, setEmail] = useState("");
   const [issue, setIssue] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   
   const history = useHistory();
@@ -23,8 +21,8 @@ const ReportIssue = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email || !issue) {
-      setMessage("Please fill out both fields.");
+    if (!issue) {
+      alert('Invalid request: empty field');
       return;
     }
 
@@ -33,15 +31,17 @@ const ReportIssue = () => {
     const reportIssue = httpsCallable(functions, "reportIssue");
 
     try {
-      const result = await reportIssue({ clientEmail: email, issue: issue });
+      const result = await reportIssue({issue: issue });
       if (result.data.success) {
+        console.log('Submisson went through')
         setSubmitted(true);
       } else {
-        setMessage("Failed to report issue. Please try again.");
+        alert('Error during submission');
+        console.log(result.data);
+        return;
       }
     } catch (error) {
       console.error("Error reporting issue:", error);
-      setMessage("An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -71,7 +71,6 @@ const ReportIssue = () => {
                 {loading ? "Submitting..." : "Submit"}
               </button>
             </form>
-            {message && <p className="message">{message}</p>}
           </>
         )}
 

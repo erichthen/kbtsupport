@@ -335,10 +335,7 @@ body.user-dashboard {
 }
 
 .user-dashboard .report-issue-link {
-  position: absolute;
-  top: 793px;
-  bottom: 12px;
-  right: 0px;
+  margin-bottom: 100px;
   color: blue;
   text-decoration: underline;
   font-size: 16px;
