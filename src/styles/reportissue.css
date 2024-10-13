@@ -1,15 +1,29 @@
-.report-issue .report-issue-container {
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
-    transform: scale(0.7);
-    transform-origin: center;
-  }
+body.report-issue {
+  background-color: rgb(83, 52, 73);
+}
+
+.report-issue .outer-container {
+  background-color: white;
+  width: 80%; /* Adjust as needed */
+  max-width: 400px; /* Adjust as needed */
+  margin: 260px auto; /* Centers the container */
+  padding: 20px; /* Add padding if desired */
+  box-sizing: border-box; /* Ensure padding doesn't affect total width */
+}
+
+.report-issue .report-title {
+  margin-top: 0px;
+}
+
+.report-issue .report-issue-container {  
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
   
 .report-issue .report-issue-textarea {
-    width: 70%;
+    width: 100%;
     height: 200px;
     padding: 10px;
     margin-top: 10px;
@@ -40,13 +54,20 @@
 
 .report-issue .report-back-button {
     width: 30%;
+    font-size: 15px;
     background-color: rgb(83, 52, 73);
     margin-top: 20px;
-    padding: 10px 20px;
+    margin-bottom: 0px;
+    padding: 2px 5px;
     color: white;
     border: none;
     cursor: pointer;
     border-radius: 5px;
+}
+
+.report-issue .report-submit-button {
+  margin-bottom: 0px;
+  margin-top: 20px;
 }
 
 @media (max-width: 768px) {

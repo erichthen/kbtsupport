@@ -48,49 +48,40 @@ const ReportIssue = () => {
   };
 
   return (
-    <div className="report-issue report-issue-container">
-      {submitted ? (
-        <p className="thank-you-message">
-          Thank you for reporting your issue. I will work to resolve it as soon as possible.
-        </p>
-      ) : (
-        <>
-          <h1>Report an Issue</h1>
-          <p className="report-text">
-            Please briefly describe the issue you're experiencing.<br />
-            Please provide your email in case the issue is specific to you.
+    <div className="outer-container">
+      <div className="report-issue-container">
+        {submitted ? (
+          <p className="thank-you-message">
+            Thank you for reporting your issue. I will work to resolve it as soon as possible.
           </p>
-          <form onSubmit={handleSubmit}>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              className="report-email-input"
-              placeholder="Enter your email"
-              autoComplete="off"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <textarea
-              className="report-issue-textarea"
-              placeholder="Describe the issue you're facing..."
-              value={issue}
-              onChange={(e) => setIssue(e.target.value)}
-            />
-            <button className="report-submit-button" type="submit" disabled={loading}>
-              {loading ? "Submitting..." : "Submit"}
-            </button>
-          </form>
-          {message && <p className="message">{message}</p>}
-        </>
-      )}
+        ) : (
+          <>
+            <h1 className="report-title">Report an Issue</h1>
+            <p className="report-text">
+              Please describe the issue you're experiencing.<br />
+            </p>
+            <form onSubmit={handleSubmit}>
+              <textarea
+                className="report-issue-textarea"
+                placeholder="Describe the issue you're facing..."
+                value={issue}
+                onChange={(e) => setIssue(e.target.value)}
+              />
+              <button className="report-submit-button" type="submit" disabled={loading}>
+                {loading ? "Submitting..." : "Submit"}
+              </button>
+            </form>
+            {message && <p className="message">{message}</p>}
+          </>
+        )}
 
-      <button
-        className="report-back-button"
-        onClick={() => history.push("/dashboard")}
-      >
-        Back to Dashboard
-      </button>
+        <button
+          className="report-back-button"
+          onClick={() => history.push("/dashboard")}
+        >
+          Back
+        </button>
+      </div>
     </div>
   );
 };

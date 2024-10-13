@@ -83,104 +83,104 @@ const SignIn = () => {
 
     <div className="main-container">
 
-      <h1 className="title">KBT Reading Support</h1>
+      <div className="content-wrapper">
+        <h1 className="title">KBT Reading Support</h1>
+        <div className="outer-container">
 
-      <div className="outer-container">
+          {showForgotPassword ? (
+              <h3 className="welcome-message">Password Reset</h3>
+            ) : (
+              <h4 className="welcome-message">
+                Welcome! Please enter the credentials you set <br />
+                up while registering. Registration is invite-only.
+              </h4>
+            )  
+          }
 
-        {showForgotPassword ? (
-            <h3 className="welcome-message">Password Reset</h3>
-          ) : (
-            <h4 className="welcome-message">
-              Welcome! Please enter the credentials you set <br />
-              up while registering. Registration is invite-only.
-            </h4>
-          ) 
-        }
+          {showForgotPassword ? (
+            <div className="forgot-password-container">
 
-        {showForgotPassword ? (
-          <div className="forgot-password-container">
-
-            <form className="forgot-password-form" onSubmit={handleForgotPassword}>
-              <input
-                type="email"
-                className="emailforreset"
-                value={forgotPasswordEmail}
-                onChange={(e) => {
-                  setForgotPasswordEmail(e.target.value);
-                  setError('');
-                  setDisableResetButtonAfterError(false);
-                }}
-                placeholder="Enter your email"
-                required
-              />
-              {error && <div className="error">{error}</div>} 
-              <button className="forgot-pass-submit" type="submit" disabled={!isEmailValid || disableResetButtonAfterError}>Send Password Reset Email</button>
-            </form>
-
-            <button 
-              className="forgot-back-button" 
-              onClick={() => {
-                setShowForgotPassword(false);
-                setError('');
-              }}
-            >Go Back</button>
-
-          </div>
-
-        ) : (
-
-          <div className="container">
-
-            <form onSubmit={handleSubmit}>
-
-              <div>
+              <form className="forgot-password-form" onSubmit={handleForgotPassword}>
                 <input
-                  id="email"
-                  className="email-input"
-                  name="email"
                   type="email"
-                  value={email}
+                  className="emailforreset"
+                  value={forgotPasswordEmail}
                   onChange={(e) => {
-                    setEmail(e.target.value);
-                    setError(''); 
-                  }}
-                  placeholder="Email"
-                  required
-                />
-                <input
-                  className=""
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
+                    setForgotPasswordEmail(e.target.value);
                     setError('');
+                    setDisableResetButtonAfterError(false);
                   }}
-                  placeholder="Password"
-                  autoComplete="new-password"
+                  placeholder="Enter your email"
                   required
                 />
-              </div>
+                {error && <div className="error">{error}</div>} 
+                <button className="forgot-pass-submit" type="submit" disabled={!isEmailValid || disableResetButtonAfterError}>Send Password Reset Email</button>
+              </form>
 
-              {error && <div className="error">{error}</div>}
-              <button type="submit" disabled={!isFormValid || disableButtonAfterError}>Sign In</button>
-
-            </form>
-
-            <div className="forgot-password">
-              <button className="forgot-password-link" 
+              <button 
+                className="forgot-back-button" 
                 onClick={() => {
-                  setShowForgotPassword(true);
-                  setError(false);
+                  setShowForgotPassword(false);
+                  setError('');
                 }}
-              >Forgot Password?</button>
+              >Go Back</button>
+
             </div>
 
-          </div>
-        )}
-      </div>
+          ) : (
 
+            <div className="container">
+
+              <form onSubmit={handleSubmit}>
+
+                <div>
+                  <input
+                    id="email"
+                    className="email-input"
+                    name="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setError(''); 
+                    }}
+                    placeholder="Email"
+                    required
+                  />
+                  <input
+                    className=""
+                    id="password"
+                    name="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setError('');
+                    }}
+                    placeholder="Password"
+                    autoComplete="new-password"
+                    required
+                  />
+                </div>
+
+                {error && <div className="error">{error}</div>}
+                <button type="submit" disabled={!isFormValid || disableButtonAfterError}>Sign In</button>
+
+              </form>
+
+              <div className="forgot-password">
+                <button className="forgot-password-link" 
+                  onClick={() => {
+                    setShowForgotPassword(true);
+                    setError(false);
+                  }}
+                >Forgot Password?</button>
+              </div>
+
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
