@@ -525,9 +525,6 @@ const DashBoard = () => {
               Cancel/Reschedule
             </button>
             <button className="logout-button" onClick={handleLogout}>Logout</button>
-            <Link to="/report-an-issue" className="report-issue-link">
-              Report an issue
-            </Link>
           </>
         )}
   
@@ -697,6 +694,9 @@ const DashBoard = () => {
           </div>
         )}
       </div>
+      <Link to="/report-an-issue" className="report-issue-link">
+              Report an issue
+      </Link>
     </div>
   );
 };

@@ -49,37 +49,39 @@ const ReportIssue = () => {
 
   return (
     <div className="outer-container">
-      <div className="report-issue-container">
-        {submitted ? (
-          <p className="thank-you-message">
-            Thank you for reporting your issue. I will work to resolve it as soon as possible.
-          </p>
-        ) : (
-          <>
-            <h1 className="report-title">Report an Issue</h1>
-            <p className="report-text">
-              Please describe the issue you're experiencing.<br />
+      <div className="main-container">
+        <div className="report-issue-container">
+          {submitted ? (
+            <p className="thank-you-message">
+              Thank you for reporting your issue. I will work to resolve it as soon as possible.
             </p>
-            <form onSubmit={handleSubmit}>
-              <textarea
-                className="report-issue-textarea"
-                placeholder="Describe the issue you're facing..."
-                value={issue}
-                onChange={(e) => setIssue(e.target.value)}
-              />
-              <button className="report-submit-button" type="submit" disabled={loading}>
-                {loading ? "Submitting..." : "Submit"}
-              </button>
-            </form>
-          </>
-        )}
+          ) : (
+            <>
+              <h1 className="report-title">Report an Issue</h1>
+              <p className="report-text">
+                Please describe the issue you're experiencing.<br />
+              </p>
+              <form onSubmit={handleSubmit}>
+                <textarea
+                  className="report-issue-textarea"
+                  placeholder="Describe the issue you're facing..."
+                  value={issue}
+                  onChange={(e) => setIssue(e.target.value)}
+                />
+                <button className="report-submit-button" type="submit" disabled={loading}>
+                  {loading ? "Submitting..." : "Submit"}
+                </button>
+              </form>
+            </>
+          )}
 
-        <button
-          className="report-back-button"
-          onClick={() => history.push("/dashboard")}
-        >
-          Back
-        </button>
+          <button
+            className="report-back-button"
+            onClick={() => history.push("/dashboard")}
+          >
+            Back
+          </button>
+        </div>
       </div>
     </div>
   );

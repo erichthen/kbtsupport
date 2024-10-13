@@ -11,8 +11,13 @@ body.report-issue {
   box-sizing: border-box; /* Ensure padding doesn't affect total width */
 }
 
+.report-issue .main-container { 
+  background-color: rgb(225, 197, 202);
+}
+
 .report-issue .report-title {
   margin-top: 0px;
+  font-size: 30px;
 }
 
 .report-issue .report-issue-container {  
