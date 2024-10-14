@@ -21,7 +21,7 @@ const Step1 = ({ name, child, setName, setChild, goToNextStep, isFirstStepValid 
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Enter your name"
+          placeholder="Name (first and last)"
           aria-label="Enter your name"
         />
       </div>
@@ -33,7 +33,7 @@ const Step1 = ({ name, child, setName, setChild, goToNextStep, isFirstStepValid 
           type="text"
           value={child}
           onChange={(e) => setChild(e.target.value)}
-          placeholder="Enter your child's name"
+          placeholder="Childs name (first)"
           aria-label="Enter your child's name"
         />
       </div>

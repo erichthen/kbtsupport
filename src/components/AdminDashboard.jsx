@@ -225,6 +225,10 @@ const AdminDashboard = () => {
     return date.toLocaleDateString('en-US', options);
   };
 
+  const handleSendEmailClick = () => {
+    history.push('/admin/send-email');
+  };
+
   const handleDaySelect = (event) => {
     const selected = new Date(event.target.value);
     setSelectedDay(selected); 
@@ -460,7 +464,6 @@ const AdminDashboard = () => {
         ) : showSessions ? (
           <div className="session-container">
             <h2 className="session-title">Sessions for {getFormattedDate(selectedDate)}</h2>
-            <button className="close-button" onClick={handleClosePopup}>x</button>
             {selectedSessions.length > 0 ? (
               selectedSessions.map((session, index) => (
                 <div key={session.id} className="session-info">
@@ -474,6 +477,7 @@ const AdminDashboard = () => {
             {selectedSessions.length > 0 && (
               <button className="cancel-sessions-button" onClick={handleCancelSessions}>Cancel Sessions</button>
             )}
+            <button className="sessionsforday-back-button" onClick={handleClosePopup}>Back</button>
           </div>
         ) : showCancel ? (
           <div className="cancel-container">
@@ -543,7 +547,7 @@ const AdminDashboard = () => {
   
             <button className="options-back-button" onClick={() => setShowOptions(false)}>Back</button>
           </div>
-        ) : (
+      ) : (
           <>
             {showInviteForm ? (
               <div>
@@ -593,7 +597,7 @@ const AdminDashboard = () => {
                   >
                     Reschedule/Cancel a Session
                   </button>
-                  <button className="logout-button" onClick={handleLogout}>Logout</button>
+                  <button className="send-email-button" onClick={handleSendEmailClick}>Send Email(s)</button>
                 </div>
                 <div className="calendar-container">
                   <DatePicker
@@ -604,7 +608,7 @@ const AdminDashboard = () => {
                   />
                 </div>
               </>
-            )}
+            )}  
           </>
         )}
 
@@ -618,7 +622,8 @@ const AdminDashboard = () => {
                   </div>
                 </div>
               </div>
-            )}
+        )}
+        {!(showReschedule || showSessions || showCancel || showOptions || showInviteForm) && <button className="logout-button" onClick={handleLogout}>Logout</button>}
       </div>
   );
 };

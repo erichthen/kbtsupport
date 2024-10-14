@@ -152,21 +152,33 @@ body.user-dashboard {
   color: white !important;
 }
 
+.user-dashboard .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+/* Centered Session Popup */
 .user-dashboard .session-popup {
-  margin-right: 0px;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  padding: 20px;
-  border: 1px solid #ccc;
   background-color: #f9f9f9;
-  text-align: left;
-  position: relative; 
+  padding: 0px;
+  border: 1px solid #ccc;
+  text-align: center;
+  position: relative;
+  max-width: 400px;
+  width: 60%; /* Responsive width */
+  margin: 0 20px;
+  border-radius: 8px;
 }
 
 .user-dashboard .session-popup .close-button {
-  position: absolute;
-  top: -22px;
-  right: 1px;
   background: none;
   border: none;
   font-size: 20px;
@@ -179,10 +191,13 @@ body.user-dashboard {
 }
 
 .user-dashboard .session-popup .close-button:hover {
-  color: red;
+  text-decoration: underline;
+  text-decoration-color: rgb(83, 52, 73);
 }
 
 .user-dashboard .session-info {
+  font-size: 20px;
+  margin-top: 30px;
   margin-bottom: 10px;
 }
 

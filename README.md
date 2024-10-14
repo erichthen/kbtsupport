@@ -24,10 +24,8 @@ An email will be sent:
 
 
 - **Make sure it goes back to options or dash after admin reschedule**
-- when registering, times that are already booked need to be unavailable  
 - when admin cancel day, test case of multiple parents, and their sessions removed from the db and from the calendar  
-- appointment reminder function  
-- when client cancels or reschedules, available slots must be updated to accomidate the opening  
+- when client cancels or reschedules, available slots must be updated to accomidate the opening, test this by canceling and rescheduling, and then checking with another account registration and reschedule 
 - invoice sending (parents invoice goes away for the month when invoice is sent, also resets at beginning of each new month)
 - Test adding a client with an email, and registering with a different email than the one added
 

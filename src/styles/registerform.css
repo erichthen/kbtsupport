@@ -206,8 +206,13 @@ body.registration-form {
   font-size: 27px;
 }
 
+.dashboard-details {
+  text-align: center;
+}
+
 .registered-message .registered-login {
   margin-bottom: 30px;
+  margin-top: -20px;
   margin-left: 93px;
 }
 

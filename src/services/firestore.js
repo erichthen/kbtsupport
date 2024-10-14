@@ -95,6 +95,38 @@ export const getParentEmailById = async (parentId) => {
   }
 };
 
+export const getAllParentEmails = async () => {
+
+  try {
+    const parentsCollection = collection(db, 'parents');
+    const parentsSnapshot = await getDocs(parentsCollection);
+    const emails = parentsSnapshot.docs.map(doc => doc.data().email);
+    return emails;
+  } 
+  catch (error) {
+    console.error('Error fetching parent emails:', error);
+    throw error;
+  }
+};
+
+export const getAllParentNames = async () => {
+
+  try {
+    const parentsCollection = collection(db, 'parents');
+    const parentsSnapshot = await getDocs(parentsCollection);
+    const parents = parentsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      name: doc.data().parent_name,
+      email: doc.data().email,
+    }));
+    return parents;
+  } 
+  catch (error) {
+    console.error('Error fetching parent names:', error);
+    throw error;
+  }
+};
+
 export const updateInvoiceStatus = async (parentId, status) => {
   try {
     const parentRef = doc(db, 'parents', parentId);

@@ -1,0 +1,283 @@
+/* Body Styles */
+body.send-emails {
+    background-color: rgb(83, 52, 73);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+  
+  /* Send Email Container */
+  .send-emails .send-email-container {
+    background-color: white;
+    outline: 5px solid black;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Inner Container */
+  .send-emails .send-email-inner-container {
+    background-color: rgb(225, 197, 202);
+    outline: 2px solid black;
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Title */
+  .send-emails .send-email-title {
+    font-size: 27px;
+    margin-bottom: 15px;
+    margin-top: 0px;
+    text-align: center;
+  }
+  
+  /* Email Options */
+  .send-emails .email-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .send-emails .email-option-button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 15px;
+    background-color: rgb(83, 52, 73);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .send-emails .email-option-button:hover {
+    background-color: #997d8b;
+  }
+  
+  /* Back Button */
+  .send-emails .email-back-button {
+    font-size: 16px;
+    background-color: rgb(83, 52, 73);
+    padding: 10px 20px;
+    margin: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .send-emails .email-back-button:hover {
+    background-color: #997d8b;
+  }
+  
+  /* Forms */
+  .send-emails .email-parent-form,
+  .send-emails .email-all-parents-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Form Headings */
+  .send-emails .email-parent-form h2,
+  .send-emails .email-all-parents-form h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: rgb(83, 52, 73);
+  }
+  
+  /* Success and Error Messages */
+  .send-emails .email-parent-form .success-message,
+  .send-emails .email-parent-form .error-message,
+  .send-emails .email-all-parents-form .success-message,
+  .send-emails .email-all-parents-form .error-message {
+    width: 80%;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  /* Form Groups */
+  .send-emails .email-parent-form .form-group,
+  .send-emails .email-all-parents-form .form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .send-emails .email-parent-form label,
+  .send-emails .email-all-parents-form label {
+    font-weight: bold;
+    margin-bottom: -10px;
+    text-align: center;
+  }
+  
+  /* Input Fields */
+  .send-emails .email-parent-form input[type="text"],
+  .send-emails .email-parent-form input[type="file"],
+  .send-emails .email-parent-form textarea,
+  .send-emails .email-all-parents-form input[type="text"],
+  .send-emails .email-all-parents-form input[type="file"],
+  .send-emails .email-all-parents-form textarea {
+    width: 80%;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid black;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  /* Select Dropdown */
+  .send-emails .email-parent-form select {
+    width: 80%;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid black;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+  }
+  
+  /* Input Fields Specific to Email All Parents Form */
+  .send-emails .email-all-parents-form input[type="file"] {
+    border: none;
+    margin-left: 100px;
+  }
+  
+  /* Textarea */
+  .send-emails .email-parent-form textarea,
+  .send-emails .email-all-parents-form textarea {
+    height: 200px;
+    resize: vertical;
+    margin-bottom: 20px;
+  }
+  
+  /* Selected Parent Email Display */
+  .send-emails .email-parent-form .selected-parent-email {
+    font-size: 16px;
+    margin-top: 0px;
+    color: rgb(83, 52, 73);
+    margin-bottom: 15px;    
+    text-align: center;
+  }
+  
+  /* Buttons in Form */
+  .send-emails .email-parent-form .send-email-button,
+  .send-emails .email-parent-form .email-back-button,
+  .send-emails .email-all-parents-form .send-email-button,
+  .send-emails .email-all-parents-form .email-back-button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    background-color: rgb(83, 52, 73);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .send-emails .attachment {
+    margin-bottom: -50px;
+  }
+  
+  .send-emails .email-parent-form .send-email-button,
+  .send-emails .email-all-parents-form .send-email-button {
+    margin-top: 0px;
+  }
+  
+  .send-emails .email-parent-form .email-back-button,
+  .send-emails .email-all-parents-form .email-back-button {
+    margin-top: 0px;
+    width: 25%;
+  }
+  
+  .send-emails .email-parent-form .send-email-button:hover,
+  .send-emails .email-parent-form .email-back-button:hover,
+  .send-emails .email-all-parents-form .send-email-button:hover,
+  .send-emails .email-all-parents-form .email-back-button:hover {
+    background-color: #997d8b;
+  }
+  
+  /* Modal Overlay */
+  .send-emails .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it overlays other content */
+  }
+  
+  .send-emails .modal-content {
+    background-color: white;
+    border-radius: 5px;
+    overflow-y: auto; /* Scroll if content exceeds */
+    width: 15%;
+    height: 15%;
+    max-width: 400px;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .send-emails .email-list {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+  }
+  
+  .send-emails .email-list li {
+    margin-bottom: 5px;
+  }
+
+  .send-emails .email-parent-form input[type="file"] {
+    border: none;
+    margin-left: 100px;
+  }
+  
+  .send-emails .close-modal-button {
+    margin-top: 70px;
+    padding: 5px 10px;
+    background-color: rgb(83, 52, 73);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: -200px;
+  }
+  
+  .send-emails .close-modal-button:hover {
+    background-color: #997d8b;
+  }
+  
+  .send-emails .view-recipients-button {
+    margin-top: -30px;
+    font-size: 16px;
+    background-color: rgb(225, 197, 202);
+    color: rgb(83, 52, 73);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .send-emails .view-recipients-button:hover {
+    background-color: rgb(225, 197, 202);
+    text-decoration: underline;
+    text-decoration-color: rgb(83, 52, 73);
+  }

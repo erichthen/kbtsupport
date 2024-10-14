@@ -79,6 +79,10 @@ body.admin-dashboard {
   margin-top: 10px;
 }
 
+.admin-dashboard .send-email-button {
+  width: 65%;
+}
+
 .admin-dashboard .no-sessions {
   color: rgb(83, 52, 73);
 }
@@ -92,15 +96,6 @@ body.admin-dashboard {
   background-color: rgb(131, 102, 107);
 }
 
-.admin-dashboard .logout-button {
-  background-color: rgb(83, 52, 73);
-  color: white;
-  width: 65%; 
-}
-
-.admin-dashboard .logout-button:hover {
-  background-color: #3a1a28;
-}
 
 .admin-dashboard .add-client-container {
   text-align: center;
@@ -158,6 +153,25 @@ body.admin-dashboard {
   background-color: rgb(83, 52, 73);
   color: white;
   width: 65%; 
+}
+
+.admin-dashboard .logout-button{
+  background-color: white;
+  font-size: 19px;
+  color: rgb(83, 52, 73);
+  position: absolute;
+  padding: 2px 2px;
+  width: 5%;
+  top: 760px;
+  margin-left: 344px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.admin-dashboard .logout-button:hover {
+  background-color: white;
+  text-decoration: underline;
+  text-decoration-color: rgb(83, 52, 73);
 }
 
 .admin-dashboard .add-client-button:hover {
@@ -243,12 +257,14 @@ body.admin-dashboard {
   background-color: rgb(237, 226, 226);
   position: relative; /* Ensure the parent container is positioned relative */
   padding: 50px;
+  padding-top: 10px;
   text-align: center;
 }
 
 .admin-dashboard .session-title {
-  margin-top: -30px; /* Remove default margin */
-  padding-bottom: 30px; /* Space between title and session list */
+  margin-top: -50px; /* Remove default margin */
+  padding-bottom: 10px; /* Space between title and session list */
+  margin-bottom: 50px;
   font-size: 24px;
   font-weight: bold;
   text-align: center; /* Center the title */
@@ -257,17 +273,22 @@ body.admin-dashboard {
   text-decoration-color: rgb(83, 52, 73);
 }
 
-.session-container .close-button {
+.session-container .sessionsforday-back-button {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  top: -30px;   /* Adjust the top position as needed */
-  right: -10px; /* Adjust the right position as needed */
-  background: none;
+  top: 255px;
+  right: 137px;
+  background-color: rgb(83, 52, 73);
+  width: 90px;
+  height: 30px;
+  color: white;
   border: none;
-  font-size: 24px;
+  font-size: 19px;
   cursor: pointer;
   padding: 0;
+}
+
+.session-container .sessionsforday-back-button:hover {
+  background-color: rgb(131, 102, 107);
 }
 
 .admin-dashboard .reschedule-container {
@@ -500,7 +521,7 @@ body.admin-dashboard {
   display: block;
   margin: 20px auto; /* Center the button horizontally */
   margin-top: 50px;
-  margin-bottom: -40px;
+  margin-bottom: -20px;
   padding: 10px 15px;
   background-color: rgb(177, 48, 65);
   color: white;

@@ -291,7 +291,7 @@ exports.reportIssue = functions.https.onCall(async (data, context) => {
     service: "gmail",
     auth: {
       user: "erich.then2@gmail.com",
-      pass: "ogvw hxcu tohn sgzc",
+      pass: "xfww bjzq hkes tzhl",
     },
   });
 
@@ -300,7 +300,6 @@ exports.reportIssue = functions.https.onCall(async (data, context) => {
     to: "erich.then2@gmail.com",
     subject: "Client has reported an issue",
     html: `
-      <p>client_email: ${data.clientEmail}</p>
       <p>Issue reported: ${data.issue}</p>
     `,
   };
@@ -369,6 +368,66 @@ exports.checkEmailSendReset = functions.https.onCall(async (data, context) => {
       return {success: false, error: "No account matches this email address."};
     }
     return {success: false, error: "Error sending password reset email."};
+  }
+});
+
+exports.emailAllParents = functions.https.onCall(async (data, context) => {
+  const {subject, message, attachment} = data;
+  const db = admin.firestore();
+
+  try {
+    const parentsSnapshot = await db.collection("parents").get();
+    const emails = parentsSnapshot.docs.map((doc) => doc.data().email);
+    const mailOptions = {
+      from: "kelli.b.then@gmail.com",
+      bcc: emails,
+      subject: subject,
+      html: message,
+    };
+
+    if (attachment) {
+      mailOptions.attachments = [
+        {
+          filename: attachment.fileName,
+          content: attachment.content,
+          encoding: "base64",
+        },
+      ];
+    }
+    await transporter.sendMail(mailOptions);
+    return {success: true};
+  } catch (error) {
+    console.error("Error sending email to all parents:", error);
+    throw new functions.https.HttpsError("internal", "Error sending emails");
+  }
+});
+
+exports.emailAParent = functions.https.onCall(async (data, context) => {
+  const {email, subject, message, attachment} = data;
+
+  const mailOptions = {
+    from: "kelli.b.then@gmail.com",
+    to: email,
+    subject: subject,
+    html: message,
+  };
+
+  if (attachment) {
+    mailOptions.attachments = [
+      {
+        filename: attachment.fileName,
+        content: attachment.content,
+        encoding: "base64",
+      },
+    ];
+  }
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return {success: true};
+  } catch (error) {
+    console.error("Error sending email to parent: ", email);
+    throw new functions.https.HttpsError("internal", "Error sending email");
   }
 });
 

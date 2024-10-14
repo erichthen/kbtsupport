@@ -350,7 +350,6 @@ const DashBoard = () => {
       if (emailResponse.data.success) {
         alert("Session rescheduled successfully. Refresh to see changes.");
         setShowReschedule(false);
-        setShowOptions(true);
       } else {
         alert("Error sending reschedule email: " + emailResponse.data.error);
       }
@@ -489,7 +488,7 @@ const DashBoard = () => {
         {!showOptions && !showReschedule && !showCancel && !showRescheduleAllForm && (
           <>
             <h1 className="greeting">Hello, {parentName || 'Loading...'}!</h1>
-            <p className="schedule-details">Below is your schedule.<br />Hover over a shaded day to see the time of your session.</p>
+            <p className="schedule-details">Below is your schedule.<br />Click on a shaded day to see the time of your session.</p>
             <div className="calendar-container">
               <DatePicker
                 inline
@@ -499,15 +498,19 @@ const DashBoard = () => {
               />
             </div>
             {showSessions && (
-              <div className="session-popup">
-                <button className="close-button" onClick={handleClosePopup}>x</button>
-                <p>{formattedDate}</p>
-                {selectedSessions.map((session, index) => (
-                  <div key={session.id} className="session-info">
-                    <p>Time: {session.session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} EST</p>
-                    {index < selectedSessions.length - 1 && <hr className="session-separator" />}
-                  </div>
-                ))}
+              <div className="modal-overlay">
+                <div className="session-popup">
+                  {selectedSessions.map((session, index) => (
+                    <div key={session.id} className="session-info">
+                      <p>{formattedDate}</p>
+                      <p>
+                        Time: {session.session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} EST
+                      </p>
+                      {index < selectedSessions.length - 1 && <hr className="session-separator" />}
+                    </div>
+                  ))}
+                  <button className="close-button" onClick={handleClosePopup}>Close</button>
+                </div>
               </div>
             )}
             <div className="zoom-link">
@@ -694,9 +697,11 @@ const DashBoard = () => {
           </div>
         )}
       </div>
-      <Link to="/report-an-issue" className="report-issue-link">
+      {!showOptions && !showReschedule && !showCancel && !showRescheduleAllForm && (
+        <Link to="/report-an-issue" className="report-issue-link">  
               Report an issue
-      </Link>
+        </Link>
+      )}
     </div>
   );
 };
