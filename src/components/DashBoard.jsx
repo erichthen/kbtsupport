@@ -153,6 +153,11 @@ const DashBoard = () => {
     setShowReschedule(false); 
   };
 
+  const handleCloseRescheduleAll = () => {
+    setShowRescheduleAllForm(false);
+    setShowOptions(true);
+  }
+
   const getFormattedDate = (date) => {
     const options = { month: 'long', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
@@ -559,7 +564,7 @@ const DashBoard = () => {
         {showCancelAllPopup && (
           <div className="cancel-all-popup">
             <div className="popup-content">
-              <p>Are you sure you want to cancel all sessions? <br />This action cannot be undone.</p>
+              <p><b>Are you sure you want to cancel all sessions? <br /><u>This action cannot be undone!</u></b></p>
               <button className="yes-button" onClick={cancelAllSessions} disabled={loading}>
                 {loading ? "Processing..." : "Yes"}
               </button>
@@ -658,7 +663,7 @@ const DashBoard = () => {
               {loading ? 'Rescheduling...' : 'Reschedule All Sessions'}
             </button>
             
-            <button type="button" className="back-button" onClick={handleGoBack}>Back</button>
+            <button type="button" className="reschedule-all-back-button" onClick={handleCloseRescheduleAll}>Back</button>
           </form>
         )}
   

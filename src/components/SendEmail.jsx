@@ -116,7 +116,7 @@ const SendEmail = () => {
           });
     
           if (response.data.success) {
-            setSuccessMessage('Email sent successfully to all parents.');
+            setSuccessMessage('Email sent successfully to all parents!');
             setSubject('');
             setMessage('');
             setAttachment(null);
@@ -178,7 +178,7 @@ const SendEmail = () => {
             });  
 
             if (response.data.success) {
-                setSuccessMessage('Email sent successfully to the parent.');
+                setSuccessMessage('Email sent successfully to the parent!');
                 setSubject('');
                 setMessage('');
                 setAttachment(null);
@@ -214,7 +214,7 @@ const SendEmail = () => {
                   All parents
                 </button>
               </div>
-              <button className="email-back-button" onClick={handleBackClick}>
+              <button type="button" className="email-back-button" onClick={handleBackClick}>
                 Back
               </button>
             </>
@@ -223,8 +223,6 @@ const SendEmail = () => {
           {showEmailAllParentsForm && (
             <form className="email-all-parents-form" onSubmit={handleSendEmailToAllParents}>
               <h2>Email All Parents</h2>
-              {successMessage && <p className="success-message">{successMessage}</p>}
-              {error && <p className="error-message">{error}</p>}
               <div className="form-group">
                 <input
                   type="text"
@@ -248,8 +246,9 @@ const SendEmail = () => {
                 <input type="file" onChange={handleAttachmentChange} />
               </div>
 
-              <button className="view-recipients-button" onClick={handleViewRecipients}>View recepients</button>
-
+              <button className="view-recipients-button" type="button" onClick={handleViewRecipients}>View recepients</button>
+              {successMessage && <p className="success-message">{successMessage}</p>}
+              {error && <p className="error-message">{error}</p>}
               <button type="submit" className="send-email-button" disabled={loading}>
                 {loading ? 'Sending...' : 'Send Email'}
               </button>
@@ -261,11 +260,7 @@ const SendEmail = () => {
 
           {showEmailParentForm && (
             <form className="email-parent-form" onSubmit={handleEmailParent}>
-              <h2>Email a Parent</h2>
-              {successMessage && <p className="success-message">{successMessage}</p>}
-              {error && <p className="error-message">{error}</p>}
-          
-              {/* Parent Selection Dropdown */}
+              <h2>Email a Parent</h2>          
               <div className="form-group">
                 <select
                   id="parent-select"
@@ -317,7 +312,8 @@ const SendEmail = () => {
                 <input type="file" onChange={handleAttachmentChange} />
               </div>
           
-              {/* Send and Back Buttons */}
+              {successMessage && <p className="success-message">{successMessage}</p>}
+              {error && <p className="error-message">{error}</p>}
               <button type="submit" className="send-email-button" disabled={loading}>
                 {loading ? 'Sending...' : 'Send Email'}
               </button>

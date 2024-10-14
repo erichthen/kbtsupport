@@ -95,16 +95,6 @@ body.send-emails {
     color: rgb(83, 52, 73);
   }
   
-  /* Success and Error Messages */
-  .send-emails .email-parent-form .success-message,
-  .send-emails .email-parent-form .error-message,
-  .send-emails .email-all-parents-form .success-message,
-  .send-emails .email-all-parents-form .error-message {
-    width: 80%;
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  
   /* Form Groups */
   .send-emails .email-parent-form .form-group,
   .send-emails .email-all-parents-form .form-group {
@@ -280,4 +270,16 @@ body.send-emails {
     background-color: rgb(225, 197, 202);
     text-decoration: underline;
     text-decoration-color: rgb(83, 52, 73);
+  }
+
+  .send-emails .success-message {
+    color: green;
+    margin-top: -10px;
+    margin-bottom: 40px;
+  }
+
+  .send-emails .error-message {
+    color: red;
+    margin-top: -10px;
+    margin-bottom: 40px;
   }

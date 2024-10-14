@@ -42,6 +42,10 @@
   margin-top: 50px;
 }
 
+.step2 .email-advice {
+  margin-top: -10px;
+}
+
 .step2 .view-password {
   top: 150px;
   width: 150px;
@@ -232,7 +236,7 @@
 }
 
 .step3 .instructions-text-1 {
-  margin-top: 65px;
+  margin-top: 35px;
 }
 
 .step3 .instructions-button:hover {
@@ -245,12 +249,12 @@
   background-color: white;
   color: red;
   position: absolute;
-  top: 250px;
+  top: 600px;
   font-size: 20px;
   width: 40px;
   padding: 1px;
   margin-top: -10px;
-  margin-left: -244px;
+  right: 242px;
 }
 
 .step3 .converter-link {

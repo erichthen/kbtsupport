@@ -48,6 +48,10 @@ body.user-dashboard {
   transition: background-color 0.3s ease;
 }
 
+.user-dashboard p {
+  color: rgb(83, 52, 73);
+}
+
 .user-dashboard .logout-button {
   margin-top: 10px;
   margin-right: 16px;
@@ -72,9 +76,10 @@ body.user-dashboard {
 }
 
 .user-dashboard .reschedule-title {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
-  margin-bottom: 5px;
+  color: rgb(83, 52, 73);
+  margin-bottom: -5px;
   text-decoration: underline;
 }
 
@@ -129,7 +134,20 @@ body.user-dashboard {
 .user-dashboard .back-button {
   margin-top: 20px; /* Add space above the back button */
   padding: 10px 20px;
-  background-color: #5D3B6D;
+  background-color: rgb(83, 52, 73);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  align-self: center; /* Keep button centered */
+}
+
+.user-dashboard .reschedule-all-back-button {
+  margin-top: 40px; /* Add space above the back button */
+  background-color: rgb(83, 52, 73);
+  padding: 10px;
+  width: 17%;
   color: white;
   border: none;
   border-radius: 5px;
@@ -139,6 +157,10 @@ body.user-dashboard {
 }
 
 .user-dashboard .back-button:hover {
+  background-color: #997d8b;
+}
+
+.user-dashboard .reschedule-all-back-button:hover {
   background-color: #997d8b;
 }
 
@@ -313,6 +335,7 @@ body.user-dashboard {
 .user-dashboard .options-back-button {
   display: flex;
   justify-content: center;
+  background-color: rgb(83, 52, 73);
   align-items: center;  
   margin-top: 40px;
   margin-left: 90px;
@@ -410,7 +433,16 @@ body.user-dashboard {
 
 .reschedule-all-title {
   font-size: 30px;
+  font-weight: bold;
   margin-bottom: 30px;
+  color: rgb(83, 52, 73); 
+}
+
+.user-dashboard .cancel-title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: -5px;
+  color: rgb(83, 52, 73);
 }
 
 .user-dashboard .res-session-dropdown {
