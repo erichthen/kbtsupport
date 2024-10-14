@@ -404,6 +404,7 @@ const AdminDashboard = () => {
   return (
     <div className="main-container">
       {!(showReschedule || showSessions || showCancel || showOptions || showInviteForm) && <h1 className="greeting">Hello, Kelli!</h1>}
+      <div className="wrapper">
         {showReschedule ? (
           <div className="reschedule-container">
               <h2 className="reschedule-title">Reschedule a Session</h2>
@@ -623,6 +624,7 @@ const AdminDashboard = () => {
                 </div>
               </div>
         )}
+        </div>
         {!(showReschedule || showSessions || showCancel || showOptions || showInviteForm) && <button className="logout-button" onClick={handleLogout}>Logout</button>}
       </div>
   );

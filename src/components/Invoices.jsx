@@ -113,16 +113,16 @@ const Invoices = () => {
       ) : (
         <div className="invoice-upload-section">
           <h2>Send Invoice to {selectedParent.parent_name}</h2>
-          <textarea className="note-field" value={note} onChange={handleNoteChange} placeholder="Write a note..."/>
+          <textarea className="note-field" value={note} onChange={handleNoteChange} placeholder="(Optional) Write a note..."/>
           <label htmlFor="file-input" className="upload-button">Upload the invoice PDF</label>
           <input type="file" id="file-input" className="file-input" accept="application/pdf" onChange={handleFileChange}/>
           {file && <p>Uploaded File: {file.name}</p>}
           <p>This email will be sent to: {selectedParent.email}</p>
           <div className="buttons-container">
-            <button className="invoice-back-button" onClick={handleBackToInvoices}>Back</button>
             <button className="send-invoice-button" onClick={handleSendInvoice} disabled={loading}>
               {loading ? 'Sending...' : 'Send Invoice'}
             </button>
+            <button className="invoice-back-button" onClick={handleBackToInvoices}>Back</button>
           </div>
         </div>
       )}

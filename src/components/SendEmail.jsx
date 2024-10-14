@@ -237,7 +237,7 @@ const SendEmail = () => {
                   className="email-all-textbox"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder='Enter your email text here'
+                  placeholder='Type your email here'
                   required
                 ></textarea>
               </div>
@@ -301,7 +301,7 @@ const SendEmail = () => {
                   className="email-textbox"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Enter your email text here"
+                  placeholder='Type your email here'
                   required
                 ></textarea>
               </div>

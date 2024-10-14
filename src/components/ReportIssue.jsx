@@ -53,7 +53,7 @@ const ReportIssue = () => {
         <div className="report-issue-container">
           {submitted ? (
             <p className="thank-you-message">
-              Thank you for reporting your issue. I will work to resolve it as soon as possible.
+              Thank you for reporting your issue. It will worked to be resolved as soon as possible.
             </p>
           ) : (
             <>

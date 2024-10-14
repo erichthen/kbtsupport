@@ -645,13 +645,13 @@ const DashBoard = () => {
               const selectedDay = e.target.value === 'Saturday' ? getNextDayOfWeek(6) : getNextDayOfWeek(0);
               setSelectedDayForAll(selectedDay);
               }} required>
-                <option value="">-- Select a Day --</option>
+                <option value="">Select the new day</option>
                 <option value="Saturday">Saturday</option>
                 <option value="Sunday">Sunday</option>
             </select>
             
             <select className="res-session-dropdown" onChange={(e) => setSelectedTimeSlotForAll(e.target.value)} required>
-              <option value="">-- Select a Time --</option>
+              <option value="">Select the new time</option>
               {availableSlots.map((slot, index) => (
                 <option key={index} value={slot.time} disabled={slot.status === 'unavailable'}>
                   {slot.time} {slot.status === 'unavailable' ? '(Unavailable)' : ''}

@@ -10,12 +10,18 @@ body.admin-dashboard {
   margin: 0;
 }
 
+.admin-dashboard .wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .admin-dashboard .main-container {
   outline: 10px solid black;
   background-color: rgb(255, 255, 255); 
   border-radius: 20px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   width: auto;
   padding: 60px;
@@ -24,24 +30,25 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .greeting {
-  position: absolute;
-  top: 300px;
-  margin-left: 277px;
+  margin-left: -13px;
+  margin-bottom: -10px;
+  margin-top: -40px;
 }
 
 .admin-dashboard .container {
   outline: 3px solid rgb(83, 52, 73);
   border-radius: 10px;
   background-color: rgb(225, 197, 202);
+  padding-bottom: 40px;
   margin-left: 10px;  
-  padding: 36px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 300px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 42px;
+  margin-bottom: 6px;
 }
 
 
@@ -114,13 +121,11 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .add-client-title {
-  top: 350px;
   text-decoration: underline;
   text-decoration-color: rgb(83, 52, 73);
-  margin-left: 111px;
-  position: absolute;
   font-size: 30px;
   text-align: center;
+  margin-top: -40px;
   color: rgb(83, 52, 73);
 }
 
@@ -156,16 +161,14 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .logout-button{
+  margin-bottom: -40px;
+  margin-top: 30px;
+  margin-right: 42px;
   background-color: white;
   font-size: 19px;
   color: rgb(83, 52, 73);
-  position: absolute;
   padding: 2px 2px;
   width: 5%;
-  top: 760px;
-  margin-left: 344px;
-  margin-top: 40px;
-  margin-bottom: 40px;
 }
 
 .admin-dashboard .logout-button:hover {
@@ -200,7 +203,7 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .calendar-container {
-  margin-top: 32px;
+  margin-top: 40px;
   margin-left: 40px;
   margin-bottom: 0px;
 }
@@ -447,6 +450,7 @@ body.admin-dashboard {
   position: absolute;
   font-size: 27px;
   text-decoration: underline;
+  color: rgb(83, 52, 72);
   text-decoration-color:rgb(83, 52, 72);
   top: 250px;
   margin-left: 11px;

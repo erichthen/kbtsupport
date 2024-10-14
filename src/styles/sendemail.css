@@ -121,7 +121,7 @@ body.send-emails {
   .send-emails .email-all-parents-form textarea {
     width: 80%;
     padding: 8px;
-    font-size: 16px;
+    font-size: 15px;
     border: 2px solid black;
     border-radius: 5px;
     box-sizing: border-box;
@@ -242,7 +242,7 @@ body.send-emails {
   }
   
   .send-emails .close-modal-button {
-    margin-top: 70px;
+    margin-top: 40px;
     padding: 5px 10px;
     background-color: rgb(83, 52, 73);
     color: white;
