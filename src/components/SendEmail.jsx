@@ -108,7 +108,7 @@ const SendEmail = () => {
         setError('');
     
         try {
-          const sendEmailToAllParents = httpsCallable(functions, 'sendEmailToAllParents');
+          const sendEmailToAllParents = httpsCallable(functions, 'emailAllParents');
           const response = await sendEmailToAllParents({
             subject,
             message,
