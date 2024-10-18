@@ -35,7 +35,7 @@ const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChang
           aria-label="Enter your email"
           autoComplete="off"
         />
-        <p className="email-advice">Please use the email that got sent the sign up link.</p>
+        <p className="email-advice">Please use the email that received the sign up link.</p>
       </div>
       <div className="input-container">
         <div className="password-input-container">

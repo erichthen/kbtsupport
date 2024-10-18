@@ -30,7 +30,7 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .greeting {
-  margin-left: -13px;
+  margin-left: -27px;
   margin-bottom: -10px;
   margin-top: -40px;
 }
@@ -163,7 +163,7 @@ body.admin-dashboard {
 .admin-dashboard .logout-button{
   margin-bottom: -40px;
   margin-top: 30px;
-  margin-right: 42px;
+  margin-right: 50px;
   background-color: white;
   font-size: 19px;
   color: rgb(83, 52, 73);
@@ -452,7 +452,7 @@ body.admin-dashboard {
   text-decoration: underline;
   color: rgb(83, 52, 72);
   text-decoration-color:rgb(83, 52, 72);
-  top: 250px;
+  top: 90px;
   margin-left: 11px;
   text-align: center;
 }

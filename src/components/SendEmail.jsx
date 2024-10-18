@@ -107,6 +107,12 @@ const SendEmail = () => {
         setSuccessMessage('');
         setError('');
     
+        const emails = await getAllParentEmails();
+        if (emails.length === 0) {
+          setError('There are no recepients');
+          setLoading(false);
+          return;
+        }
         try {
           const sendEmailToAllParents = httpsCallable(functions, 'emailAllParents');
           const response = await sendEmailToAllParents({
@@ -135,7 +141,7 @@ const SendEmail = () => {
 
     const handleViewRecipients = async () => {
         try {
-          const emails = await getAllParentEmails();
+          const emails = await getAllParentEmails();        
           setRecipientEmails(emails);
           setShowRecipientsModal(true);
         } catch (error) {
@@ -314,7 +320,7 @@ const SendEmail = () => {
           
               {successMessage && <p className="success-message">{successMessage}</p>}
               {error && <p className="error-message">{error}</p>}
-              <button type="submit" className="send-email-button" disabled={loading}>
+              <button type="submit" className="send-email-button" disabled={loading }>
                 {loading ? 'Sending...' : 'Send Email'}
               </button>
               <button type="button" className="email-back-button" onClick={handleBackClick}>

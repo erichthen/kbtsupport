@@ -570,7 +570,7 @@ const AdminDashboard = () => {
                     {successMessage}
                   </div>
                   {error && <div className="error">{error}</div>}
-                  <button className="send-button" type="submit" disabled={loading}>
+                  <button className="send-button" type="submit" disabled={loading || email === ''}>
                     {loading ? 'Sending...' : 'Send Registration Form'}
                   </button>
                 </form>
