@@ -272,7 +272,7 @@ body.user-dashboard {
 
 .user-dashboard .zoom-link {
   margin-top: 10px;
-  margin-left: -10px;
+  margin-left: 0px;
   font-size: 20px;
 }
 
@@ -281,9 +281,14 @@ body.user-dashboard {
   color: blue;
 }
 
+.user-dashboard .session-popup-date {
+  text-decoration: underline;
+}
+
 .user-dashboard .zoom-link p {
   margin-top: 10px;
   font-size: 18px;
+  margin-left: -5px;
 }
 
 

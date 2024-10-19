@@ -53,18 +53,15 @@ const ReportIssue = () => {
         <div className="report-issue-container">
           {submitted ? (
             <p className="thank-you-message">
-              Thank you for reporting your issue. It will worked to be resolved as soon as possible.
+              Thank you for reporting your issue. It will be resolved as soon as possible.
             </p>
           ) : (
             <>
               <h1 className="report-title">Report an Issue</h1>
-              <p className="report-text">
-                Please describe the issue you're experiencing.<br />
-              </p>
               <form onSubmit={handleSubmit}>
                 <textarea
                   className="report-issue-textarea"
-                  placeholder="Describe the issue you're facing..."
+                  placeholder="Please describe the issue you're facing..."
                   value={issue}
                   onChange={(e) => setIssue(e.target.value)}
                 />

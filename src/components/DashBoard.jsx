@@ -507,9 +507,9 @@ const DashBoard = () => {
                 <div className="session-popup">
                   {selectedSessions.map((session, index) => (
                     <div key={session.id} className="session-info">
-                      <p>{formattedDate}</p>
+                      <p className="session-popup-date"><b>{formattedDate}</b></p>
                       <p>
-                        Time: {session.session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} EST
+                       <b>Time:</b> {session.session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} EST
                       </p>
                       {index < selectedSessions.length - 1 && <hr className="session-separator" />}
                     </div>
