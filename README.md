@@ -2,11 +2,9 @@
 
 ## TODO ATM  
 
--**Think about implementing a report issue if a user cannot register**  
--**increase sign in message font size and make outer container white**
--**Upon success message for registering, tell the parent what their dashbaord will be for/what they can do**
--**Report issue styling and remove email requirement**-
--**change the session pop up to be hovering over the day, and seeing the time.**
+- **allow the user to report an issue during the registration process as well**
+- **admin reshcedule: allow all days of the week**
+- **change the link sent by registration email back to web app from local host**
 
 **Emailing**
 

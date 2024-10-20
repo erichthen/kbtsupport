@@ -243,7 +243,13 @@
 }
 
 .step3 .instructions-text-1 {
-  margin-top: 35px;
+  margin-top: 25px;
+  margin-bottom: -25px;
+  font-size: 20px;
+}
+
+.step3 .instructions-text-4 {
+  font-size: 20px;
 }
 
 .step3 .instructions-button:hover {

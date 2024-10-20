@@ -76,10 +76,11 @@ body.user-dashboard {
 }
 
 .user-dashboard .reschedule-title {
-  font-size: 30px;
+  font-size: 27px;
   font-weight: bold;
   color: rgb(83, 52, 73);
-  margin-bottom: -5px;
+  margin-bottom: -15px;
+  margin-top: -5px;
   text-decoration: underline;
 }
 
@@ -110,7 +111,8 @@ body.user-dashboard {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 50px;
+  margin-top: 20px;
+  margin-bottom: 5px;
   width: 80%; /* Ensure it stretches to match dropdown */
   font-size: 16px;
 }
@@ -131,9 +133,10 @@ body.user-dashboard {
   resize: none; /* Disable resizing of the textbox */
 }
 
-.user-dashboard .back-button {
+.user-dashboard .reschedule-back-button {
   margin-top: 20px; /* Add space above the back button */
   padding: 10px 20px;
+  margin-bottom: 0px;
   background-color: rgb(83, 52, 73);
   color: white;
   border: none;
@@ -272,7 +275,7 @@ body.user-dashboard {
 
 .user-dashboard .zoom-link {
   margin-top: 10px;
-  margin-left: 0px;
+  margin-left: -5px;
   font-size: 20px;
 }
 
@@ -373,6 +376,7 @@ body.user-dashboard {
   font-size: 27px;
   text-decoration: underline;
   text-decoration-color: rgb(83, 52, 72);
+  color: rgb(83, 52, 72);
   margin-bottom: 30px;
   margin-top: 0px;
 }
@@ -437,17 +441,21 @@ body.user-dashboard {
 }
 
 .reschedule-all-title {
-  font-size: 30px;
+  font-size: 27px;
   font-weight: bold;
   margin-bottom: 30px;
-  color: rgb(83, 52, 73); 
+  color: rgb(83, 52, 73);
+  text-decoration: underline;
+  text-decoration-color: rgb(83, 52, 73); 
 }
 
 .user-dashboard .cancel-title {
-  font-size: 30px;
+  font-size: 27px;
   font-weight: bold;
-  margin-bottom: -5px;
+  margin-top: -10px;
   color: rgb(83, 52, 73);
+  text-decoration: underline;
+  text-decoration-color: rgb(83, 52, 73); 
 }
 
 .user-dashboard .res-session-dropdown {

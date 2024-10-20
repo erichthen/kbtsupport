@@ -14,15 +14,10 @@ const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, fil
     };
   }, []);
 
-  const isWeekend = (date) => {
-    const day = date.getDay();
-    return day === 6 || day === 0;
-  };
-
   return (
     <>
       <div className="instructions">
-        <button className="instructions-button" onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }}>Instructions for this step (click me)</button>
+        <button className="instructions-button" onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }}>Important Information (click here)</button>
       </div>
       <div className="datepicker-container">
         <DatePicker
@@ -32,7 +27,6 @@ const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, fil
           onChange={handleDateChange}
           dateFormat="yyyy/MM/dd"
           aria-label="Select start date"
-          filterDate={isWeekend} // disables weekdays
           minDate={new Date()} // disables past dates
           inline 
         />
@@ -65,22 +59,23 @@ const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, fil
       {isModalOpen && (
       <div className="modal-overlay">
         <div className="modal-content">
-          <h3 className="instructions-text-1">
-            Please select the day of your <u>upcoming</u> session with Kelli on the calendar. For the time being, sessions are only on the weekends.
+          <p className="instructions-text-1">
+            Please select the day of your <u>upcoming</u> session with Kelli on the calendar. 
             Then, select the time of the session. The selected day of the week and time will be used to schedule your sessions for the school year.      
+          </p>
+          <h3>
+          <br /><em>Unless you already attend sessions during the week, <u>sessions are only available on the weekends.</u></em>
           </h3>
-          <h3 className="instructions-text-2">
-            Please note that the session times are in <u>Eastern Standard Time(EST).</u>
-          </h3>
-          <h3 className="instructions-text-3"> 
-            If you need it, you can use this <br />
+          <h3 className="instructions-text-3">
+            Please note that the session times are in <em>Eastern Standard Time (EST).</em>
+            <br />If you need it, you can use this <br />
             <a href="https://dateful.com/time-zone-converter" target="_blank" className="converter-link" rel="noopener noreferrer">
             time zone converter.
             </a>
           </h3>
-          <h3 className="instructions-text-4">
+          <p className="instructions-text-4">
             You will be able to reschedule or cancel your sessions anytime. 
-          </h3>
+          </p>
           <button className="close-button" onClick={() => setIsModalOpen(false)}>Close</button>
         </div>
       </div>

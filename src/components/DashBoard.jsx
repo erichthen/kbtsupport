@@ -35,6 +35,16 @@ const DashBoard = () => {
   const { user } = useAuth();
   const history = useHistory();
 
+  const daysOfWeek = {
+    'Sunday': 0,
+    'Monday': 1,
+    'Tuesday': 2,
+    'Wednesday': 3,
+    'Thursday': 4,
+    'Friday': 5,
+    'Saturday': 6,
+  };
+
   useEffect(() => {
     document.body.classList.add('user-dashboard');
     return () => {
@@ -111,15 +121,19 @@ const DashBoard = () => {
   useEffect(() => {
     const fetchSlots = async () => {
       try {
-        const availableSlotsData = generateTimeSlots(); 
+        const availableSlotsData = generateTimeSlots();
         const bookedSlotsArray = await getAvailableSlots();
-        const filteredSlots = filterAvailableSlots(availableSlotsData, bookedSlotsArray, selectedDayForAll);
+        const filteredSlots = filterAvailableSlots(
+          availableSlotsData,
+          bookedSlotsArray,
+          selectedDayForAll
+        );
         setAvailableSlots(filteredSlots);
       } catch (error) {
         console.error("Error fetching slots:", error);
       }
     };
-
+  
     if (selectedDayForAll) {
       fetchSlots();
     }
@@ -282,24 +296,21 @@ const DashBoard = () => {
   
   const sortedSessions = [...sessions].sort((a, b) => new Date(a.session_time) - new Date(b.session_time));
 
-  const getAllWeekends = () => {
-    const weekends = [];
+  const getAllDaysForOneMonth = () => {
+    const days = [];
     const today = new Date();
     const endDate = new Date();
-    endDate.setMonth(today.getMonth() + 3); 
-  
-    let currentDate = new Date(today);
-  
+    endDate.setMonth(today.getMonth() + 1);
+
+    let currentDate = new Date(today); 
+
     while (currentDate <= endDate) {
-      const day = currentDate.getDay();
-      if (day === 6 || day === 0) {
-        weekends.push(new Date(currentDate));
-      }
+      days.push(new Date(currentDate));
       currentDate.setDate(currentDate.getDate() + 1);
     }
-  
-    return weekends;
-  };
+
+    return days;
+  }
 
   const handleRescheduleSession = async () => {
     try {
@@ -448,22 +459,20 @@ const DashBoard = () => {
       }
   
       while (currentDate <= endDate) {
-        if (currentDate.getDay() === 6 || currentDate.getDay() === 0) { 
-          const sessionDate = new Date(currentDate);
-          sessionDate.setHours(hours, minutes, 0, 0);
-  
-          await addSession(parentData.id, {
-            child_name: parentData.child_name,
-            session_time: sessionDate.toISOString(),
-          });
-        }
+        const sessionDate = new Date(currentDate);
+        sessionDate.setHours(hours, minutes, 0, 0);
+
+        await addSession(parentData.id, {
+          child_name: parentData.child_name,
+          session_time: sessionDate.toISOString(),
+        });
         currentDate.setDate(currentDate.getDate() + 7); 
       }
   
       const sendRescheduleAllEmail = httpsCallable(functions, 'sendRescheduleAll');
       await sendRescheduleAllEmail({
         parentName: parentData.parent_name,
-        rescheduledDay: new Date(selectedDayForAll).toLocaleDateString('en-US', { weekday: 'long' }),
+        rescheduledDay: selectedDayForAll.toLocaleDateString('en-US', { weekday: 'long' }),
         rescheduledTime: selectedTimeSlotForAll
       });
   
@@ -482,11 +491,13 @@ const DashBoard = () => {
   const getNextDayOfWeek = (dayOfWeek) => {
     const today = new Date();
     const resultDate = new Date(today);
-    resultDate.setDate(today.getDate() + (dayOfWeek + 7 - today.getDay()) % 7); 
+  
+    const daysUntilNext = (dayOfWeek + 7 - today.getDay()) % 7 || 7;
+    resultDate.setDate(today.getDate() + daysUntilNext); 
+  
     return resultDate;
   };
   
-
   return (
     <div className="outer-container">
       <div className="main-container">
@@ -604,10 +615,10 @@ const DashBoard = () => {
               )}
             </select>
     
-            <p className="select-new-date">Select day to reschedule to</p>
+            <p className="select-new-date">Select day to reschedule to (must be within one month)</p>
             <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
               <option value="">-- Select a Day --</option>
-              {getAllWeekends().map((day, index) => (
+              {getAllDaysForOneMonth().map((day, index) => (
                 <option key={index} value={day.toISOString()}>
                   {getFormattedDate(new Date(day))}
                 </option>
@@ -634,20 +645,29 @@ const DashBoard = () => {
             >
               {loading ? 'Rescheduling...' : 'Reschedule Session'}
             </button>
-            <button className="back-button" onClick={handleClosePopup}>Back</button>
+            <button className="reschedule-back-button" onClick={handleClosePopup}>Back</button>
           </div>
         )}
   
         {showRescheduleAllForm && (
           <form onSubmit={handleRescheduleAllSubmit} className="reschedule-all-container">
             <h2 className="reschedule-all-title">Reschedule All Sessions</h2>
-            <select className="session-dropdown" onChange={(e) => {
-              const selectedDay = e.target.value === 'Saturday' ? getNextDayOfWeek(6) : getNextDayOfWeek(0);
-              setSelectedDayForAll(selectedDay);
-              }} required>
-                <option value="">Select the new day</option>
-                <option value="Saturday">Saturday</option>
-                <option value="Sunday">Sunday</option>
+            <select
+              className="session-dropdown"
+              onChange={(e) => {
+                const selectedDayName = e.target.value;
+                const selectedDayNumber = daysOfWeek[selectedDayName];
+                const selectedDate = getNextDayOfWeek(selectedDayNumber);
+                setSelectedDayForAll(selectedDate);
+              }}
+              required
+            >
+              <option value="">Select the new day</option>
+              {Object.keys(daysOfWeek).map((dayName) => (
+                <option key={dayName} value={dayName}>
+                  {dayName}
+                </option>
+              ))}
             </select>
             
             <select className="res-session-dropdown" onChange={(e) => setSelectedTimeSlotForAll(e.target.value)} required>

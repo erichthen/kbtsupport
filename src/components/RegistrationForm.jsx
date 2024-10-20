@@ -108,12 +108,10 @@ const RegistrationForm = () => {
       };
       
       const parentId = await addParent(parentData);
-  
       let currentDate = new Date(startDate);
       const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 9, 0); 
 
       while (currentDate <= endDate) {
-        if (currentDate.getDay() === 6 || currentDate.getDay() === 0) { // Saturday or Sunday
           const sessionDate = new Date(currentDate);
           const timeParts = selectedTime.split(':');
           let hours = parseInt(timeParts[0], 10);
@@ -137,7 +135,6 @@ const RegistrationForm = () => {
           } else {
             throw new Error("Invalid time value");
           }
-        }
         currentDate.setDate(currentDate.getDate() + 7); // Move to the same day next week
       }
       setRegistered(true);
