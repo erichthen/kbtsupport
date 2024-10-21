@@ -54,14 +54,13 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const fetchSlotsForRescheduleToDay = async () => {
-      if (!selectedDayToRescheduleTo) {
-        return; // Wait until a valid day is selected
+      if (!selectedDayToRescheduleTo || isNaN(selectedDayToRescheduleTo.getTime())) {
+        return;
       }
   
-      const availableSlots = generateTimeSlots(); // Generate all possible slots for the day
-      const bookedSlotsArray = await getAvailableSlots(); // Get all booked sessions across all days
+      const availableSlots = generateTimeSlots(); 
+      const bookedSlotsArray = await getAvailableSlots();
   
-      // Filter the booked slots to only include those on the "reschedule to" day
       const filteredBookedSlots = bookedSlotsArray.filter(slot => {
         const slotDate = new Date(slot);
         return (
@@ -71,10 +70,9 @@ const AdminDashboard = () => {
         );
       });
   
-      // Pass `selectedDayToRescheduleTo` as the selected date argument
       const filteredSlots = filterAvailableSlots(availableSlots, filteredBookedSlots, selectedDayToRescheduleTo);
   
-      setFilteredSlots(filteredSlots); // Set filtered slots for the dropdown
+      setFilteredSlots(filteredSlots); 
     };
   
     fetchSlotsForRescheduleToDay();
@@ -336,23 +334,20 @@ const AdminDashboard = () => {
   };
 
 
-  const getAllWeekends = () => {
-    const weekends = [];
+  const getAllDaysForNextThreeMonths = () => {
+    const days = [];
     const today = new Date();
     const endDate = new Date();
-    endDate.setMonth(today.getMonth() + 3); 
+    endDate.setMonth(today.getMonth() + 3);
   
     let currentDate = new Date(today);
   
     while (currentDate <= endDate) {
-      const day = currentDate.getDay();
-      if (day === 6 || day === 0) { 
-        weekends.push(new Date(currentDate));
-      }
+      days.push(new Date(currentDate));
       currentDate.setDate(currentDate.getDate() + 1);
     }
   
-    return weekends;
+    return days;
   };
 
   const submitCancelSession = async () => {
@@ -441,7 +436,7 @@ const AdminDashboard = () => {
   
             <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
               <option className="day-select" value="">-- Select a Day --</option>
-              {getAllWeekends().map((day, index) => (
+              {getAllDaysForNextThreeMonths().map((day, index) => (
                 <option key={index} value={day.toISOString()}>
                   {getFormattedDate(new Date(day))}
                 </option>

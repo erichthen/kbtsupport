@@ -296,11 +296,11 @@ const DashBoard = () => {
   
   const sortedSessions = [...sessions].sort((a, b) => new Date(a.session_time) - new Date(b.session_time));
 
-  const getAllDaysForOneMonth = () => {
+  const getAllDaysForThreeMonths = () => {
     const days = [];
     const today = new Date();
     const endDate = new Date();
-    endDate.setMonth(today.getMonth() + 1);
+    endDate.setMonth(today.getMonth() + 3);
 
     let currentDate = new Date(today); 
 
@@ -615,10 +615,10 @@ const DashBoard = () => {
               )}
             </select>
     
-            <p className="select-new-date">Select day to reschedule to (must be within one month)</p>
+            <p className="select-new-date">Select day to reschedule to </p>
             <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
               <option value="">-- Select a Day --</option>
-              {getAllDaysForOneMonth().map((day, index) => (
+              {getAllDaysForThreeMonths().map((day, index) => (
                 <option key={index} value={day.toISOString()}>
                   {getFormattedDate(new Date(day))}
                 </option>
