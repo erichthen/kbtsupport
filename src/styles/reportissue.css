@@ -4,11 +4,11 @@ body.report-issue {
 
 .report-issue .outer-container {
   background-color: white;
-  width: 80%; /* Adjust as needed */
-  max-width: 400px; /* Adjust as needed */
-  margin: 260px auto; /* Centers the container */
-  padding: 20px; /* Add padding if desired */
-  box-sizing: border-box; /* Ensure padding doesn't affect total width */
+  width: 80%; 
+  max-width: 400px;
+  margin: 260px auto;
+  padding: 20px; 
+  box-sizing: border-box; 
 }
 
 .report-issue .main-container { 

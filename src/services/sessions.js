@@ -78,24 +78,23 @@ export const filterAvailableSlots = (slots, bookedSlots, selectedDate) => {
     return [];
   }
 
-  const selectedDay = selectedDate.toLocaleDateString(); // Get the selected day in MM/DD/YYYY format
+  const selectedDay = selectedDate.toLocaleDateString(); // get the selected day in MM/DD/YYYY format
 
-  // Convert bookedSlots to a format that includes both date and time for comparison
+  // convert booked slots to a format that includes both date and time for comparison
   const unavailableSlots = bookedSlots
-    .filter(slot => slot) // Filter out undefined or invalid slots
+    .filter(slot => slot) // filter out undefined or invalid slots
     .map(slot => {
       const date = new Date(slot);
       if (!(date instanceof Date) || isNaN(date)) {
         console.error('Invalid slot date:', slot);
         return null;
       }
-      const day = date.toLocaleDateString(); // Get the date (MM/DD/YYYY format)
-      const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Get the time
-      return { day, time }; // Return both the day and time
+      const day = date.toLocaleDateString(); 
+      const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return { day, time }; 
     })
-    .filter(slot => slot); // Filter out any invalid/null slot objects
+    .filter(slot => slot); 
 
-  // Filter out the slots that are unavailable on the selected day
   return slots.map(time => {
     const isUnavailable = unavailableSlots.some(slot => slot.day === selectedDay && slot.time === time);
     return {
@@ -109,15 +108,14 @@ export const deleteSessionsByDate = async (selectedDate) => {
   try {
     const batch = writeBatch(db);
 
-    // Get the start and end of the selected date
     const startOfDay = new Date(selectedDate);
-    startOfDay.setHours(0, 0, 0, 0); // Start at 00:00:00
+    startOfDay.setHours(0, 0, 0, 0); 
     const endOfDay = new Date(selectedDate);
-    endOfDay.setHours(23, 59, 59, 999); // End at 23:59:59
+    endOfDay.setHours(23, 59, 59, 999);
 
     console.log(`Deleting sessions from ${startOfDay.toISOString()} to ${endOfDay.toISOString()}`);
 
-    // Query to get all sessions that match the selected date
+    //query to get all sessions that match the selected date
     const sessionsRef = collection(db, 'sessions');
     const q = query(sessionsRef, where('session_time', '>=', startOfDay.toISOString()),
                                     where('session_time', '<=', endOfDay.toISOString()));
@@ -129,7 +127,6 @@ export const deleteSessionsByDate = async (selectedDate) => {
       return;
     }
 
-    // Iterate through the sessions and delete them
     querySnapshot.forEach((doc) => {
       batch.delete(doc.ref);
     });

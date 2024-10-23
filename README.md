@@ -1,4 +1,4 @@
-### This is a website for a local tutoring business built with node, react, firebase
+### This is a website for my mothers tutoring business built with node, react, firebase
 
 ## TODO ATM  
 

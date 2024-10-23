@@ -110,9 +110,9 @@
 .passwords-match {
   position: absolute;
   display: block;
-  height: 20px; /* Adjust based on your desired space */
-  color: red; /* Or any color you prefer */
-  font-size: 15px; /* Adjust as needed */
+  height: 20px; 
+  color: red; 
+  font-size: 15px;
 }
 
 .password-strength {
@@ -138,17 +138,16 @@
 }
 
 .step3 .react-datepicker {
-  width:100%; /* You can set the width you prefer */
-  max-width: 450px; /* Adjust as necessary */
+  width:100%;
+  max-width: 450px; 
 }
 
-/* Increase the size of individual day cells */
 .step3 .react-datepicker__day,
 .step3 .react-datepicker__day-name {
-  width: 3.33rem;  /* Adjust day width */
-  height: 3rem; /* Adjust day height */
-  line-height: 3rem; /* Center the day text vertically */
-  font-size: 1.2rem; /* Make the day text bigger */
+  width: 3.33rem;  
+  height: 3rem; 
+  line-height: 3rem; 
+  font-size: 1.2rem; 
 }
 
 
@@ -219,7 +218,6 @@
   z-index: 1000;
 }
 
-/* Modal Content */
 .modal-content {
   background-color: #fff;
   padding: 5px;

@@ -12,7 +12,7 @@ const SendEmail = () => {
     const [showEmailAllParentsForm, setShowEmailAllParentsForm] = useState(false);
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
-    const [attachment, setAttachment] = useState(null); // For file upload
+    const [attachment, setAttachment] = useState(null); 
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [error, setError] = useState('');

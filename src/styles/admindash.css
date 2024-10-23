@@ -258,20 +258,20 @@ body.admin-dashboard {
 
 .session-container {
   background-color: rgb(237, 226, 226);
-  position: relative; /* Ensure the parent container is positioned relative */
+  position: relative; 
   padding: 50px;
   padding-top: 10px;
   text-align: center;
 }
 
 .admin-dashboard .session-title {
-  margin-top: -50px; /* Remove default margin */
-  padding-bottom: 10px; /* Space between title and session list */
+  margin-top: -50px; 
+  padding-bottom: 10px;
   margin-bottom: 50px;
   font-size: 24px;
   font-weight: bold;
-  text-align: center; /* Center the title */
-  color: rgb(83, 52, 73); /* Adjust the color as needed */
+  text-align: center; 
+  color: rgb(83, 52, 73); 
   text-decoration: underline;
   text-decoration-color: rgb(83, 52, 73);
 }
@@ -300,7 +300,7 @@ body.admin-dashboard {
   outline: 3px solid black;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Ensures that content is spaced between top and bottom */
+  justify-content: space-between; 
   height: 100%;
   text-align: center;
   margin-top: 20px;
@@ -312,7 +312,7 @@ body.admin-dashboard {
 
 .admin-dashboard .reschedule-title {
   position: absolute;
-  top: -85px; /* Adjust as needed to position the title above the container */
+  top: -85px; 
   font-size: 27px;
   font-weight: bold;
   text-align: center;
@@ -361,12 +361,12 @@ body.admin-dashboard {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 100%; /* Full height */
+  height: 100%; 
   padding: 20px;
 }
 
 .admin-dashboard .choose-title {
-  margin-bottom: 20px; /* Add some space below the title */
+  margin-bottom: 20px;
 }
 
 .admin-dashboard .option-button {
@@ -376,14 +376,13 @@ body.admin-dashboard {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin: 10px; /* Space between buttons */
+  margin: 10px;
 }
 
 .admin-dashboard .option-button:hover {
   background-color: rgb(66, 28, 54);
 }
 
-/* Make option buttons align in a row */
 .admin-dashboard .options-container {
   padding: 1px px;
 }
@@ -392,7 +391,7 @@ body.admin-dashboard {
   width: 400px;
   display: flex;
   justify-content: center;
-  margin-bottom: 10px; /* Add space below the buttons */
+  margin-bottom: 10px;
 }
 
 .admin-dashboard .options-back-button {
@@ -403,7 +402,7 @@ body.admin-dashboard {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: auto; /* Push the button to the bottom */
+  margin-top: auto; 
   margin-bottom: 10px;
 }
 
@@ -489,7 +488,7 @@ body.admin-dashboard {
   margin-right: 10px;
   background-color: rgb(83, 52, 73);
   border-radius: 10px;
-  text-align: center; /* Keep the text left-aligned within each session */
+  text-align: center; 
   color: white;
 }
 
@@ -523,7 +522,7 @@ body.admin-dashboard {
 
 .session-container .cancel-sessions-button {
   display: block;
-  margin: 20px auto; /* Center the button horizontally */
+  margin: 20px auto; 
   margin-top: 50px;
   margin-bottom: -20px;
   padding: 10px 15px;
@@ -533,7 +532,7 @@ body.admin-dashboard {
   border-radius: 5px;
   font-size: 14px;
   cursor: pointer;
-  width: fit-content; /* Adjusts the button width to fit its content */
+  width: fit-content; 
 }
 
 
@@ -547,10 +546,9 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .container button {
-  margin-bottom: 5px; /* Adjust this value to decrease/increase spacing between buttons */
+  margin-bottom: 5px; 
 }
 
-/* Style for the confirmation popup */
 .confirmation-popup {
   position: fixed;
   top: 50%;
@@ -565,7 +563,6 @@ body.admin-dashboard {
   text-align: center;
 }
 
-/* Style for the buttons inside the confirmation popup */
 .confirmation-popup .confirm-button,
 .confirmation-popup .cancel-button {
   padding: 10px 20px;
@@ -576,7 +573,6 @@ body.admin-dashboard {
   cursor: pointer;
 }
 
-/* Specific styles for the confirm and cancel buttons */
 .confirmation-popup .confirm-button {
   background-color: rgb(83, 52, 73);
   color: white;
@@ -607,11 +603,11 @@ body.admin-dashboard {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Dim background */
+  background-color: rgba(0, 0, 0, 0.5); 
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Make sure it's in front of everything */
+  z-index: 1000;
 }
 
 .admin-dashboard .cancel-confirmation-popup {

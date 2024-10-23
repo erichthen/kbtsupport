@@ -68,10 +68,10 @@ body.user-dashboard {
 .user-dashboard .reschedule-container {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center all elements */
+  align-items: center; 
   padding: 20px;
   text-align: center;
-  gap: 20px; /* Space between form fields */
+  gap: 20px; 
 }
 
 .user-dashboard .reschedule-title {
@@ -87,7 +87,7 @@ body.user-dashboard {
 .user-dashboard .select-session,
 .user-dashboard .select-new-date,
 .user-dashboard .select-new-time {
-  margin-bottom: -10px; /* Space between label and dropdown */
+  margin-bottom: -10px;
 }
 
 .user-dashboard .session-dropdown {
@@ -105,21 +105,21 @@ body.user-dashboard {
 }
 
 .user-dashboard .cancel-session-button {
-  background-color: #4d0a40; /* Adjust as needed */
+  background-color: #4d0a40; 
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   margin-top: 20px;
   margin-bottom: 5px;
-  width: 80%; /* Ensure it stretches to match dropdown */
+  width: 80%; 
   font-size: 16px;
 }
 
 .user-dashboard .cancel-session-button:disabled {
   background-color: grey;
   cursor: not-allowed;
-  opacity: 0.6; /* Makes the button look more muted */
+  opacity: 0.6; 
 }
 
 .user-dashboard .cancel-reason-textbox {
@@ -129,11 +129,11 @@ body.user-dashboard {
   margin-top: 40px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  resize: none; /* Disable resizing of the textbox */
+  resize: none; 
 }
 
 .user-dashboard .reschedule-back-button {
-  margin-top: 20px; /* Add space above the back button */
+  margin-top: 20px; 
   padding: 10px 20px;
   margin-bottom: 0px;
   background-color: rgb(83, 52, 73);
@@ -142,11 +142,11 @@ body.user-dashboard {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  align-self: center; /* Keep button centered */
+  align-self: center;
 }
 
 .user-dashboard .reschedule-all-back-button {
-  margin-top: 40px; /* Add space above the back button */
+  margin-top: 40px; 
   background-color: rgb(83, 52, 73);
   padding: 10px;
   width: 17%;
@@ -155,7 +155,7 @@ body.user-dashboard {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  align-self: center; /* Keep button centered */
+  align-self: center; 
 }
 
 .user-dashboard .back-button:hover {
@@ -182,14 +182,13 @@ body.user-dashboard {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5); 
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Ensure it's above other content */
+  z-index: 1000; 
 }
 
-/* Centered Session Popup */
 .user-dashboard .session-popup {
   background-color: #f9f9f9;
   padding: 0px;
@@ -197,7 +196,7 @@ body.user-dashboard {
   text-align: center;
   position: relative;
   max-width: 400px;
-  width: 60%; /* Responsive width */
+  width: 60%; 
   margin: 0 20px;
   border-radius: 8px;
 }
@@ -305,10 +304,10 @@ body.user-dashboard {
 
 .user-dashboard .options-outer-container {
   display: flex;
-  justify-content: center; /* Centers the buttons horizontally */
-  align-items: center; /* Centers the buttons vertically */
+  justify-content: center; 
+  align-items: center;
   flex-direction: row;
-  width: 100%; /* Ensure the container takes full width */
+  width: 100%;
 }
 
 .user-dashboard .inner-container1 {
@@ -322,7 +321,7 @@ body.user-dashboard {
 }
 
 .user-dashboard .option-button {
-  margin: 10px; /* Adjust the margin for even spacing */
+  margin: 10px; 
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
@@ -353,7 +352,7 @@ body.user-dashboard {
   border: none;
   border-radius: 4px;
   transition: background-color 0.3s ease;
-  text-align: center; /* Ensures the text is centered */
+  text-align: center; 
 }
 
 .user-dashboard .options-back-button:hover {
@@ -471,13 +470,12 @@ body.user-dashboard {
 
 @media (max-width: 768px) {
   .user-dashboard .outer-container {
-    transform: scale(0.75); /* Scale down further for tablets */
+    transform: scale(0.75); 
   }
 }
 
-/* For screens less than or equal to 480px (mobile phones) */
 @media (max-width: 480px) {
   .user-dashboard .outer-container {
-    transform: scale(0.75); /* Scale down further for mobile phones */
+    transform: scale(0.75); 
   }
 }

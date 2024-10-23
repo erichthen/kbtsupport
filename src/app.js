@@ -46,20 +46,13 @@ const App = () => {
     <AuthProvider>
       <Router>
         <Switch>
-          {/* Public Routes */}
           <Route path="/login" component={SignIn} />
           <Route path="/register" component={RegistrationForm} />
           <Route path="/report-an-issue" component={ReportIssue} />
-
-          {/* Private Routes */}
           <PrivateRoute path="/dashboard" component={DashBoard} />
-
-          {/* Admin Routes */}
           <AdminRoute exact path="/admin/send-email" component={SendEmail} />
           <AdminRoute exact path="/admin/invoices" component={Invoices} />
           <AdminRoute exact path="/admin" component={AdminDashboard} />
-
-          {/* Redirect root to login */}
           <Route exact path="/" render={() => <Redirect to="/login" />} />
         </Switch>
       </Router>

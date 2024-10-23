@@ -43,7 +43,7 @@ const SignIn = () => {
     try {
       await loginUser(email, password);
   
-      // Check if the logged-in user is the admin
+      // push to admin dashboard if email matches (and password ofc, which is handled with above line)
       if (email === 'kelli.b.then@gmail.com') { 
         history.push('/admin'); 
       } else {
@@ -61,7 +61,7 @@ const SignIn = () => {
     const response = await sendPasswordResetEmail(forgotPasswordEmail);
   
     if (response.success) {
-      setError(''); // Clear any existing errors
+      setError(''); // clear any existing errors
       setDisableResetButtonAfterError(false);
       setShowForgotPassword(false);
       alert('Password reset email sent. Please check your inbox.');
