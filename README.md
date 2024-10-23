@@ -1,4 +1,4 @@
-### This is a website for a local tutoring business.  
+### This is a website for a local tutoring business built with node, react, firebase
 
 ## TODO ATM  
 
@@ -14,5 +14,3 @@
 - when client cancels or reschedules, available slots must be updated to accomidate the opening, test this by canceling and rescheduling, and then checking with another account registration and reschedule 
 - test the invoice reset without waiting for the first of a new month
 - Test adding a client with an email, and registering with a different email than the one added
-
-
