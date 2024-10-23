@@ -723,9 +723,15 @@ const DashBoard = () => {
         )}
       </div>
       {!showOptions && !showReschedule && !showCancel && !showRescheduleAllForm && (
-        <Link to="/report-an-issue" className="report-issue-link">  
-              Report an issue
-        </Link>
+      <Link
+        to={{
+          pathname: '/report-an-issue',
+          state: { from: '/dashboard' },
+        }}
+        className="report-issue-link"
+      >
+        Report an issue
+      </Link>
       )}
     </div>
   );

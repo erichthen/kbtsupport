@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { registerUser } from '../services/auth';
 import { addParent } from '../services/firestore';
 import { getAvailableSlots, addSession, filterAvailableSlots, generateTimeSlots } from '../services/sessions';
@@ -231,6 +231,14 @@ const RegistrationForm = () => {
               )}
             </form>
           </div>
+          <Link
+            to={{
+            pathname: '/report-an-issue',
+            state: { from: '/register' }, 
+            }}
+            className="report-issue-link"
+            >Report an issue 
+          </Link>
         </div>
       </div>
     );

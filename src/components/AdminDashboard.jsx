@@ -20,14 +20,14 @@ const AdminDashboard = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showSessions, setShowSessions] = useState(false);
   const [showReschedule, setShowReschedule] = useState(false);
-  const [selectedDay, setSelectedDay] = useState(null); // Store selected day
-  const [filteredSlots, setFilteredSlots] = useState([]); // For storing available slots
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [filteredSlots, setFilteredSlots] = useState([]);
   const [selectedDayToRescheduleTo, setSelectedDayToRescheduleTo] = useState(null);
   const [selectedSession, setSelectedSession] = useState(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
-  const [showCancel, setShowCancel] = useState(false);  // For showing/hiding the Cancel view
-  const [showOptions, setShowOptions] = useState(false);  // For toggling between Reschedule/Cancel options
-  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false); // For showing/hiding the cancel confirmation popup
+  const [showCancel, setShowCancel] = useState(false);  
+  const [showOptions, setShowOptions] = useState(false);
+  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -87,6 +87,7 @@ const AdminDashboard = () => {
     history.push('/login');
   };
 
+  //THIS NEEDS TO BE CHANGED WHEN PUSHED PROD
   const handleSendInvite = async (e) => {
     e.preventDefault();
     const actionCodeSettings = {
@@ -175,7 +176,7 @@ const AdminDashboard = () => {
     }
 
     try {
-
+      
       const sessionDate = new Date(selectedSessions[0].session_time);
 
       for (const session of selectedSessions) {

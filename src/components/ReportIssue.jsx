@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../firebaseConfig";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import '../styles/reportissue.css';
 
 const ReportIssue = () => {
@@ -10,6 +10,9 @@ const ReportIssue = () => {
   const [submitted, setSubmitted] = useState(false);
   
   const history = useHistory();
+  const location = useLocation();
+
+  const from = location.state?.from || '/dashboard';
 
   useEffect(() => {
     document.body.classList.add("report-issue");
@@ -74,7 +77,7 @@ const ReportIssue = () => {
 
           <button
             className="report-back-button"
-            onClick={() => history.push("/dashboard")}
+            onClick={() => history.push(from)}
           >
             Back
           </button>

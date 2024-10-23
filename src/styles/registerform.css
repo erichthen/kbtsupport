@@ -35,6 +35,16 @@ body.registration-form {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
+.registration-form .report-issue-link {
+  margin-top: 15px;
+  margin-left: 320px;
+  margin-bottom: -25px;
+  color: blue;
+  text-decoration: underline;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 .registration-form .container {
   background-color: rgb(225, 197, 202);
   padding: 40px 30px;

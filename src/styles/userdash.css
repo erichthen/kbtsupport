@@ -36,7 +36,7 @@ body.user-dashboard {
 .user-dashboard .cancel-reschedule-button {
   margin-top: 17px;
   margin-bottom: 0px;
-  margin-right: 16px;
+  margin-right: 0px;
   padding: 10px 20px;
   width: 60%;
   font-size: 16px;
@@ -54,7 +54,6 @@ body.user-dashboard {
 
 .user-dashboard .logout-button {
   margin-top: 10px;
-  margin-right: 16px;
   margin-bottom: 30px;
   width: 30%;
   padding: 10px 20px;
