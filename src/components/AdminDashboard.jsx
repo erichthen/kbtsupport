@@ -87,12 +87,12 @@ const AdminDashboard = () => {
     history.push('/login');
   };
 
-  //THIS NEEDS TO BE CHANGED WHEN PUSHED PROD
+  //DONT FORGET TO UPDATE WHEN SWITCHING
   const handleSendInvite = async (e) => {
     e.preventDefault();
     const actionCodeSettings = {
-      // url: 'https://kbt-reading-support.web.app/register',
-      url: 'http://localhost:3000/register',
+      url: 'https://kbt-reading-support.web.app/register',
+      // url: 'http://localhost:3000/register',
       handleCodeInApp: true,
     };
     
