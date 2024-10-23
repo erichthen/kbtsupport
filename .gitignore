@@ -9,7 +9,7 @@ firebase-debug.*.log*
 
 .firebase/
 
-functions/
+functions/index.js
 
 firebaseConfig.js
 
