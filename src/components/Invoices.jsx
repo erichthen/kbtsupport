@@ -71,10 +71,8 @@ const Invoices = () => {
           fileName: file.name
         });
   
-        // Update the invoice status in Firestore
         await updateInvoiceStatus(selectedParent.id, true);
   
-        // Remove the parent from the list of invoices in state
         setInvoices(invoices.filter(invoice => invoice.id !== selectedParent.id));
   
         alert('Invoice sent successfully');

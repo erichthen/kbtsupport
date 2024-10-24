@@ -36,19 +36,19 @@ const RegistrationForm = () => {
 
   useEffect(() => {
     if (!startDate) {
-      console.error("Start date is undefined"); // Early exit if startDate is not set
+      console.error("Start date is undefined"); // early exit if startDate is not set
       return;
     }
   
     const fetchSlots = async () => {
       const availableSlots = generateTimeSlots();
       const bookedSlotsArray = await getAvailableSlots();
-      const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray, startDate); // Pass startDate instead of undefined
+      const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray, startDate); // pass startDate instead of undefined
       setFilteredSlots(filteredSlots);
     };
   
     fetchSlots();
-  }, [startDate]); // Only trigger when startDate is set
+  }, [startDate]); // only trigger when startDate is set
 
   const checkFormValidity = useCallback(() => {
     const requiredFields = [email, password, confirmPassword, name, child, selectedTime, startDate];
@@ -98,7 +98,7 @@ const RegistrationForm = () => {
       const userCredential = await registerUser(email, password);
       const user = userCredential.user;
   
-      // Add parent to the firestore parents collection with their uid
+      // add parent to the firestore parents collection using their uid
       const parentData = {
         parent_name: name,
         email: email,
@@ -127,7 +127,7 @@ const RegistrationForm = () => {
           if (!isNaN(hours) && !isNaN(minutes)) {
             sessionDate.setHours(hours, minutes, 0, 0);
 
-            // Save the session to Firestore
+            //save the session to sessions collection
             await addSession(parentId, {
               child_name: child,
               session_time: sessionDate.toISOString(),

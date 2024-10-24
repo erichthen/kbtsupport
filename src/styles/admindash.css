@@ -39,7 +39,8 @@ body.admin-dashboard {
   outline: 3px solid rgb(83, 52, 73);
   border-radius: 10px;
   background-color: rgb(225, 197, 202);
-  padding-bottom: 40px;
+  padding-bottom: 29px;
+  padding-top: 29px;
   margin-left: 10px;  
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 300px;
@@ -48,7 +49,7 @@ body.admin-dashboard {
   flex-direction: column;
   align-items: center;
   margin-top: 42px;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
 }
 
 
@@ -156,6 +157,7 @@ body.admin-dashboard {
 
 .admin-dashboard .add-client-button {
   background-color: rgb(83, 52, 73);
+  margin-top: 20px;
   color: white;
   width: 65%; 
 }
@@ -203,9 +205,10 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .calendar-container {
+  border-radius: 10px;
   margin-top: 40px;
   margin-left: 40px;
-  margin-bottom: 0px;
+  margin-bottom: 5px;
 }
 
 .admin-dashboard .react-datepicker {

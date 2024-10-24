@@ -2,7 +2,6 @@
 
 ## TODO ATM  
 
-- **allow the user to report an issue during the registration process as well**
 - **change the link sent by registration email back to web app from local host**
 - **modify the registration email template in firebase**
 - **implement cloud function to remove a parent and all of their sessions without using firebase console or site UI**

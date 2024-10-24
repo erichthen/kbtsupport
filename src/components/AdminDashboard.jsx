@@ -89,7 +89,7 @@ const AdminDashboard = () => {
 
   //DONT FORGET TO UPDATE WHEN SWITCHING
   const handleSendInvite = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     const actionCodeSettings = {
       url: 'https://kbt-reading-support.web.app/register',
       // url: 'http://localhost:3000/register',
