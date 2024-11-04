@@ -3,6 +3,8 @@ import { useHistory, Link } from 'react-router-dom';
 import { registerUser } from '../services/auth';
 import { addParent } from '../services/firestore';
 import { getAvailableSlots, addSession, filterAvailableSlots, generateTimeSlots } from '../services/sessions';
+import { functions } from '../firebaseConfig';
+import { httpsCallable } from 'firebase/functions';
 import '../styles/registerform.css';
 import Step1 from './Step1';
 import Step2 from './Step2';
@@ -137,6 +139,9 @@ const RegistrationForm = () => {
           }
         currentDate.setDate(currentDate.getDate() + 7); // Move to the same day next week
       }
+
+      const notifyAdmin = httpsCallable(functions, 'notifyOnRegister'); 
+      await notifyAdmin({ parentEmail: email, parentName: name });
       setRegistered(true);
 
     } catch (error) {
