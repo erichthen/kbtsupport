@@ -18,7 +18,7 @@ const Step2 = ({ email, password, confirmPassword, setEmail, handlePasswordChang
   }, [password, confirmPassword]);
 
   useEffect(() => {
-    setIsStep2Valid(password.length !== 0 && passwordMatch && passwordStrength !== 'weak' && email.trim() !== '');
+    setIsStep2Valid(password.length !== 0 && passwordMatch && passwordStrength !== 'weak' && email.trim() !== '' && email.includes("@"));
   }, [passwordMatch, passwordStrength, email, password]);
 
   return (
