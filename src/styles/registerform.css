@@ -206,6 +206,9 @@ body.registration-form {
   padding: 5px;
   border-radius: 8px;
   width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .successful-register-message {
@@ -221,7 +224,6 @@ body.registration-form {
 .registered-message .registered-login {
   margin-bottom: 30px;
   margin-top: -20px;
-  margin-left: 93px;
 }
 
 
