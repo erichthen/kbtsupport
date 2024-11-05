@@ -178,3 +178,27 @@ export const deleteSessionById = async (sessionId) => {
     console.error('Error deleting session:', error);
   }
 };
+
+export const deleteSessionsNotRaffaele = async () => {
+  try {
+    const batch = writeBatch(db);
+    const sessionsRef = collection(db, 'sessions');
+
+    const q = query(sessionsRef, where('child_name', '!=', 'Raffaele'));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.log('No sessions found with a child name other than Raffaele.');
+      return;
+    }
+
+    querySnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    await batch.commit();
+    console.log('Sessions not belonging to Raffaele deleted successfully');
+  } catch (error) {
+    console.error('Error deleting sessions:', error);
+  }
+};
