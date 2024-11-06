@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { sendSignInLink, logoutUser } from '../services/auth';
 import DatePicker from 'react-datepicker';
+import { deleteSessionsNotRaffaele } from '../services/sessions';
 import { getSessions, deleteSessionsByDate, deleteSessionById, addSession } from '../services/sessions';
 import { getParentEmailById, getParentByDocumentId } from '../services/firestore';
 import { functions } from '../firebaseConfig';
@@ -91,8 +92,8 @@ const AdminDashboard = () => {
   const handleSendInvite = async (e) => {
     e.preventDefault(); 
     const actionCodeSettings = {
-      url: 'https://kbt-reading-support.web.app/register',
-      // url: 'http://localhost:3000/register',
+      // url: 'https://kbt-reading-support.web.app/register',
+      url: 'http://localhost:3000/register',
       handleCodeInApp: true,
     };
     
@@ -131,26 +132,27 @@ const AdminDashboard = () => {
         sessionDate.getDate() === date.getDate()
       );
     });
-
+  
     const formattedSessions = sessionsForDay.map(session => {
       const sessionTime = new Date(session.session_time);
-
+  
+      // Set the time explicitly in EST, regardless of the user's local timezone
       const formattedTime = sessionTime.toLocaleString('en-US', {
         timeZone: 'America/New_York',
         hour: '2-digit',
         minute: '2-digit',
         hour12: true,
       });
-
+  
       return {
         ...session,
         formattedTime: `${formattedTime} EST`, 
         sessionTime: sessionTime
       };
     });
-
-    formattedSessions.sort((a, b) => a.sessionTime - b.sessionTime)
-
+  
+    formattedSessions.sort((a, b) => a.sessionTime - b.sessionTime);
+  
     setSelectedSessions(formattedSessions);
     setSelectedDate(date);
     setShowSessions(true); 
@@ -334,6 +336,19 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDeleteSessionsNotRaffaele = async () => {
+    try {
+      setLoading(true); // Optional: Show loading indicator
+      await deleteSessionsNotRaffaele();
+      alert("Sessions not associated with 'Raffaele' have been deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting sessions:", error);
+      alert("Failed to delete sessions. Please try again.");
+    } finally {
+      setLoading(false); // Optional: Hide loading indicator
+    }
+  };
+
 
   const getAllDaysForNextThreeMonths = () => {
     const days = [];
@@ -399,6 +414,9 @@ const AdminDashboard = () => {
 
   return (
     <div className="main-container">
+      <button onClick={handleDeleteSessionsNotRaffaele} className="delete-sessions-button">
+        Delete Non-Raffaele Sessions
+      </button>
       {!(showReschedule || showSessions || showCancel || showOptions || showInviteForm) && <h1 className="greeting">Hello, Kelli!</h1>}
       <div className="wrapper">
         {showReschedule ? (

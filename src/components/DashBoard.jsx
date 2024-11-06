@@ -7,6 +7,7 @@ import { httpsCallable } from 'firebase/functions';
 import { functions } from '../firebaseConfig';
 import { logoutUser } from '../services/auth';
 import DatePicker from 'react-datepicker';
+import moment from 'moment-timezone';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/userdash.css';
 
@@ -342,9 +343,17 @@ const DashBoard = () => {
         hours = 0;
       }
   
-      const rescheduleDate = new Date(selectedDayToRescheduleTo.setHours(hours, minutes, 0, 0));
+      // Set the reschedule time in EST and convert to UTC
+      const rescheduleDateEST = moment.tz(selectedDayToRescheduleTo, 'America/New_York').set({
+        hour: hours,
+        minute: minutes,
+        second: 0,
+        millisecond: 0,
+      });
+      const rescheduleDateUTC = rescheduleDateEST.utc();
+  
       const sessionData = {
-        session_time: rescheduleDate.toISOString(),
+        session_time: rescheduleDateUTC.toISOString(),
         child_name: selectedSession.child_name,
         parent_id: selectedSession.parent_id,
       };
@@ -359,8 +368,8 @@ const DashBoard = () => {
         parentName: parentData.parent_name,
         oldSessionDate: new Date(selectedSession.session_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
         oldTimeSlot: new Date(selectedSession.session_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
-        newSessionDate: rescheduleDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
-        newTimeSlot: selectedTimeSlot
+        newSessionDate: rescheduleDateEST.format('MMMM D'), // Keep it in EST for readability
+        newTimeSlot: selectedTimeSlot,
       });
   
       if (emailResponse.data.success) {
@@ -433,20 +442,21 @@ const DashBoard = () => {
         return;
       }
   
-
       const parentData = await getParentById(user.uid);
       if (!parentData || !parentData.id) {
         alert("Parent data not found.");
         setLoading(false);
         return;
       }
-
+  
+      // Delete all existing sessions
       for (const session of sessions) {
         await deleteSessionById(session.id);
       }
   
+      // Reschedule all sessions to the new day and time in EST
       let currentDate = new Date(selectedDayForAll);
-      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 9, 0); 
+      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 9, 0);
   
       const timeParts = selectedTimeSlotForAll.split(':');
       let hours = parseInt(timeParts[0], 10);
@@ -455,25 +465,30 @@ const DashBoard = () => {
       if (selectedTimeSlotForAll.includes('PM') && hours !== 12) {
         hours += 12;
       } else if (selectedTimeSlotForAll.includes('AM') && hours === 12) {
-        hours = 0; 
+        hours = 0;
       }
   
       while (currentDate <= endDate) {
-        const sessionDate = new Date(currentDate);
-        sessionDate.setHours(hours, minutes, 0, 0);
-
+        const sessionDateEST = moment.tz(currentDate, 'America/New_York').set({
+          hour: hours,
+          minute: minutes,
+          second: 0,
+          millisecond: 0,
+        });
+        const sessionDateUTC = sessionDateEST.utc();
+  
         await addSession(parentData.id, {
           child_name: parentData.child_name,
-          session_time: sessionDate.toISOString(),
+          session_time: sessionDateUTC.toISOString(),
         });
-        currentDate.setDate(currentDate.getDate() + 7); 
+        currentDate.setDate(currentDate.getDate() + 7); // Weekly recurrence
       }
   
       const sendRescheduleAllEmail = httpsCallable(functions, 'sendRescheduleAll');
       await sendRescheduleAllEmail({
         parentName: parentData.parent_name,
         rescheduledDay: selectedDayForAll.toLocaleDateString('en-US', { weekday: 'long' }),
-        rescheduledTime: selectedTimeSlotForAll
+        rescheduledTime: selectedTimeSlotForAll,
       });
   
       alert("All sessions rescheduled successfully. Refresh to see changes.");
@@ -520,7 +535,7 @@ const DashBoard = () => {
                     <div key={session.id} className="session-info">
                       <p className="session-popup-date"><b>{formattedDate}</b></p>
                       <p>
-                       <b>Time:</b> {session.session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} EST
+                       <b>Time:</b> {session.session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
                       {index < selectedSessions.length - 1 && <hr className="session-separator" />}
                     </div>
@@ -631,7 +646,7 @@ const DashBoard = () => {
               {filteredSlots.length > 0 ? (
                 filteredSlots.map((slot, index) => (
                   <option key={index} value={slot.time} disabled={slot.status === 'unavailable'}>
-                    {slot.time} {slot.status === 'unavailable' ? '(Unavailable)' : ''}
+                    {`${slot.time} EST`} {slot.status === 'unavailable' ? '(Unavailable)' : ''}
                   </option>
                 ))
               ) : (
@@ -674,7 +689,7 @@ const DashBoard = () => {
               <option value="">Select the new time</option>
               {availableSlots.map((slot, index) => (
                 <option key={index} value={slot.time} disabled={slot.status === 'unavailable'}>
-                  {slot.time} {slot.status === 'unavailable' ? '(Unavailable)' : ''}
+                  {`${slot.time} EST`} {slot.status === 'unavailable' ? '(Unavailable)' : ''}
                 </option>
               ))}
             </select>

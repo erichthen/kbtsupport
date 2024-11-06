@@ -1,4 +1,6 @@
 import { collection, addDoc, getDocs, query, where, writeBatch, deleteDoc, doc} from 'firebase/firestore';
+import moment from 'moment-timezone';
+
 import { db } from '../firebaseConfig';
 
 export const addSession = async (parentId, sessionData) => {
@@ -52,15 +54,12 @@ export const getAvailableSlots = async () => {
 
 export const generateTimeSlots = () => {
   const slots = [];
-  const endTime = new Date();
-  endTime.setHours(13, 40, 0, 0); // end at 1:40 PM
+  const startTime = moment.tz('09:00', 'HH:mm', 'America/New_York'); // Start at 9:00 AM EST
+  const endTime = moment.tz('13:40', 'HH:mm', 'America/New_York'); // End at 1:40 PM EST
 
-  let currentTime = new Date();
-  currentTime.setHours(9, 0, 0, 0); // start at 9:00 AM
-
-  while (currentTime < endTime) {
-    slots.push(currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-    currentTime = new Date(currentTime.getTime() + 40 * 60000); // 40 minute interval
+  while (startTime.isBefore(endTime)) {
+    slots.push(startTime.format('hh:mm A'));
+    startTime.add(40, 'minutes'); // Increment by 40 minutes
   }
 
   return slots;
@@ -72,31 +71,21 @@ export const filterAvailableSlots = (slots, bookedSlots, selectedDate) => {
     return [];
   }
 
-  // Ensure selectedDate is valid
-  if (!(selectedDate instanceof Date) || isNaN(selectedDate)) {
-    console.error('Invalid selectedDate:', selectedDate);
-    return [];
-  }
+  // Format the selected day to EST date
+  const selectedDayEST = moment.tz(selectedDate, 'America/New_York').format('MM/DD/YYYY');
 
-  const selectedDay = selectedDate.toLocaleDateString(); // get the selected day in MM/DD/YYYY format
-
-  // convert booked slots to a format that includes both date and time for comparison
   const unavailableSlots = bookedSlots
-    .filter(slot => slot) // filter out undefined or invalid slots
     .map(slot => {
-      const date = new Date(slot);
-      if (!(date instanceof Date) || isNaN(date)) {
-        console.error('Invalid slot date:', slot);
-        return null;
-      }
-      const day = date.toLocaleDateString(); 
-      const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      return { day, time }; 
+      const date = moment(slot).tz('America/New_York'); // Convert booked time to EST
+      return {
+        day: date.format('MM/DD/YYYY'),
+        time: date.format('hh:mm A')
+      };
     })
-    .filter(slot => slot); 
+    .filter(slot => slot.day === selectedDayEST);
 
   return slots.map(time => {
-    const isUnavailable = unavailableSlots.some(slot => slot.day === selectedDay && slot.time === time);
+    const isUnavailable = unavailableSlots.some(slot => slot.time === time);
     return {
       time,
       status: isUnavailable ? 'unavailable' : 'available'

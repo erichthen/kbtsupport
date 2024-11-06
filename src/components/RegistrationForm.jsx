@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory, Link } from 'react-router-dom';
+import moment from 'moment-timezone';
 import { registerUser } from '../services/auth';
 import { addParent } from '../services/firestore';
 import { getAvailableSlots, addSession, filterAvailableSlots, generateTimeSlots } from '../services/sessions';
@@ -94,13 +95,11 @@ const RegistrationForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
     try {
       setLoading(true);
       const userCredential = await registerUser(email, password);
       const user = userCredential.user;
   
-      // add parent to the firestore parents collection using their uid
       const parentData = {
         parent_name: name,
         email: email,
@@ -108,53 +107,36 @@ const RegistrationForm = () => {
         invoice_status: false,
         uid: user.uid,
       };
-      
+  
       const parentId = await addParent(parentData);
       let currentDate = new Date(startDate);
-      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 9, 0); 
-
+      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 9, 0);
+  
       while (currentDate <= endDate) {
-          const sessionDate = new Date(currentDate);
-          const timeParts = selectedTime.split(':');
-          let hours = parseInt(timeParts[0], 10);
-          const minutes = parseInt(timeParts[1], 10);
-
-          //store the time in 24 hour format
-          if (selectedTime.includes('PM') && hours !== 12) {
-            hours += 12;
-          } else if (selectedTime.includes('AM') && hours === 12) {
-            hours = 0;
-          }
-
-          if (!isNaN(hours) && !isNaN(minutes)) {
-            sessionDate.setHours(hours, minutes, 0, 0);
-
-            //save the session to sessions collection
-            await addSession(parentId, {
-              child_name: child,
-              session_time: sessionDate.toISOString(),
-            });
-          } else {
-            throw new Error("Invalid time value");
-          }
-        currentDate.setDate(currentDate.getDate() + 7); // Move to the same day next week
+        const [hours, minutes] = selectedTime.split(':').map(Number);
+        const sessionDateEST = moment.tz(currentDate, 'America/New_York').set({
+          hour: hours + (selectedTime.includes('PM') && hours !== 12 ? 12 : 0),
+          minute: minutes,
+          second: 0,
+          millisecond: 0,
+        });
+        const sessionDateUTC = sessionDateEST.utc();
+  
+        await addSession(parentId, {
+          child_name: child,
+          session_time: sessionDateUTC.toISOString(),
+        });
+  
+        currentDate.setDate(currentDate.getDate() + 7);
       }
-
-      const notifyAdmin = httpsCallable(functions, 'notifyOnRegister'); 
+  
+      const notifyAdmin = httpsCallable(functions, 'notifyOnRegister');
       await notifyAdmin({ parentEmail: email, parentName: name });
       setRegistered(true);
-
+  
     } catch (error) {
-      console.error('Error during registration: ', error.message, error.code);
-      let errorMessage = 'An unexpected error occurred. Please try again.';
-      if (error.code === 'auth/email-already-in-use') {
-        errorMessage = 'The email address is already in use by another account.';
-      } else if (error.code === 'auth/invalid-email') {
-        errorMessage = 'The email address is not valid.';
-      } else {
-        errorMessage = error.message;
-      }
-      setRegisterError(errorMessage);
+      console.error('Error during registration:', error.message, error.code);
+      setRegisterError('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
