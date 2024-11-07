@@ -36,9 +36,9 @@ body.registration-form {
 }
 
 .registration-form .report-issue-link {
-  margin-top: -20px;
+  margin-top: 20px;
   margin-left: 250px;
-  margin-bottom: 10px;
+  margin-bottom: -20px;
   color: blue;
   text-decoration: underline;
   font-size: 16px;
@@ -241,6 +241,14 @@ body.registration-form {
   .registration-form .register-title {
     margin-bottom: 10px;
     margin-top: 10px;
+  }
+
+  .registration-form .report-issue-link {
+    margin-bottom: 20px;
+    margin-top: -10px;
+  }
+
+  .registration-form .registered-overlay {
   }
 
   .registration-form h1 {

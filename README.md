@@ -28,6 +28,7 @@
 
 
 *notes for me*  
+**DONT FORGET TO UPDATE WHEN PUSHING TO PRODUCTION OR EDITING ON LOCAL HOST**
 *post prod problems and resolutions*
 web app: registering in london for 1:00PM EST: session_time: T13:00:00.000Z
 local host: registering in london for 1:00PM EST: session_time: 
