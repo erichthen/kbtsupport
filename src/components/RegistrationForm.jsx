@@ -68,16 +68,18 @@ const RegistrationForm = () => {
   }, [checkFormValidity]);
 
   const handleDateChange = async (date) => {
-    setStartDate(date);
+    // Convert the selected date to EST
+    const estDate = moment.tz(date, 'America/New_York').toDate();
+    setStartDate(estDate);
   
-    if (!(date instanceof Date) || isNaN(date)) {
-      console.error('Invalid date:', date);
+    if (!(estDate instanceof Date) || isNaN(estDate)) {
+      console.error('Invalid date:', estDate);
       return;
     }
   
     const availableSlots = generateTimeSlots();
     const bookedSlotsArray = await getAvailableSlots();
-    const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray, date); // Pass the valid date
+    const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray, estDate); // Pass the converted EST date
     setFilteredSlots(filteredSlots);
   };
 
@@ -89,8 +91,10 @@ const RegistrationForm = () => {
   };
 
   const checkPasswordStrength = (password) => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{7,}$/;
-    return passwordRegex.test(password) ? 'strong' : 'weak';
+    const lengthCheck = password.length >= 6;
+    //this is a regular expression literal to check if the password contains a digit
+    const hasNumber = /\d/.test(password);
+    return lengthCheck && hasNumber ? 'strong' : 'weak';
   };
 
   const handleSubmit = async (event) => {
@@ -113,9 +117,18 @@ const RegistrationForm = () => {
       const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 9, 0);
   
       while (currentDate <= endDate) {
-        const [hours, minutes] = selectedTime.split(':').map(Number);
+        const [hourString, minuteString] = selectedTime.split(':');
+        let hours = parseInt(hourString, 10);
+        const minutes = parseInt(minuteString, 10);
+      
+        if (selectedTime.includes('PM') && hours !== 12) {
+          hours += 12;
+        } else if (selectedTime.includes('AM') && hours === 12) {
+          hours = 0;
+        }
+        
         const sessionDateEST = moment.tz(currentDate, 'America/New_York').set({
-          hour: hours + (selectedTime.includes('PM') && hours !== 12 ? 12 : 0),
+          hour: hours,
           minute: minutes,
           second: 0,
           millisecond: 0,

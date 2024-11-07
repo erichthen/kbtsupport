@@ -71,18 +71,19 @@ export const filterAvailableSlots = (slots, bookedSlots, selectedDate) => {
     return [];
   }
 
-  // Format the selected day to EST date
+  // Convert selectedDate to an EST date string for consistency
   const selectedDayEST = moment.tz(selectedDate, 'America/New_York').format('MM/DD/YYYY');
 
+  // Convert each booked slot from UTC to EST to compare with generated slots
   const unavailableSlots = bookedSlots
     .map(slot => {
-      const date = moment(slot).tz('America/New_York'); // Convert booked time to EST
+      const date = moment.utc(slot).tz('America/New_York'); // Convert each slot from UTC to EST
       return {
         day: date.format('MM/DD/YYYY'),
         time: date.format('hh:mm A')
       };
     })
-    .filter(slot => slot.day === selectedDayEST);
+    .filter(slot => slot.day === selectedDayEST); // Compare only slots on the selected EST day
 
   return slots.map(time => {
     const isUnavailable = unavailableSlots.some(slot => slot.time === time);

@@ -259,12 +259,54 @@ body.admin-dashboard {
   background-color: #e0bbf5;
 }
 
-.session-container {
+.admin-dashboard .session-container {
   background-color: rgb(237, 226, 226);
   position: relative; 
   padding: 50px;
   padding-top: 10px;
   text-align: center;
+}
+
+.admin-dashboard .sessions-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.admin-dashboard .session-container .sessionsforday-back-button {
+  background-color: rgb(83, 52, 73);
+  width: 90px;
+  height: 30px;
+  color: white;
+  border: none;
+  font-size: 19px;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 80px;
+  margin-bottom: 0px;
+}
+
+.admin-dashboard .session-container .sessionsforday-back-button:hover {
+  background-color: rgb(131, 102, 107);
+}
+
+.admin-dashboard .cancel-sessions-button {
+  padding: 10px 15px;
+  background-color: rgb(177, 48, 65);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  width: fit-content; 
+  z-index: 1000;
+  margin-top: 50px;
+  margin-bottom: -50px;
+}
+
+.admin-dashboard .cancel-sessions-button:hover {
+  background-color: rgb(95, 8, 8);
+  cursor: pointer;
 }
 
 .admin-dashboard .session-title {
@@ -277,24 +319,6 @@ body.admin-dashboard {
   color: rgb(83, 52, 73); 
   text-decoration: underline;
   text-decoration-color: rgb(83, 52, 73);
-}
-
-.session-container .sessionsforday-back-button {
-  position: absolute;
-  top: 255px;
-  right: 137px;
-  background-color: rgb(83, 52, 73);
-  width: 90px;
-  height: 30px;
-  color: white;
-  border: none;
-  font-size: 19px;
-  cursor: pointer;
-  padding: 0;
-}
-
-.session-container .sessionsforday-back-button:hover {
-  background-color: rgb(131, 102, 107);
 }
 
 .admin-dashboard .reschedule-container {
@@ -522,26 +546,6 @@ body.admin-dashboard {
 
 .zoom-button:hover {
   background-color: rgb(131, 102, 107);
-}
-
-.session-container .cancel-sessions-button {
-  display: block;
-  margin: 20px auto; 
-  margin-top: 50px;
-  margin-bottom: -20px;
-  padding: 10px 15px;
-  background-color: rgb(177, 48, 65);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 14px;
-  cursor: pointer;
-  width: fit-content; 
-}
-
-
-.admin-dashboard .cancel-sessions-button:hover {
-  background-color: rgb(95, 8, 8);
 }
 
 .admin-dashboard .zoom-info {

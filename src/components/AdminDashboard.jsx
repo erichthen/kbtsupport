@@ -414,9 +414,9 @@ const AdminDashboard = () => {
 
   return (
     <div className="main-container">
-      <button onClick={handleDeleteSessionsNotRaffaele} className="delete-sessions-button">
+      {/* <button onClick={handleDeleteSessionsNotRaffaele} className="delete-sessions-button">
         Delete Non-Raffaele Sessions
-      </button>
+      </button> */}
       {!(showReschedule || showSessions || showCancel || showOptions || showInviteForm) && <h1 className="greeting">Hello, Kelli!</h1>}
       <div className="wrapper">
         {showReschedule ? (
@@ -489,10 +489,12 @@ const AdminDashboard = () => {
             ) : (
               <p className="no-sessions">No sessions!</p>
             )}
-            {selectedSessions.length > 0 && (
-              <button className="cancel-sessions-button" onClick={handleCancelSessions}>Cancel Sessions</button>
-            )}
-            <button className="sessionsforday-back-button" onClick={handleClosePopup}>Back</button>
+            <div className="sessions-buttons">
+              {selectedSessions.length > 0 && (
+                <button className="cancel-sessions-button" onClick={handleCancelSessions}>Cancel Sessions</button>
+              )}
+              <button className="sessionsforday-back-button" onClick={handleClosePopup}>Back</button>
+            </div>
           </div>
         ) : showCancel ? (
           <div className="cancel-container">

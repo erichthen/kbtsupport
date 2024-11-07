@@ -27,7 +27,8 @@
 
 
 
-*notes for me*
+*notes for me*  
+*post prod problems and resolutions*
 web app: registering in london for 1:00PM EST: session_time: T13:00:00.000Z
 local host: registering in london for 1:00PM EST: session_time: 
 
@@ -40,3 +41,8 @@ problem: time zone affects the availability of sessions. example: user can now r
 fix: Generate and check time slots exclusively in EST regardless of the user’s device timezone. I modified generateTimeSlots to use the moment timezone module to explicitly set and display the times in EST. since the times are now all in EST, the availablity and filtering will work regardless of the users time zone. 
 And when checking for the slots that are booked in the filterAvailableSlots function, we convert all booked times from UTC to EST, effectively making the comparison from the slots to the prospective slots EST to EST. 
 the date object and the toLocaleString method have been removed from these functions
+
+
+problem: when there is a slot booked at 11:40AM EST for example, when I am registering in eastern time, they can see that the slot at 11:40AM is availble. However, when I switch to another time zone, the fitler availble slots funciton converts the booked times to that time zone, meaning I cannot see that 11:40AM is unavailable. Either an incorrect/unbooked slot is unavailbale, or not slot is unavailable at all
+
+fix: in the filter function, I converted the selected date to an EST string. I also converted bookedSlots to an EST string. Because of this consistency, the selected date is used to fetch the slots for that day in est, and the booked slots are converted to EST. This fixes the issue, because the problem was the users time zone was being affected by their time zone. 
