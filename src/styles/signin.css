@@ -238,10 +238,18 @@ button:hover {
 @media (max-width: 480px) {
   .outer-container {
     padding: 30px;
+    width: 70%;
   }
 
   .container {
-    width: 100%;
+    width: 90%;
+    margin-bottom: 30px;
+  }
+
+  .welcome-message {
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: -15px;
   }
 
   .forgot-password-container {
@@ -260,6 +268,7 @@ button:hover {
 
   h1 {
     font-size: 30px;
+    text-align: center;
   }
 
   input {

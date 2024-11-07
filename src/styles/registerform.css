@@ -36,13 +36,14 @@ body.registration-form {
 }
 
 .registration-form .report-issue-link {
-  margin-top: 15px;
-  margin-left: 320px;
-  margin-bottom: -25px;
+  margin-top: -20px;
+  margin-left: 250px;
+  margin-bottom: 10px;
   color: blue;
   text-decoration: underline;
   font-size: 16px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .registration-form .container {
@@ -229,12 +230,17 @@ body.registration-form {
 
 @media (max-width: 480px) {
   .registration-form .outer-container {
-    padding: 50px;
+    padding: 0px 50px;
   }
 
   .registration-form .container {
     width: 100%;
     padding: 20px;
+  }
+
+  .registration-form .register-title {
+    margin-bottom: 10px;
+    margin-top: 10px;
   }
 
   .registration-form h1 {

@@ -53,6 +53,10 @@ const DashBoard = () => {
     };
   }, []);
 
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector('.user-dashboard .outer-container').classList.add('is-visible');
+  });
+
   useEffect(() => {
     const fetchParentName = async () => {
       if (user) {

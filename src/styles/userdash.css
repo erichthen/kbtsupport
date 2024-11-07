@@ -471,11 +471,26 @@ body.user-dashboard {
 @media (max-width: 768px) {
   .user-dashboard .outer-container {
     transform: scale(0.75); 
+    margin: 0 auto;
   }
 }
 
 @media (max-width: 480px) {
+  body.user-dashboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
   .user-dashboard .outer-container {
     transform: scale(0.75); 
+    margin: 0 auto;
+    max-width: 120vw; 
+    max-height: 200vh;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-y: auto; /* Add scroll if content overflows vertically */
+    padding: 40px; /* Add padding to give some space inside */
   }
 }
