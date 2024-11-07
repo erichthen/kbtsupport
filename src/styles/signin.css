@@ -192,9 +192,8 @@ button:hover {
 }
 
 .error {
-  position: absolute;
   color: red;
-  margin-left: 98px;
+  margin-top: 20px;
   font-size: 18px;
 }
 
