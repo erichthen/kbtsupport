@@ -1,5 +1,5 @@
 ### This is a website for my mothers tutoring business built with node, react, firebase  
-[link](https://kbt-reading-support.web.app)  
+  
 ## TODO ATM  
 
 - **change the link sent by registration email back to web app from local host**
