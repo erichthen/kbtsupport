@@ -18,7 +18,7 @@
 * **Email Owner**
 * **Recieve and view invoces**
 * **Report and issue** 
-
+---
 ### Ideas for more features of the site...  
 * **Handle the payments on the platform, rather than just the invoices**
 * **Assign homework or tasks that parents can access, download, and submit through the platform**
