@@ -27,13 +27,16 @@
 
 
 
-*notes for me*  
-**DONT FORGET TO UPDATE WHEN PUSHING TO PRODUCTION OR EDITING ON LOCAL HOST**
-*post prod problems and resolutions*
-web app: registering in london for 1:00PM EST: session_time: T13:00:00.000Z
-local host: registering in london for 1:00PM EST: session_time: 
+## notes for me 
+**DONT FORGET TO UPDATE WHEN PUSHING TO PRODUCTION OR EDITING ON LOCAL HOST**  
 
-problem: when a user in another time zone registers and clicks a time in EST, it actually registers as that EST time but in their time zone, so then the admin dash sees it is as the selected time in their time zone, converted to EST. Ex. user in london registers for 1:00PM EST, the time gets stored as 13:00 UTC, and admin sees it as 8:00AM when it should be 1:00PM. 
+*post prod problems and resolutions*  
+
+**web app**: registering in london for 1:00PM EST: session_time: T13:00:00.000Z
+**local host**: registering in london for 1:00PM EST: session_time: 
+
+**problem** 
+  : when a user in another time zone registers and clicks a time in EST, it actually registers as that EST time but in their time zone, so then the admin dash sees it is as the selected time in their time zone, converted to EST. Ex. user in london registers for 1:00PM EST, the time gets stored as 13:00 UTC, and admin sees it as 8:00AM when it should be 1:00PM. 
 
 fix: Setting time in EST explicitly: We use moment.tz to handle the date in EST by setting it directly in 'America/New_York'. No longer using time.toLocaleString(). We then convert this to UTC
 
