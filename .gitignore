@@ -10,7 +10,7 @@ firebase-debug.*.log*
 .firebase/
 
 
-firebaseConfig.js
+src/firebaseConfig.js
 
 .firebaserc
 
