@@ -91,8 +91,8 @@ const AdminDashboard = () => {
   const handleSendInvite = async (e) => {
     e.preventDefault(); 
     const actionCodeSettings = {
-      // url: 'https://kbt-reading-support.web.app/register',
-      url: 'http://localhost:3000/register',
+      url: 'https://kbt-reading-support.web.app/register',
+      // url: 'http://localhost:3000/register',
       handleCodeInApp: true,
     };
     
@@ -109,7 +109,7 @@ const AdminDashboard = () => {
     finally {
       setLoading(false);
     }
-  };
+  };  
 
   const isDayWithSession = (date) => {
     return sessions.some(session => {
