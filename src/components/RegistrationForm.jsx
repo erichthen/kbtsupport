@@ -68,18 +68,20 @@ const RegistrationForm = () => {
   }, [checkFormValidity]);
 
   const handleDateChange = async (date) => {
-    // Convert the selected date to EST
-    const estDate = moment.tz(date, 'America/New_York').toDate();
-    setStartDate(estDate);
+    // Set the selected date in EST to ensure consistent day/time handling
+    const estDate = moment.tz(date, 'America/New_York').startOf('day');
+    setStartDate(estDate.toDate());
   
-    if (!(estDate instanceof Date) || isNaN(estDate)) {
+    // Check for invalid date
+    if (!estDate.isValid()) {
       console.error('Invalid date:', estDate);
       return;
     }
   
+    // Generate available slots and filter them based on the selected EST date
     const availableSlots = generateTimeSlots();
     const bookedSlotsArray = await getAvailableSlots();
-    const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray, estDate); // Pass the converted EST date
+    const filteredSlots = filterAvailableSlots(availableSlots, bookedSlotsArray, estDate.toDate()); // Pass the EST date
     setFilteredSlots(filteredSlots);
   };
 
@@ -113,34 +115,36 @@ const RegistrationForm = () => {
       };
   
       const parentId = await addParent(parentData);
-      let currentDate = new Date(startDate);
-      const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 9, 0);
+      let currentDate = moment.tz(startDate, 'America/New_York');  // Set initial date in EST
+      const endDate = currentDate.clone().add(9, 'months');
   
-      while (currentDate <= endDate) {
+      while (currentDate.isSameOrBefore(endDate)) {
         const [hourString, minuteString] = selectedTime.split(':');
         let hours = parseInt(hourString, 10);
         const minutes = parseInt(minuteString, 10);
-      
+  
+        // Adjust for AM/PM in 12-hour format
         if (selectedTime.includes('PM') && hours !== 12) {
           hours += 12;
         } else if (selectedTime.includes('AM') && hours === 12) {
           hours = 0;
         }
-        
-        const sessionDateEST = moment.tz(currentDate, 'America/New_York').set({
+  
+        // Create the session time in EST and then convert to UTC for storage
+        const sessionDateEST = currentDate.clone().set({
           hour: hours,
           minute: minutes,
           second: 0,
           millisecond: 0,
         });
-        const sessionDateUTC = sessionDateEST.utc();
+        const sessionDateUTC = sessionDateEST.clone().utc();
   
         await addSession(parentId, {
           child_name: child,
-          session_time: sessionDateUTC.toISOString(),
+          session_time: sessionDateUTC.toISOString(),  // Store as UTC
         });
   
-        currentDate.setDate(currentDate.getDate() + 7);
+        currentDate.add(7, 'days');  // Move to the same day next week
       }
   
       const notifyAdmin = httpsCallable(functions, 'notifyOnRegister');

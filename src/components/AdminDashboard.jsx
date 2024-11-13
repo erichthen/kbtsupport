@@ -413,9 +413,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="main-container">
-      {/* <button onClick={handleDeleteSessionsNotRaffaele} className="delete-sessions-button">
-        Delete Non-Raffaele Sessions
-      </button> */}
       {!(showReschedule || showSessions || showCancel || showOptions || showInviteForm) && <h1 className="greeting">Hello, Kelli!</h1>}
       <div className="wrapper">
         {showReschedule ? (
