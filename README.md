@@ -1,4 +1,4 @@
-# A website for KBT Reading Support (A tutoring business)  
+# A webapp for KBT Reading Support (A tutoring business)  
 ---
 ## Built with node, react, firebase. Handles operations with clients throughout the world
 ---
