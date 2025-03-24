@@ -16,8 +16,8 @@
 * **View their sessions on a calendar**
 * **Join zoom session**
 * **Email Owner**
-* **Recieve and view invoces**
-* **Report and issue** 
+* **Recieve and view invoices**
+* **Report an issue** 
 ---
 ### Ideas for more features of the site...  
 * **Handle the payments on the platform, rather than just the invoices**
