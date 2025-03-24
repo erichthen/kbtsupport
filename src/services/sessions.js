@@ -55,11 +55,11 @@ export const getAvailableSlots = async () => {
 export const generateTimeSlots = () => {
   const slots = [];
   const startTime = moment.tz('09:00', 'HH:mm', 'America/New_York'); // Start at 9:00 AM EST
-  const endTime = moment.tz('13:40', 'HH:mm', 'America/New_York'); // End at 1:40 PM EST
+  const endTime = moment.tz('13:30', 'HH:mm', 'America/New_York'); // End at 1:30 PM EST
 
   while (startTime.isBefore(endTime)) {
     slots.push(startTime.format('hh:mm A'));
-    startTime.add(40, 'minutes'); // Increment by 40 minutes
+    startTime.add(30, 'minutes'); // Increment by 30 minutes
   }
 
   return slots;
