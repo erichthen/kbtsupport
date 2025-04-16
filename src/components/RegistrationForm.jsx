@@ -177,11 +177,12 @@ const RegistrationForm = () => {
             <p className="dashboard-details">
               <b> In your dashboard, you can:</b> <br/>
               <br />
-                - Reschedule a session or all of your sessions<br/>
-                - Cancel a session or all of your sessions<br/>
-                - View your schedule<br/>
-                - Join zoom<br/>
-                <br/>
+                - Reschedule a session or all of your sessions<br />
+                - Cancel a session or all of your sessions<br />
+                - View your schedule<br />
+                - View session notes<br />
+                - Join zoom<br />
+                <br />
               Please monitor your email for session reminders, changes to your schedule, invoices, or any other messages.
             </p>
             <button className="registered-login" type="button" onClick={() => history.push('/login')}>Login</button>

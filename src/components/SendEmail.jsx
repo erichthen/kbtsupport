@@ -208,7 +208,6 @@ const SendEmail = () => {
   return (
     <div className="send-emails">
       <div className="send-email-container">
-        <div className="send-email-inner-container">
         {!showEmailParentForm && !showEmailAllParentsForm && (<h1 className="send-email-title">Send an email to...</h1>)}
           {!showEmailParentForm && !showEmailAllParentsForm && (
             <>
@@ -227,106 +226,107 @@ const SendEmail = () => {
           )}
 
           {showEmailAllParentsForm && (
-            <form className="email-all-parents-form" onSubmit={handleSendEmailToAllParents}>
-              <h2>Email All Parents</h2>
-              <div className="form-group">
-                <input
-                  type="text"
-                  value={subject}
-                  placeholder='Email subject'
-                  onChange={(e) => setSubject(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <textarea
-                  className="email-all-textbox"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder='Type your email here'
-                  required
-                ></textarea>
-              </div>
-              <div className="form-group">
-                <label className="attachment">Attachment (optional):</label>
-                <input type="file" onChange={handleAttachmentChange} />
-              </div>
+            <div className="email-all-container">
+              <form className="email-all-parents-form" onSubmit={handleSendEmailToAllParents}>
+                <h2>Email All Parents</h2>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    value={subject}
+                    placeholder='Email subject'
+                    onChange={(e) => setSubject(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <textarea
+                    className="email-all-textbox"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder='Type your email here'
+                    required
+                  ></textarea>
+                </div>
+                <div className="form-group">
+                  <label className="attachment">Attachment (optional):</label>
+                  <input type="file" onChange={handleAttachmentChange} />
+                </div>
+                <button className="view-recipients-button" type="button" onClick={handleViewRecipients}>View recepients</button>
+                {successMessage && <p className="success-message">{successMessage}</p>}
+                {error && <p className="error-message">{error}</p>}
+                <button type="submit" className="send-email-button" disabled={loading}>
+                  {loading ? 'Sending...' : 'Send Email'}
+                </button>
+                <button type="button" className="email-back-button" onClick={handleBackClick}>
+                  Back
+                </button>
+              </form>
+            </div>
 
-              <button className="view-recipients-button" type="button" onClick={handleViewRecipients}>View recepients</button>
-              {successMessage && <p className="success-message">{successMessage}</p>}
-              {error && <p className="error-message">{error}</p>}
-              <button type="submit" className="send-email-button" disabled={loading}>
-                {loading ? 'Sending...' : 'Send Email'}
-              </button>
-              <button type="button" className="email-back-button" onClick={handleBackClick}>
-                Back
-              </button>
-            </form>
-          )}
-
+          )}  
           {showEmailParentForm && (
-            <form className="email-parent-form" onSubmit={handleEmailParent}>
-              <h2>Email a Parent</h2>          
-              <div className="form-group">
-                <select
-                  id="parent-select"
-                  value={selectedParentId}
-                  onChange={handleParentChange}
-                  required
-                >
-                  <option value="">Select a Parent</option>
-                  {parents.map((parent) => (
-                    <option key={parent.id} value={parent.id}>
-                      {parent.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div className="email-parent-container">
+              <form className="email-parent-form" onSubmit={handleEmailParent}>
+                <h2>Email a Parent</h2>          
+                <div className="form-group">
+                  <select
+                    id="parent-select"
+                    value={selectedParentId}
+                    onChange={handleParentChange}
+                    required
+                  >
+                    <option value="">Select a Parent</option>
+                    {parents.map((parent) => (
+                      <option key={parent.id} value={parent.id}>
+                        {parent.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                  
+                {/* Display Selected Parent's Email */}
+                {selectedParentEmail && (
+                  <p className="selected-parent-email">
+                    An email will be sent to: {selectedParentEmail}
+                  </p>
+                )}
+
+                {/* Subject Input */}
+                <div className="form-group">
+                  <input
+                    type="text"
+                    value={subject}
+                    placeholder="Email subject"
+                    onChange={(e) => setSubject(e.target.value)}
+                    required
+                  />
+                </div>
               
-              {/* Display Selected Parent's Email */}
-              {selectedParentEmail && (
-                <p className="selected-parent-email">
-                  An email will be sent to: {selectedParentEmail}
-                </p>
-              )}
-          
-              {/* Subject Input */}
-              <div className="form-group">
-                <input
-                  type="text"
-                  value={subject}
-                  placeholder="Email subject"
-                  onChange={(e) => setSubject(e.target.value)}
-                  required
-                />
-              </div>
-          
-              {/* Message Textarea */}
-              <div className="form-group">
-                <textarea
-                  className="email-textbox"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder='Type your email here'
-                  required
-                ></textarea>
-              </div>
-          
-              {/* Attachment Input */}
-              <div className="form-group">
-                <label>Attachment (optional):</label>
-                <input type="file" onChange={handleAttachmentChange} />
-              </div>
-          
-              {successMessage && <p className="success-message">{successMessage}</p>}
-              {error && <p className="error-message">{error}</p>}
-              <button type="submit" className="send-email-button" disabled={loading }>
-                {loading ? 'Sending...' : 'Send Email'}
-              </button>
-              <button type="button" className="email-back-button" onClick={handleBackClick}>
-                Back
-              </button>
-            </form>
+                {/* Message Textarea */}
+                <div className="form-group">
+                  <textarea
+                    className="email-textbox"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder='Type your email here'
+                    required
+                  ></textarea>
+                </div>
+              
+                {/* Attachment Input */}
+                <div className="form-group">
+                  <label>Attachment (optional):</label>
+                  <input type="file" onChange={handleAttachmentChange} />
+                </div>
+              
+                {successMessage && <p className="success-message">{successMessage}</p>}
+                {error && <p className="error-message">{error}</p>}
+                <div className="send-email-buttons">
+                  <button type="submit" className="send-email-button" disabled={loading }>{loading ? 'Sending...' : 'Send Email'}</button>
+                  <button type="button" className="email-back-button" onClick={handleBackClick}>Back</button>
+                </div>
+              </form>
+            </div>
           )}
 
           {showRecipientsModal && (
@@ -351,7 +351,6 @@ const SendEmail = () => {
             </div>
           )}
         </div>
-      </div>
     </div>
   );
 };

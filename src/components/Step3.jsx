@@ -51,7 +51,7 @@ const Step3 = ({ startDate, handleDateChange, selectedTime, setSelectedTime, fil
       <div className="nav">
         <button type="button" className="step3-nav" onClick={goToPreviousStep}>Prev</button>
         <button type="submit" className="step3-nav" disabled={!isFormValid || loading}>
-          {loading ? 'Registering...' : 'Register'}
+          {loading ? 'Registering' : 'Register'}
         </button>
       </div>
       <p className="step-number">Step 3 of 3</p>

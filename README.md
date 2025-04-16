@@ -2,6 +2,8 @@
 ---
 ## Built with node, react, firebase. Handles operations with clients throughout the world
 ---
+### Going through a major redesign arc 
+---
 ### Allows owner to have a platform to...
 * **Onboard clients**
 * **View schedule on a calendar**
@@ -19,8 +21,8 @@
 * **Recieve and view invoices**
 * **Report an issue** 
 ---
-### Ideas for more features of the site...  
-* **Handle the payments on the platform, rather than just the invoices**
+### Features coming soon...  
+* **Write session notes (owner) and view session notes (parent)**
 * **Assign homework or tasks that parents can access, download, and submit through the platform**
 * **Show and keep track of session attendance records**
 * **Implement SMS messages for a some of the operations**
@@ -28,11 +30,21 @@
 **Used nodemailer to automatically compose and send emails when any operation is done, as well as send session reminder emails**
 
 ## TODO ATM  
-- **implement cloud function to remove a parent and all of their sessions without using firebase console or site UI**
----
+### Redesigns: common header and footer, better color theme, less blockly, more modern looking
+- **Make sure pages switch properly**
+- **Finish redesigning the admin side (still have to do send a message page)**
+- **Once you have finished redesigning admin, make sure everything still works (emails, reminders, invoice sends, canceling and rescheduling)**
+- **Redesign the login page**
+- **Redesign registration pages**
+- **Redesign User side pages**
+- **Add session notes feature**
+- **Find a way to allow teacher to access pages to grade it**
+- **Deploy the site to webpages.charlotte and push to current domain as well**
+
 ## test cases
 
 - **Make sure it goes back to options or dash after admin reschedule**
+- **Test all cases of page swithces, make sure you are updating the states correctly
 - when client cancels or reschedules, available slots must be updated to accomidate the opening, test this by canceling and rescheduling, and then registering and rescheduling (all and one) with another account. Do this in different timezones 
 - test the invoice reset without waiting for the first of a new month
 - Test adding a client with an email, and registering with a different email than the one added
@@ -73,4 +85,17 @@ the date object and the toLocaleString method have been removed from these funct
 
 fix: in the filter function, I converted the selected date to an EST string. I also converted bookedSlots to an EST string. Because of this consistency, the selected date is used to fetch the slots for that day in est, and the booked slots are converted to EST. This fixes the issue, because the problem was the users time zone was being affected by their time zone. 
 
-**problem**: 
+**problem**: Could not get header to be at the top of the screen and span the entire viewport width. Also could not get footer at the bottom. 
+
+fix: Removed `justify content: space-between` from the body attribute in admindash.css.  
+Set `position: fixed` to the header, as well as `top: 0; left: 0;`.  
+Set the width to 100vh; Did the same things with the footer.
+
+**problem**: On my laptop, the main content is in the middle vertically and looks nice. However, on my monitor everything in the main element is towards the top. I need the main content to  
+be vertically centered regardless of the size of the display
+
+fix: Made a content wrapper to wrap all of the contents of main. Set its min-height to 100vh (height of display) minus (header height + footer height). This way, 
+it stretches out in between the header and the footer. With `justify-content: center;`, `display: flex;`, and `flex-direction: column`, the height is stretched from the header to the footer, 
+and the content will be in the middle (vertically & horizontally)
+
+

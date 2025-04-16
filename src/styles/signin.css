@@ -1,29 +1,93 @@
 body.sign-in {
   font-family: Arial, sans-serif;
+  background-color: #694F5D;
   display: flex;
-  background-color: rgb(83, 52, 72);
-  justify-content: center;
+  flex-direction: column;
+  /* justify-content: space-between; */
   align-items: center;
   height: 100vh;
   margin: 0;
 }
 
-.main-container {
+.sign-in .main-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  background-color: #694F5D;
+  justify-content: center;   
+  align-items: center;       
+  width: 100%;               
+  padding-top: 60px;  
+  padding-bottom: 60px;
+  min-height: calc(100vh - 100px);
+}
+
+.sign-in footer {
   width: 100%;
+  background-color: rgb(246, 227, 227);
+  height: 50px;
+  text-align: center;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }
 
-.content-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.sign-in footer p {
+  color: rgb(83, 52, 72);
+  font-style: italic;
 }
 
-.welcome-message {
-  margin-top: -10px;
-  color: rgb(83, 52, 73);
+
+.sign-in header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  height: 133px;
+  width: 100vw;
+  background-color: #EFC7C2;
+  text-align: center;
+}
+
+.sign-in header nav button {
+  width: 200px;
+  background-color: #EFC7C2;
+  color: #694F5D;
+  margin-top: -30px;
+  padding: 2px;
+  transition: transform 0.3s ease;
+  text-decoration: underline;
+}
+
+.sign-in header nav button:hover {
+  transform: scale(1.3);
+  font-weight: bold;
+  background-color: transparent;
+} 
+
+.sign-in .welcome-message-1{
+  margin-top: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+}
+
+.sign-in .forgot-password-title {
+  color: white;
+  font-weight: bold;
+  font-size: 21px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.sign-in .welcome-message-2 {
+  margin-top: -20px;
+  margin-bottom: 10px;
+  color: white;
+  font-size: 17px;
+  width: 60%;
+  text-align: center;
 }
 
 .sign-in .title {
@@ -31,30 +95,23 @@ body.sign-in {
   margin-bottom: -10px;
 }
 
-.outer-container {
-  outline: 5px solid black;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-top: 35px;
-}
-
-.container {
-  outline: 3px solid black;
-  background-color: rgb(225, 197, 202);
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.sign-in .container {
+  background-color: rgb(246, 227, 227);
+  padding: 10px;
+  border-radius: 27px;
   width: 350px;
   text-align: center;
+  /* border: 9px solid #d6ada8; */
+  border: 9px solid #a7817c;
 }
 
-h1 {
+.sign-in .sign-in-button {
+  margin-right: 8px;
+  margin-top: 40px;
+  width: 100px;
+}
+
+.sign-in header h1 {
   margin-bottom: 25px;
   color: rgb(83, 52, 73);
   text-decoration: underline;
@@ -62,71 +119,76 @@ h1 {
   font-size: 42px;
 }
 
-input {
-  width: 65%;
-  padding: 12px;
-  margin: 12px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 20px;
-  margin-bottom: 25px;
-}
-
-.forgot-password {
-  margin-top: -20px;
-  margin-bottom: -20px;
-}
-
-.forgot-password-container {
-  outline: 3px solid black;
+.sign-in #email-input {
+  margin-top: 20px;
   text-align: center;
+  margin-bottom: 20px;
+}
+
+.sign-in #password-input {
+  text-align: center;
+}
+
+.sign-in .login-input {
+  display: block;
+  padding: 12px;
+  margin-left: 59px;
+  width: 200px;
+  font-size: 16px;
+}
+
+.sign-in .forgot-password-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  background-color: rgb(225, 197, 202);
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  background-color: rgb(246, 227, 227);
+  padding: 10px;
+  border-radius: 27px;
   width: 350px;
   text-align: center;
+  border: 9px solid #d6ada8;
 }
 
-.forgot-password-link {
+.sign-in .forgot-password-link {
   background-color: transparent;
+  margin-bottom: 0px;
+  margin-top: 0px;
   text-decoration: underline;
   color: rgb(83, 52, 73);
+  font-size: 15px;
   white-space: nowrap;
+  transition: transform 0.3s ease;
 }
 
-.forgot-password-link:hover {
+.sign-in .forgot-password-link:hover {
   background-color: transparent;
+  transform: scale(1.1);
 }
 
-.forgot-password-form {
+.sign-in .forgot-password-form {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 70%;
 }
 
-.forgot-password-form .emailforreset {
-  width: 100%;
-  text-align: center;
+.sign-in .forgot-password-form .emailforreset {
+  display: block;
   padding: 12px;
-  margin-bottom: 0px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 20px;
+  width: 200px;
+  font-size: 16px;
+  margin-top: 20px;
 }
 
-.forgot-pass-submit { 
-  width: 80%;
+.sign-in .forgot-pass-submit { 
+  width: 150px;
   margin-top: 30px;
   margin-bottom: 0px;
+  font-size: 17px;
 }
 
-.back-button {
+.sign-in .back-button {
   width: 20%;
   text-align: center;
   display: flex;
@@ -141,36 +203,33 @@ input {
   cursor: pointer;
 }
 
-.forgot-back-button {
-  width: 40%;
-  padding: 5px 5px;
-  margin-bottom: -10px;
-  margin-top: 40px;
+.sign-in .forgot-back-button {
+  width: 30%;
+  font-size: 15px;
+  text-decoration: underline;
+  background-color: rgb(246, 227, 227);
+  color: rgb(83, 52, 73);
+  margin-bottom: 0px;
 }
 
-.forgot-password-form .emailforreset {
+.sign-in .forgot-back-button:hover
+
+.sign-in .emailforreset {
   margin-top: 20px;
   font-size: 20px;
+  text-align: center;
 }
 
-.email-input {
-  margin-top: 20px;
-}
-
-input[type="email"]::placeholder {
+.sign-in input[type="email"]::placeholder {
   font-size: 16px;
 }
 
-input[type="password"]::placeholder {
+.sign-in input[type="password"]::placeholder {
   font-size: 16px;
 }
 
-
-
-
-button {
-  width: 45%;
-  padding: 12px;
+.sign-in button {
+  padding: 9px;
   border: none;
   border-radius: 5px;
   background-color: rgb(83, 52, 73);
@@ -182,16 +241,16 @@ button {
   margin-right: 8px;
 }
 
-button:disabled {
+.sign-in button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
-button:hover {
+.sign-in button:hover {
   background-color: rgb(131, 102, 107);
 }
 
-.error {
+.sign-in .error {
   color: red;
   margin-top: 20px;
   font-size: 18px;
@@ -215,7 +274,7 @@ button:hover {
   }
 
   .forgot-pass-submit {
-    width: 80%;
+    width: 50%;
     font-size: 16px;
   }
 
@@ -243,12 +302,6 @@ button:hover {
   .container {
     width: 90%;
     margin-bottom: 30px;
-  }
-
-  .welcome-message {
-    text-align: center;
-    margin-bottom: 5px;
-    margin-top: -15px;
   }
 
   .forgot-password-container {
