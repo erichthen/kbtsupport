@@ -274,7 +274,7 @@ const RegistrationForm = () => {
               <>
                 <h2 className="register-message-1">Welcome!</h2>
                 <h4 className="register-message-2">
-                  Please fill out the fields to register.
+                  Please complete these steps to register.
                 </h4>
               </>
             )}
@@ -492,7 +492,7 @@ const RegistrationForm = () => {
                         </a>
                       </h3>
                       <p className="instructions-text">
-                        You will be able to reschedule or cancel a session or all sessions anytime. 
+                        You will be able to reschedule or cancel one or all sessions anytime. 
                       </p>
                       <button className="close-button" onClick={() => setIsModalOpen(false)}>Close</button>
                     </div>

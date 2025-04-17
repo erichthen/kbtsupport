@@ -3,7 +3,6 @@ body.admin-dashboard {
   background-color: #694F5D;
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
   align-items: center;
   height: 100vh;
   margin: 0;
@@ -14,7 +13,7 @@ body.admin-dashboard {
   top: 0;
   left: 0;
   z-index: 1000;
-  height: 127px;
+  height: 115px;
   width: 100vw;
   background-color: #EFC7C2;
   text-align: center;
@@ -22,6 +21,7 @@ body.admin-dashboard {
 
 .admin-dashboard header h1 {
   text-decoration: none;
+  margin-top: 15px;
   margin-bottom: 20px;
   color: rgb(83, 52, 72);
   font-size: 40px;
@@ -157,8 +157,8 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .send-button {
-  width: 80%;
-  margin-bottom: 0px;
+  width: 60%;
+  margin-bottom: -20px;
   margin-top: 30px;
   background-color: rgb(83, 52, 72);
   color: white;

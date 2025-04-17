@@ -794,7 +794,7 @@ const AdminDashboard = () => {
                     className="session-dropdown"
                     onChange={handleDaySelect}
                   >
-                    <option value="">-- Select a Day --</option>
+                    <option value="">Select a Day</option>
                     {sessions
                       .sort((a, b) => new Date(a.session_time) - new Date(b.session_time))
                       .map((session, index) => (
@@ -811,7 +811,7 @@ const AdminDashboard = () => {
                       setSelectedSession(session);
                     }}
                   >
-                    <option value="">-- Select a Session --</option>
+                    <option value="">Select a Session</option>
                     {sessionsForSelectedDay.length > 0 ? (
                       sessionsForSelectedDay.map((session, index) => (
                         <option key={index} value={session.id}>
@@ -827,9 +827,7 @@ const AdminDashboard = () => {
                     )}
                   </select>
                   <select className="session-dropdown" onChange={handleDayToRescheduleToSelect}>
-                    <option className="day-select" value="">
-                      -- Select a Day --
-                    </option>
+                    <option className="day-select" value="">Select a New Day</option>
                     {getAllDaysForNextThreeMonths().map((day, index) => (
                       <option key={index} value={day.toISOString()}>
                         {getFormattedDate(new Date(day))}
@@ -840,7 +838,7 @@ const AdminDashboard = () => {
                     className="session-dropdown"
                     onChange={(e) => setSelectedTimeSlot(e.target.value)}
                   >
-                    <option value="">-- Select a Time --</option>
+                    <option value="">Select a New Time</option>
                     {filteredSlots.map((slot, index) => (
                       <option key={index} value={slot.time} disabled={slot.status === "unavailable"}>
                         {slot.time} {slot.status === "unavailable" ? "(Unavailable)" : ""}
@@ -1058,7 +1056,7 @@ const AdminDashboard = () => {
                     <br />by clicking the day on the calendar.
                   </p>
                   <select className="cancel-session-dropdown" onChange={handleDaySelect}>
-                    <option value="">-- Select a Day --</option>
+                    <option value="">Select a Day</option>
                     {sessions
                       .sort((a, b) => new Date(a.session_time) - new Date(b.session_time))
                       .map((session, index) => (
@@ -1075,7 +1073,7 @@ const AdminDashboard = () => {
                       setSelectedSession(session);
                     }}
                   >
-                    <option value="">-- Select a Session --</option>
+                    <option value="">Select a Session</option>
                     {sessionsForSelectedDay.length > 0 ? (
                       sessionsForSelectedDay.map((session, index) => (
                         <option key={index} value={session.id}>
@@ -1173,7 +1171,7 @@ const AdminDashboard = () => {
                             type="submit"
                             disabled={loading || email === ""}
                           >
-                            {loading ? "Sending..." : "Send Registration Form"}
+                            {loading ? "Sending..." : "Send Invite"}
                           </button>
                         </form>
                         <button
