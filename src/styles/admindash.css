@@ -153,6 +153,7 @@ body.admin-dashboard {
 .admin-dashboard #add-client-back-button {
   margin-top: 50px;
   margin-bottom: 0px;
+  margin-left: -2px;
 }
 
 .admin-dashboard .send-button {
@@ -402,8 +403,8 @@ body.admin-dashboard {
 .admin-dashboard .back-button {
   align-self: center;
   font-size: 15px;
-  background-color: rgba(83, 52, 72, 0.77);
-  color: white;
+  background-color: #d6ada8;
+  color: rgb(83, 52, 72);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -635,17 +636,11 @@ body.admin-dashboard {
   margin-top: 50px;
   border-radius: 27px;
   border: 9px solid #d6ada8;
-  padding: 30px;
+  padding: 10px;
 }
 
 .admin-dashboard .invoices-main-container p {
   color: #694F5D;
-}
-
-.admin-dashboard #invoices-back-button {
-  margin-top: 60px;
-  margin-bottom: 10px;
-  margin-left: 111px; 
 }
 
 .admin-dashboard .invoices-main-container ul li {
@@ -710,7 +705,7 @@ body.admin-dashboard {
   background-color: rgb(83, 52, 72);
   width: 177px;
   margin-top: 30px; 
-  margin-bottom: 0px;
+  margin-bottom: -20px;
 }
 
 .admin-dashboard #invoice-count-text {
@@ -725,25 +720,12 @@ body.admin-dashboard {
   font-weight: bold;
 }
 
-/* Back button in invoices list */
-.admin-dashboard .invoice-back-button {
-  background-color: rgb(83, 52, 72);
-  color: rgb(246, 227, 227);
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  margin-bottom: -5px;
-  cursor: pointer;
-}
-
 /* Textarea for adding a note */
 .admin-dashboard .note-field {
   width: 90%;
   height: 127px;
   padding: 10px;
-  margin-top: 27px;
-  margin-bottom: 27px;
+  margin-bottom: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
@@ -751,6 +733,7 @@ body.admin-dashboard {
 
 .admin-dashboard #invoice-send-title {
   color: #694F5D;
+  margin-bottom: 30px;
 }
 
 /* Label for the file input styled as a button */
@@ -768,6 +751,15 @@ body.admin-dashboard {
 .admin-dashboard .upload-button:hover {
   transform: scale(1.1);
   text-decoration: underline;
+  background-color: transparent;
+}
+
+.admin-dashboard #invoice-upload-label {
+  margin-bottom: 10px;
+}
+
+.admin-dashboard #invoice-email-message {
+  margin-bottom: -10px;
 }
 
 /* Hide the actual file input */
@@ -786,6 +778,10 @@ body.admin-dashboard {
 
 .admin-dashboard .invoices-main-container li span {
   color: #694F5D;
+}
+
+.admin-dashboard #invoice-back-button {
+  margin-left: -6px;
 }
 
 .admin-dashboard .send-emails {
@@ -871,15 +867,12 @@ body.admin-dashboard {
   margin-top: -10px;
 }
 
-#all-subject-label, 
-#all-email-label, 
-#email-all-file-label, 
-#parent-select-label, 
-#email-parent-label, 
-#email-parent-file-label,
-#send-email-subject-label{
+.admin-dashboard .send-email-label{
   display: block;
-  color: #694F5D;   
+  color: rgb(83, 52, 72);   
+  margin-bottom: 10px;
+  margin-top: 15px;
+  font-size: 17px;
 }
 
 #send-email-subject-label {
@@ -895,37 +888,24 @@ body.admin-dashboard {
   width: 400px;
   height: 150px;
   font-size: 15px;
-  margin-bottom: 20px;
-}
-
-.admin-dashboard #email-all-file-input {
-  font-size: 15px;
-  margin-left: 60px;  
-  border: none;
-}
-
-.admin-dashboard #email-all-file-label {
-  margin-bottom: -15px;
+  margin-bottom: 0px;
 }
 
 .admin-dashboard #email-all-back-button {
-  margin-left: 150px;
   margin-top: 0px;
 }
 
 .admin-dashboard #email-a-parent-back-button {
-  margin-left: 150px;
   margin-top: 0px;
 }
 
-
 .admin-dashboard .view-recipients-button {
   display: block;
-  margin-left: 107px;
+  margin-left: 88px;
   background-color: rgb(246, 227, 227);
   color: rgb(83, 52, 72);
   transition: transform 0.3s ease;
-  margin-top: -10px;
+  font-size: 17px;
 }
 
 .admin-dashboard .view-recipients-button:hover {
@@ -935,12 +915,26 @@ body.admin-dashboard {
   font-weight: bold;
 }
 
-#parent-select-label, #email-parent-label {
-  margin-bottom: 10px;
-}
-
 #parent-select {
   font-size: 18px;
+  color: rgb(83, 52, 72);
+  border: 1px solid rgb(83, 52, 72);
+  margin-bottom: 8px;
+}
+
+.admin-dashboard #email-all-file-input {
+  display: none;
+}
+
+.admin-dashboard #send-emails-file-label {
+  color: rgb(83, 52, 72);
+  transition: transform 0.3s ease;
+}
+
+.admin-dashboard #send-emails-file-label:hover {
+  transform: scale(1.1);
+  text-decoration: underline;
+  font-weight: bold;
 }
 
 .admin-dashboard .email-a-parent-title {
@@ -949,14 +943,49 @@ body.admin-dashboard {
 }
 
 .admin-dashboard #email-parent-file-input {
-  font-size: 15px;
-  margin-left: 60px;  
-  border: none;
+  display: none;
+}
+
+.admin-dashboard #send-email-file-label {
+  transition: transform 0.3s ease;
+}
+
+.admin-dashboard #send-email-file-label:hover {
+  transform: scale(1.1);
+  text-decoration: underline;
+  font-weight: bold;
 }
 
 .admin-dashboard .send-email-button {
-  margin-top: -5px;
+  margin-top: 10px;
   margin-bottom: 15px;
+  width: 170px;
 }
 
+.admin-dashboard .email-send-and-back-btn-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
+.admin-dashboard .modal-content {
+  background-color: rgb(246, 227, 227);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0px;
+  height: 30%;
+}
+
+.admin-dashboard #recipients-title {
+  color: rgb(83, 52, 72);
+  font-size: 22px;
+  margin-bottom: 15px;
+  margin-top: -10px;
+}
+
+.admin-dashboard .modal-content ul {
+  text-align: left;
+  margin-bottom: 30px;
+}

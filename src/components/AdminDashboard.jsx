@@ -13,6 +13,7 @@ import '../styles/admindash.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import { generateTimeSlots, getAvailableSlots, filterAvailableSlots } from '../services/sessions';
+import { Helmet } from 'react-helmet';
 
 
 const AdminDashboard = () => {
@@ -644,9 +645,9 @@ const AdminDashboard = () => {
   };
   return (
     <>
-      <head>
-        <script src="https://lint.page/kit/4d0fe3.js" crossorigin="anonymous"></script>
-      </head>
+      <Helmet>
+        <title>Admin Dashboard - KBT</title>
+      </Helmet>
       <body>
         <header>
           <h1>KBT Reading Support</h1>
@@ -734,7 +735,7 @@ const AdminDashboard = () => {
                           )}
                         </ul>
                         <button
-                          id="invoices-back-button"
+                          id="invoice-back-button"
                           className="back-button"
                           onClick={() => setShowInvoices(false)}
                         >
@@ -751,7 +752,7 @@ const AdminDashboard = () => {
                         onChange={(e) => setNote(e.target.value)}
                         placeholder="(Optional) Write a note..."
                       />
-                      <label htmlFor="file-input" className="upload-button">
+                      <label id="invoice-upload-label" htmlFor="file-input" className="upload-button">
                         Click here to upload a PDF of the invoice
                       </label>
                       <input
@@ -762,7 +763,7 @@ const AdminDashboard = () => {
                         onChange={(e) => setFile(e.target.files[0])}
                       />
                       {file && <p>Uploaded File: {file.name}</p>}
-                      <p><strong>An email containing this invoice and the optional note will be sent to {selectedParent.email}</strong></p>
+                      <p id="invoice-email-message"><strong>An email containing this invoice and the optional note will be sent to {selectedParent.email}</strong></p>
                       <div className="buttons-container">
                         <button
                           className="final-send-button"
@@ -891,7 +892,7 @@ const AdminDashboard = () => {
                       <form className="email-all-parents-form" onSubmit={handleSendEmailToAllParents}>
                         <h2 className="email-all-parents-title">Email All Parents</h2>
                         <div className="form-group">
-                          <label id="all-subject-label" for="email-all-subject-input">Enter the subject of the email you want to send:</label>
+                          <label class="send-email-label" htmlFor="email-all-subject-input">Subject of the email:</label>
                           <input
                             className="email-subject-input"
                             id="email-all-subject-input"
@@ -903,7 +904,7 @@ const AdminDashboard = () => {
                           />
                         </div>
                         <div className="form-group">
-                          <label id="all-email-label" for="email-all-email-input">Write your email below:</label>
+                          <label class="send-email-label" for="email-all-email-input">Write the email below:</label>
                           <textarea
                             id="email-all-email-input"
                             className="email-textbox"
@@ -914,27 +915,31 @@ const AdminDashboard = () => {
                           ></textarea>
                         </div>
                         <div className="form-group">
-                          <label id="email-all-file-label" for="email-all-file-input" className="attachment">Attach a file (Optional):</label>
+                          <label class="send-email-label" id="send-emails-file-label" htmlFor="email-all-file-input">Click here to upload a file (Optional)</label>
                           <input id="email-all-file-input" type="file" onChange={handleAttachmentChange} />
                         </div>
-                        <button className="view-recipients-button" type="button" onClick={handleViewRecipients}>
-                          Click here to view recipients
-                        </button>
+                        <div id="view-recipients-div">
+                          <button className="view-recipients-button" type="button" onClick={handleViewRecipients}>
+                            Click here to view recipients
+                          </button>
+                        </div>
+
                         {successMessage && <p className="success-message">{successMessage}</p>}
                         {error && <p className="error-message">{error}</p>}
-                        <button type="submit" className="send-email-button" disabled={loading}>
-                          {loading ? 'Sending...' : 'Send Email'}
-                        </button>
-                        <button type="button" id="email-all-back-button" className="back-button" onClick={handleBackClick}>
-                          Back
-                        </button>
+                        <div class="email-send-and-back-btn-container">
+                          <button type="submit" className="send-email-button" disabled={loading}>
+                            {loading ? 'Sending...' : 'Send Email'}
+                          </button>
+                          <button type="button" id="email-all-back-button" className="back-button" onClick={handleBackClick}>
+                            Back
+                          </button>
+                        </div>
                       </form>
                     )}
                     {showEmailParentForm && (
                       <form className="email-parent-form" onSubmit={handleEmailParent}>
                         <h2 className="email-a-parent-title">Email a Parent</h2>
                         <div className="form-group">
-                          <label id="parent-select-label" for="parent-select">Select the parent you would like to email: </label>
                           <select
                             id="parent-select"
                             value={selectedParentId}
@@ -951,7 +956,7 @@ const AdminDashboard = () => {
                         </div>
                         {selectedParentEmail && (<p className="selected-parent-email">An email will be sent to: <strong>{selectedParentEmail}</strong></p>)}
                         <div className="form-group">
-                          <label id="send-email-subject-label" htmlFor="send-email-subject-input">Subject of the email: </label>
+                          <label class="send-email-label" htmlFor="send-email-subject-input">Subject of the email: </label>
                           <input
                             id="send-email-subject-input"
                             className="email-subject-input"
@@ -963,7 +968,7 @@ const AdminDashboard = () => {
                           />
                         </div>
                         <div className="form-group">
-                          <label id="email-parent-label" for="email-parent-input">Write the email below:</label>
+                          <label class="send-email-label" for="email-parent-input">Write the email below:</label>
                           <textarea
                             id="email-parent-input"
                             className="email-textbox"
@@ -974,22 +979,25 @@ const AdminDashboard = () => {
                           ></textarea>
                         </div>
                         <div className="form-group">
-                          <label id="email-parent-file-label" for="email-parent-file-input">Attach a file (Optional): </label>
+                          <label id="send-email-file-label" class="send-email-label" htmlFor="email-parent-file-input">Click here to upload a file (Optional)</label>
                           <input id="email-parent-file-input" type="file" onChange={handleAttachmentChange} />
                         </div>
                         {successMessage && <p className="success-message">{successMessage}</p>}
                         {error && <p className="error-message">{error}</p>}
-                        <button type="submit" className="send-email-button" disabled={loading}>
-                          {loading ? 'Sending...' : 'Send Email'}
-                        </button>
-                        <button type="button" id="email-a-parent-back-button" className="back-button" onClick={handleBackClick}>
-                          Back
-                        </button>
+                        <div class="email-send-and-back-btn-container">
+                          <button type="submit" className="send-email-button" disabled={loading}>
+                            {loading ? 'Sending...' : 'Send Email'}
+                          </button>
+                          <button type="button" id="email-a-parent-back-button" className="back-button" onClick={handleBackClick}>
+                            Back
+                          </button>
+                        </div>
                       </form>
                     )}
                     {showRecipientsModal && (
                         <div className="modal-overlay">
                           <div className="modal-content">
+                            <h3 id="recipients-title">Recipients</h3>
                             {recipientEmails.length > 0 ? (
                               <ul className="email-list">
                                 {recipientEmails.map((email, index) => (
@@ -1228,7 +1236,6 @@ const AdminDashboard = () => {
         <footer>
           <p>Proudly empowering young readers around the globe, one word at a time.</p>
         </footer>
-        <script src="../scripts/HTMLInclude.min.js"></script>
       </body>
     </>
   );
