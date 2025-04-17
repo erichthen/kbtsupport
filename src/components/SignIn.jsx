@@ -3,6 +3,7 @@ import { useHistory, Redirect } from 'react-router-dom';
 import { loginUser, sendPasswordResetEmail } from '../services/auth'; 
 import { useAuth } from '../context/authContext';
 import '../styles/signin.css'; 
+import { Helmet } from 'react-helmet';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -80,7 +81,9 @@ const SignIn = () => {
   }
   return (
     <>
-      <head></head>
+      <Helmet>
+        <title>Login - KBT</title>
+      </Helmet>
       <body>
         <header>
           <h1>KBT Reading Support</h1>

@@ -53,8 +53,9 @@ body.sign-in {
   width: 200px;
   background-color: #EFC7C2;
   color: #694F5D;
-  margin-top: -30px;
+  margin: -30px 8px;
   padding: 2px;
+  font-size: 19px;
   transition: transform 0.3s ease;
   text-decoration: underline;
 }
@@ -67,14 +68,14 @@ body.sign-in {
 
 .sign-in .welcome-message-1{
   margin-top: 10px;
-  color: white;
+  color: rgb(246, 227, 227);
   font-weight: bold;
   font-size: 24px;
   text-align: center;
 }
 
 .sign-in .forgot-password-title {
-  color: white;
+  color: rgb(246, 227, 227);
   font-weight: bold;
   font-size: 21px;
   text-align: center;
@@ -84,14 +85,14 @@ body.sign-in {
 .sign-in .welcome-message-2 {
   margin-top: -20px;
   margin-bottom: 10px;
-  color: white;
+  color: rgb(246, 227, 227);
   font-size: 17px;
   width: 60%;
   text-align: center;
 }
 
 .sign-in .title {
-  color: white;
+  color: rgb(246, 227, 227);
   margin-bottom: -10px;
 }
 
@@ -108,7 +109,8 @@ body.sign-in {
 .sign-in .sign-in-button {
   margin-right: 8px;
   margin-top: 40px;
-  width: 100px;
+  width: 120px;
+  padding: 4px 10px;
 }
 
 .sign-in header h1 {
@@ -117,6 +119,7 @@ body.sign-in {
   text-decoration: underline;
   text-decoration-color: rgb(83, 52, 73);
   font-size: 42px;
+  margin-top: 23px;
 }
 
 .sign-in #email-input {
@@ -125,8 +128,16 @@ body.sign-in {
   margin-bottom: 20px;
 }
 
+.sign-in #email-input::placeholder {
+  color: rgb(83, 52, 73)
+}
+
 .sign-in #password-input {
   text-align: center;
+}
+
+.sign-in #password-input::placeholder {
+  color: rgb(83, 52, 73);
 }
 
 .sign-in .login-input {
@@ -179,6 +190,7 @@ body.sign-in {
   width: 200px;
   font-size: 16px;
   margin-top: 20px;
+  text-align: center;
 }
 
 .sign-in .forgot-pass-submit { 
