@@ -57,6 +57,7 @@ const AdminDashboard = () => {
   const [errorEmail, setErrorEmail] = useState('');
   const [successMessageEmail, setSuccessMessageEmail] = useState('');
 
+  // applying CSS classes on mount
   useEffect(() => {
     document.body.classList.add('admin-dashboard');
     return () => {
@@ -64,7 +65,10 @@ const AdminDashboard = () => {
     };
   }, []);
 
+  // fetch the sessions from the database on component mount
+  // and store into state
   useEffect(() => {
+    // 
     const fetchSessions = async () => {
       const sessionsData = await getSessions();
       const formattedSessions = sessionsData.map(session => ({
@@ -77,6 +81,8 @@ const AdminDashboard = () => {
     fetchSessions();
   }, []);
 
+
+  //
   useEffect(() => {
     const fetchSlotsForRescheduleToDay = async () => {
       if (!selectedDayToRescheduleTo || isNaN(selectedDayToRescheduleTo.getTime())) {
@@ -103,6 +109,7 @@ const AdminDashboard = () => {
     fetchSlotsForRescheduleToDay();
   }, [selectedDayToRescheduleTo]);
 
+  // load the invoices that haven't been sent for the month
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
@@ -116,6 +123,7 @@ const AdminDashboard = () => {
     fetchInvoices();
   }, []);
 
+  // store parent names into state on load
   useEffect(() => {
     const fetchParents = async () => {
       try {
@@ -135,8 +143,11 @@ const AdminDashboard = () => {
     history.push('/login');
   };
 
+  // send a parent an invitation email that has a link to the registration form
   const handleSendInvite = async (e) => {
     e.preventDefault(); 
+
+    // link to form
     const actionCodeSettings = {
       // url: 'https://kbt-reading-support.web.app/register',
       url: 'http://localhost:3000/register',
@@ -158,6 +169,7 @@ const AdminDashboard = () => {
     }
   };  
 
+  // this is so the calendar knows which days have sessions
   const isDayWithSession = (date) => {
     return sessions.some(session => {
       const sessionDate = new Date(session.session_time);
@@ -169,6 +181,8 @@ const AdminDashboard = () => {
     });
   };
 
+  // when a day with sessions on the calendar is clicked, 
+  // a modal with pop up with info on which sessions and when
   const handleDayClick = (date) => {
     const sessionsForDay = sessions.filter(session => {
       const sessionDate = new Date(session.session_time);
@@ -182,7 +196,7 @@ const AdminDashboard = () => {
     const formattedSessions = sessionsForDay.map(session => {
       const sessionTime = new Date(session.session_time);
   
-      // Set the time explicitly in EST, regardless of the user's local timezone
+      // sets the time explicitly in EST, regardless of the user's local timezone
       const formattedTime = sessionTime.toLocaleString('en-US', {
         timeZone: 'America/New_York',
         hour: '2-digit',
@@ -196,7 +210,8 @@ const AdminDashboard = () => {
         sessionTime: sessionTime
       };
     });
-  
+    
+    // sort the session times in ascending order
     formattedSessions.sort((a, b) => a.sessionTime - b.sessionTime);
   
     setSelectedSessions(formattedSessions);
@@ -204,6 +219,7 @@ const AdminDashboard = () => {
     setShowSessions(true); 
   };
 
+  // closes session popup
   const handleClosePopup = () => {
     setSelectedSessions([]);
     setShowSessions(false); 
@@ -217,6 +233,7 @@ const AdminDashboard = () => {
     setShowCancelConfirmation(false); 
   };
 
+  // on submisson of canceling multiple sessions
   const confirmCancelSessions = async () => {
     if (selectedSessions.length === 0) {
       alert('No sessions selected');
@@ -224,18 +241,18 @@ const AdminDashboard = () => {
     }
 
     try {
-      
       const sessionDate = new Date(selectedSessions[0].session_time);
 
+      // iterate through sessions to be cancelled and email parents of each session
       for (const session of selectedSessions) {
         const parentId = session.parent_id;
-        const sessionTime = new Date(session.session_time).toLocaleString();
+        const sessionDate = new Date(session.session_time).toLocaleString();
 
         const parentEmail = await getParentEmailById(parentId);
 
         const message = `
           Dear Parent,<br>
-          Your child's session on ${sessionTime} has been canceled. We apologize for any inconvenience this may cause.<br>
+          Your child's session on ${sessionDate} has been canceled. We apologize for any inconvenience this may cause.<br>
           Best Regards,<br>
           KBT Reading Support
         `;
@@ -248,6 +265,7 @@ const AdminDashboard = () => {
         console.log(response.data.message || 'Cancelation email sent successfully.');
       }
 
+      // after sending the message, delete the session (logic handled in ../services/sessions.js)
       await deleteSessionsByDate(sessionDate);
 
       alert('All cancelation emails sent and sessions deleted successfully. Refresh to see changes.');
@@ -261,6 +279,7 @@ const AdminDashboard = () => {
     }
   };
 
+  // hide other containers and show reschedule container when clicked
   const handleRescheduleClick = () => {
     setShowCancel(false);
     setShowReschedule(false);
@@ -269,11 +288,13 @@ const AdminDashboard = () => {
     setShowInvoices(false);
   };
 
+  // format how the date is shown in the dropdown and in sessions for day title
   const getFormattedDate = (date) => {
     const options = { month: 'long', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
   };
 
+  // hide other containers, show send email
   const handleSendEmailClick = () => {
     setShowSendEmail(true);
     setShowInviteForm(false);
@@ -284,11 +305,13 @@ const AdminDashboard = () => {
     setShowSessions(false);
   };
 
+  // used when a dropdown option is selected
   const handleDaySelect = (event) => {
     const selected = new Date(event.target.value);
     setSelectedDay(selected); 
   };
 
+  // once user selects a day, filter sessions to only contain sessions on that day
   const sessionsForSelectedDay = selectedDay
     ? sessions.filter(session => {
         const sessionDate = new Date(session.session_time);
@@ -300,29 +323,33 @@ const AdminDashboard = () => {
       })
     : [];
 
-    const handleDayToRescheduleToSelect = async (event) => {
-      const selected = new Date(event.target.value);
-      setSelectedDayToRescheduleTo(selected); 
-    
-      const availableSlots = generateTimeSlots();
-    
-      const bookedSlots = await getAvailableSlots();
-    
-      const filteredSlots = filterAvailableSlots(availableSlots, bookedSlots, selected); 
-    
-      setFilteredSlots(filteredSlots);
+  // once admin selects a day to reschedule, filter for the sessions only on that day
+  // in order to populate the dropdown for that day
+  const handleDayToRescheduleToSelect = async (event) => {
+    const selected = new Date(event.target.value);
+    setSelectedDayToRescheduleTo(selected); 
+  
+    const availableSlots = generateTimeSlots();
+  
+    const bookedSlots = await getAvailableSlots();
+  
+    const filteredSlots = filterAvailableSlots(availableSlots, bookedSlots, selected); 
+  
+    setFilteredSlots(filteredSlots);
   };
 
+  // handle when admin sends an invoice to a client
   const handleSendInvoice = async () => {
     if (!file) {
       alert("Please upload a file");
       return;
     }
-  
+
+    // loading state where button is disabled
     setLoading(true);
     const fileReader = new FileReader();
+    // 
     fileReader.readAsDataURL(file);
-  
     fileReader.onload = async () => {
       const base64File = fileReader.result.split(",")[1];
       try {
@@ -337,14 +364,14 @@ const AdminDashboard = () => {
           }
         );
   
-        // Update the invoice status in the database for the selected parent
+        // update the invoice status in the database for the selected parent
         await updateInvoiceStatus(selectedParent.id, true);
   
-        // Remove the invoice from local state so it no longer appears in the list
+        // remove the invoice from local state so it no longer appears in the list
         setInvoices(invoices.filter((invoice) => invoice.id !== selectedParent.id));
   
         alert("Invoice sent successfully");
-        // Reset the invoice view (similar to handleBackToInvoices in your original logic)
+        // reset the invoice view (similar to handleBackToInvoices)
         setSelectedParent(null);
         setNote("");
       } catch (error) {
@@ -356,21 +383,25 @@ const AdminDashboard = () => {
     };
   };
 
+  // when admin confirms reschedule 
   const handleRescheduleSession = async () => {
     try {
 
       setLoading(true);
+      // for debugging
       console.log("Selected Day:", selectedDay);
       console.log("Selected Session:", selectedSession);
       console.log("Selected Day to Reschedule To:", selectedDayToRescheduleTo);
       console.log("Selected Time Slot:", selectedTimeSlot);
   
+      // if any of the fields are empty
       if (!selectedDay || !selectedSession || !selectedDayToRescheduleTo || !selectedTimeSlot) {
         alert("Please fill out all of the fields.");
         setLoading(false);
         return;
       }
-  
+      
+      // for debugging a database issue
       if (!selectedSession.id) {
         console.error("Selected session does not have an ID.");
         setLoading(false);
@@ -380,6 +411,7 @@ const AdminDashboard = () => {
       await deleteSessionById(selectedSession.id);
       console.log(`Session for ${selectedSession.child_name} on ${selectedSession.session_time} deleted successfully.`);
   
+      // deconstruct the date object info for the selected session to reschedule
       const timeParts = selectedTimeSlot.split(':');
       let hours = parseInt(timeParts[0], 10);
       const minutes = parseInt(timeParts[1], 10);
@@ -390,16 +422,19 @@ const AdminDashboard = () => {
       } else if (selectedTimeSlot.includes('AM') && hours === 12) {
         hours = 0; 
       }
-  
+      
+      // construct the date object for the newly scheduled session
       const sessionData = {
         session_time: new Date(selectedDayToRescheduleTo.setHours(hours, minutes, 0, 0)).toISOString(),
         child_name: selectedSession.child_name,
         parent_id: selectedSession.parent_id,
       };
   
+      // add the session
       const newSessionId = await addSession(selectedSession.parent_id, sessionData);
       console.log(`Rescheduled session added successfully with ID: ${newSessionId}`);
   
+      // get the parent info so an email can be sent
       const parentData = await getParentByDocumentId(selectedSession.parent_id);
   
       if (!parentData) {
@@ -408,6 +443,7 @@ const AdminDashboard = () => {
         return;
       }
   
+      // call the sendAdminReschedule firebase cloud function to send the email to the parent
       const sendAdminRescheduleEmail = httpsCallable(functions, 'sendAdminReschedule');
       const emailResponse = await sendAdminRescheduleEmail({
         parentEmail: parentData.email,
@@ -433,19 +469,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeleteSessionsNotRaffaele = async () => {
-    try {
-      setLoading(true); // Optional: Show loading indicator
-      await deleteSessionsNotRaffaele();
-      alert("Sessions not associated with 'Raffaele' have been deleted successfully.");
-    } catch (error) {
-      console.error("Error deleting sessions:", error);
-      alert("Failed to delete sessions. Please try again.");
-    } finally {
-      setLoading(false); // Optional: Hide loading indicator
-    }
-  };
-
   const handleEmailParentClick = () => {
     setShowEmailParentForm(true);
     setShowEmailAllParentsForm(false);
@@ -456,6 +479,7 @@ const AdminDashboard = () => {
     setShowEmailAllParentsForm(true);
   };
 
+  // process the file so it can be sent in the email
   const handleAttachmentChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -472,25 +496,31 @@ const AdminDashboard = () => {
     }
   };
 
+  // emailing all parents
   const handleSendEmailToAllParents = async (e) => {
     e.preventDefault();
     setLoadingEmail(true);
     setSuccessMessageEmail("");
     setErrorEmail("");
   
+    // sessions.js helper 
     const emails = await getAllParentEmails();
     if (emails.length === 0) {
       setErrorEmail("There are no recipients");
       setLoadingEmail(false);
       return;
     }
+    // try calling the firebase cloud function
     try {
       const sendEmailToAllParents = httpsCallable(functions, "emailAllParents");
       const response = await sendEmailToAllParents({
+        // these are set using useStates in the return component
         subject,
         message,
         attachment,
       });
+
+      // clear the fields when email is sent
       if (response.data.success) {
         setSuccessMessageEmail("Email sent successfully to all parents!");
         setSubject("");
@@ -507,6 +537,7 @@ const AdminDashboard = () => {
     }
   };
 
+  // view the emails of each parent that will receieve the message
   const handleViewRecipients = async () => {
     try {
       const emails = await getAllParentEmails();
@@ -518,6 +549,7 @@ const AdminDashboard = () => {
     }
   };
 
+  // when a parent is selected or changed in the email a parent menu
   const handleParentChange = (e) => {
     const parentId = e.target.value;
     setSelectedParentId(parentId);
@@ -577,11 +609,12 @@ const AdminDashboard = () => {
       setMessage('');
       setAttachment(null);
     } else {
-      // Otherwise, just hide the send email branch.
+      // otherwise, just hide the send email branch.
       setShowSendEmail(false);
     }
   };
 
+  // populate dropdown for options when rescheduling a session
   const getAllDaysForNextThreeMonths = () => {
     const days = [];
     const today = new Date();
@@ -614,7 +647,8 @@ const AdminDashboard = () => {
         setLoading(false);
         return;
       }
-  
+      
+      // format the date of the canceled session for the email
       const sessionDateFormatted = new Date(selectedDay).toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
   
       const sendAdminCancel = httpsCallable(functions, 'sendAdminCancel');
@@ -627,6 +661,7 @@ const AdminDashboard = () => {
       if (emailResponse.data.success) {
         alert("Cancelation email sent successfully.");
   
+        // remove session from db if the email was sent successfully
         await deleteSessionById(selectedSession.id);
   
         alert("Session canceled successfully. Refresh to see changes.");
@@ -643,6 +678,7 @@ const AdminDashboard = () => {
       setLoading(false);
     }
   };
+  
   return (
     <>
       <Helmet>
@@ -1238,7 +1274,5 @@ const AdminDashboard = () => {
     </>
   );
 };
-
-  
 
   export default AdminDashboard;

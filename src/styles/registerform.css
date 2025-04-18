@@ -3,10 +3,10 @@ body.registration-form {
   background-color: #694F5D;
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
   align-items: center;
   height: 100vh;
   margin: 0;
+  box-sizing: border-box;
 }
 
 .registration-form header {
@@ -14,30 +14,37 @@ body.registration-form {
   top: 0;
   left: 0;
   z-index: 1000;
-  height: 127px;
+  height: 115px;
   width: 100vw;
   background-color: #EFC7C2;
   text-align: center;
 }
 
 .registration-form header h1 {
-  margin-bottom: 20px;
+  text-decoration: none;
+  margin-top: 15px;
+  margin-bottom: -23px;
   color: rgb(83, 52, 73);
   font-size: 40px;
-  margin-top: 23px;
-  margin-bottom: 18px;
+}
+
+.registration-form header nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .registration-form header nav button {
+  /* background-color: #EFC7C2; */
+  background-color: transparent;
+  color: rgb(83, 52, 73);
   width: 200px;
   font-size: 18px;
-  background-color: #EFC7C2;
-  color: rgb(83, 52, 73);
-  margin: -30px 8px;
-  padding: 2px;
-  transition: transform 0.3s ease;
   text-decoration: underline;
   font-weight: bold;
+  transition: transform 0.3s ease;
 }
 
 .registration-form header nav button:hover {
@@ -77,6 +84,7 @@ body.registration-form {
 .registration-form .register-message-1 {
   margin-top: 20px;
   color: rgb(246, 227, 227);
+  margin-bottom: 35px;
   font-weight: bold;
   font-size: 24px;
   text-align: center;
@@ -86,11 +94,10 @@ body.registration-form {
 .registration-form .register-message-2 {
   color: rgb(246, 227, 227);
   font-weight: bold;
-  font-size: 17px;
+  font-size: 16px;
   text-align: center;
-  width: 60%;
   margin-top: -30px;
-  margin-bottom: -10px;
+  margin-bottom: -20px;
 }
 
 .registration-form .report-issue-link {
@@ -117,18 +124,6 @@ body.registration-form {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   text-align: center;
   padding: 30px;
-}
-
-.registration-form h1 {
-  margin-top: 80px;
-  font-size: 36px;
-  margin-bottom: -60px;
-}
-
-.registration-form h2 {
-  color: rgb(83, 52, 73);
-  font-size: 30px;
-  margin-bottom: 40px;
 }
 
 .registration-form input,

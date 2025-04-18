@@ -274,7 +274,7 @@ const RegistrationForm = () => {
               <>
                 <h2 className="register-message-1">Welcome!</h2>
                 <h4 className="register-message-2">
-                  Please complete these steps to register.
+                   Complete these steps to register
                 </h4>
               </>
             )}

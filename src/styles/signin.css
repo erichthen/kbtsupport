@@ -6,6 +6,7 @@ body.sign-in {
   align-items: center;
   height: 100vh;
   margin: 0;
+  box-sizing: border-box;
 }
 
 .sign-in header {
@@ -32,12 +33,12 @@ body.sign-in {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 20px;
   margin-top: -25px;
+  margin-left: 9px;
 }
 
 .sign-in header nav button {
-  background-color: #EFC7C2;
+  background-color: transparent;
   color: rgb(83, 52, 73);
   width: 200px;
   font-size: 18px;
@@ -58,6 +59,16 @@ body.sign-in {
   min-height: calc(100vh - 100px);
 }
 
+.sign-in .container {
+  background-color: rgb(246, 227, 227);
+  padding: 10px;
+  border-radius: 27px;
+  width: 350px;
+  text-align: center;
+  /* border: 9px solid #d6ada8; */
+  border: 9px solid #a7817c;
+}
+
 .sign-in footer {
   width: 100%;
   background-color: rgb(246, 227, 227);
@@ -73,7 +84,6 @@ body.sign-in {
   color: rgb(83, 52, 73);
   font-style: italic;
 }
-
 
 .sign-in header nav button:hover {
   transform: scale(1.3);
@@ -109,16 +119,6 @@ body.sign-in {
 .sign-in .title {
   color: rgb(246, 227, 227);
   margin-bottom: -10px;
-}
-
-.sign-in .container {
-  background-color: rgb(246, 227, 227);
-  padding: 10px;
-  border-radius: 27px;
-  width: 350px;
-  text-align: center;
-  /* border: 9px solid #d6ada8; */
-  border: 9px solid #a7817c;
 }
 
 .sign-in .sign-in-button {
