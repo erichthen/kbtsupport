@@ -1079,7 +1079,7 @@ const AdminDashboard = () => {
                         Cancel Sessions
                       </button>
                     )}
-                    <button className="back-button" onClick={handleClosePopup}>
+                    <button className="back-button" id="day-click-back" onClick={handleClosePopup}>
                       Back
                     </button>
                   </div>

@@ -307,8 +307,6 @@ body.admin-dashboard {
   cursor: pointer;
   width: fit-content; 
   z-index: 1000;
-  margin-top: 50px;
-  margin-bottom: -50px;
 }
 
 .admin-dashboard .cancel-sessions-button:hover {
@@ -510,6 +508,10 @@ body.admin-dashboard {
 .session-container .close-button:hover {
   color: red;
   background: none;
+}
+
+.admin-dashboard .session-container {
+  padding: 0px;
 }
 
 .admin-dashboard .session-info {
