@@ -78,7 +78,8 @@ const SignIn = () => {
     } else {
       return <Redirect to="/dashboard" />;
     }
-  }
+  } 
+
   return (
     <>
       <Helmet>
@@ -88,105 +89,110 @@ const SignIn = () => {
         <header>
           <h1>KBT Reading Support</h1>
           <nav>
-            <button className="contact-us-button">Contact Us</button>
-            <button className="contact-us-button">About Us</button>
+            <button className="contact-us-button" onClick={() => history.push('/contact-us')}>Contact Us</button>
+            <button className="contact-us-button" onClick={() => history.push('/about-us')}>About Us</button>
           </nav>
         </header>
         <main>
           <div className="main-container">
-                {showForgotPassword ? (
-                  <h3 className="forgot-password-title">Password Reset</h3>
-                ) : (
-                  <>
-                    <h4 className="welcome-message-1">Welcome!</h4>
-                    <h4 className="welcome-message-2">Please enter the credentials you set up while registering.</h4>
-                  </>
-                )}
-                {showForgotPassword ? (
-                  <div className="forgot-password-container">
-                    <form
-                      className="forgot-password-form"
-                      onSubmit={handleForgotPassword}
-                    >
-                      <input
-                        type="email"
-                        className="emailforreset"
-                        value={forgotPasswordEmail}
-                        onChange={(e) => {
-                          setForgotPasswordEmail(e.target.value);
-                          setError('');
-                          setDisableResetButtonAfterError(false);
-                        }}
-                        placeholder="Enter your email"
-                        required
-                      />
-                      {error && <div className="error">{error}</div>}
-                      <button
-                        className="forgot-pass-submit"
-                        type="submit"
-                        disabled={!isEmailValid || disableResetButtonAfterError}
-                      >
-                        Send reset email
-                      </button>
-                    </form>
-                    <button
-                      className="forgot-back-button"
-                      onClick={() => {
-                        setShowForgotPassword(false);
+            {showForgotPassword ? (
+              <h3 className="forgot-password-title">Password Reset</h3>
+            ) : (
+              <>
+                <h4 className="welcome-message-1">Welcome!</h4>
+                <h4 className="welcome-message-2">Please enter the credentials you set up while registering. <br /><br /> NOTE TO PEER REVIEWERS: view the email I sent</h4>
+                {/* <h4 className="welcome-message-2">Please enter the credentials you set up while registering</h4> */}
+              </>
+            )}
+  
+            {showForgotPassword ? (
+              <div className="forgot-password-container">
+                <form className="forgot-password-form" onSubmit={handleForgotPassword}>
+                  <input
+                    type="email"
+                    className="emailforreset"
+                    value={forgotPasswordEmail}
+                    onChange={(e) => {
+                      setForgotPasswordEmail(e.target.value);
+                      setError('');
+                      setDisableResetButtonAfterError(false);
+                    }}
+                    placeholder="Enter your email"
+                    required
+                  />
+                  {error && <div className="error">{error}</div>}
+                  <button
+                    className="forgot-pass-submit"
+                    type="submit"
+                    disabled={!isEmailValid || disableResetButtonAfterError}
+                  >
+                    Send reset email
+                  </button>
+                </form>
+                <button
+                  className="forgot-back-button"
+                  onClick={() => {
+                    setShowForgotPassword(false);
+                    setError('');
+                  }}
+                >
+                  Go Back
+                </button>
+              </div>
+            ) : (
+              <div className="container">
+                <img src="/logo.jpg" alt="KBT Logo" className="login-logo" />
+                <form onSubmit={handleSubmit}>
+                  <div>
+                    <input
+                      id="email-input"
+                      className="login-input"
+                      name="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
                         setError('');
                       }}
-                    >
-                      Go Back
-                    </button>
-                  </div>
-                ) : (
-                  <div className="container">
-                    <form onSubmit={handleSubmit}>
-                      <div>
-                        <input
-                          id="email-input"
-                          className="login-input"
-                          name="email"
-                          type="email"
-                          value={email}
-                          onChange={(e) => {
-                            setEmail(e.target.value);
-                            setError('');
-                          }}
-                          placeholder="Enter your email"
-                          required
-                        />
-                        <input
-                          id="password-input"
-                          className="login-input"
-                          name="password"
-                          type="password"
-                          value={password}
-                          onChange={(e) => {
-                            setPassword(e.target.value);
-                            setError('');
-                          }}
-                          placeholder="Enter your password"
-                          autoComplete="new-password"
-                          required
-                        />
-                      </div>
-                      {error && <div className="error">{error}</div>}
-                      <button className="sign-in-button" type="submit" disabled={!isFormValid || disableButtonAfterError}>
-                        Sign In
-                      </button>
-                    </form>
-                    <button className="forgot-password-link"
-                      onClick={() => {
-                        setShowForgotPassword(true);
-                        setError(false);
+                      placeholder="Enter your email"
+                      required
+                    />
+                    <input
+                      id="password-input"
+                      className="login-input"
+                      name="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        setError('');
                       }}
-                    >
-                        Forgot Password?
-                    </button>
+                      placeholder="Enter your password"
+                      autoComplete="new-password"
+                      required
+                    />
                   </div>
-                )}
-            </div>
+                  {error && <div className="error">{error}</div>}
+                  <button
+                    className="sign-in-button"
+                    type="submit"
+                    disabled={!isFormValid || disableButtonAfterError}
+                  >
+                    Sign In
+                  </button>
+                </form>
+                <button
+                  className="forgot-password-link"
+                  onClick={() => {
+                    setShowForgotPassword(true);
+                    setError(false);
+                  }}
+                >
+                  Forgot Password?
+                </button>
+              </div>
+            )}
+          </div>
         </main>
         <footer>
           <p>Proudly empowering young readers around the globe, one word at a time.</p>
@@ -194,6 +200,7 @@ const SignIn = () => {
       </body>
     </>
   );
+
 };
 
 export default SignIn;

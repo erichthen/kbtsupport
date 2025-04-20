@@ -6,6 +6,8 @@ import RegistrationForm from './components/RegistrationForm';
 import DashBoard from './components/DashBoard';
 import AdminDashboard from './components/AdminDashboard';
 import ReportIssue from './components/ReportIssue';
+import Contact from './components/Contact';
+import About from './components/About';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const { user } = useAuth();
@@ -49,6 +51,8 @@ const App = () => {
           <Route path="/report-an-issue" component={ReportIssue} />
           <PrivateRoute path="/dashboard" component={DashBoard} />
           <AdminRoute exact path="/admin" component={AdminDashboard} />
+          <Route path="/contact-us" component={Contact} />
+          <Route path="/about-us" component={About} />
           <Route exact path="/" render={() => <Redirect to="/login" />} />
         </Switch>
       </Router>

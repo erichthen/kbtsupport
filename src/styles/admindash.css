@@ -139,7 +139,7 @@ body.admin-dashboard {
   margin-top: 50px;
   border: none;
   border-radius: 27px;
-  border: 9px solid #d6ada8;
+  border: 9px solid #a7817c;
 }
 
 .admin-dashboard .add-client-title {
@@ -286,9 +286,9 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .calendar-container {
-  background-color: #a7817c;;
-  padding: 15px;
-  border-radius: 27px;
+  background-color: #a7817c;
+  padding: 11px;
+  border-radius: 15px;
 }
 
 .admin-dashboard .sessions-buttons {
@@ -342,7 +342,7 @@ body.admin-dashboard {
   margin-top: 50px;
   border: none;
   border-radius: 27px;
-  border: 9px solid #d6ada8;
+  border: 9px solid #a7817c;
 }
 
 .admin-dashboard #reschedule-note {
@@ -394,7 +394,9 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .options-buttons {
-  width: 400px;
+  width: 295px;
+  margin-right: 20px;
+  margin-left: 20px;
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
@@ -470,7 +472,7 @@ body.admin-dashboard {
   margin-top: 50px;
   border: none;
   border-radius: 27px;
-  border: 9px solid #d6ada8;
+  border: 9px solid #a7817c;
 }
 
 
@@ -635,7 +637,7 @@ body.admin-dashboard {
   max-width: 400px;
   margin-top: 50px;
   border-radius: 27px;
-  border: 9px solid #d6ada8;
+  border: 9px solid #a7817c;
   padding: 10px;
 }
 
@@ -794,7 +796,7 @@ body.admin-dashboard {
   text-align: center;
   margin-top: 50px;
   border-radius: 27px;
-  border: 9px solid #EFC7C2;
+  border: 9px solid #a7817c;
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -814,7 +816,7 @@ body.admin-dashboard {
   text-align: center;
   margin-top: 50px;
   border-radius: 27px;
-  border: 9px solid #d6ada8;
+  border: 9px solid #a7817c;
 }
 
 .admin-dashboard .option-buttons {
@@ -822,10 +824,13 @@ body.admin-dashboard {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin: 10px;
+  /* margin: 10px; */
+  margin-left: 12px;
+  margin-right: 12px;
   width: 175px;
   padding: 12px;
   font-size: 18px;
+  margin-bottom: 20px;
   background-color: #694F5D;
 }
 
@@ -835,7 +840,6 @@ body.admin-dashboard {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 20px;
 }
 
 .admin-dashboard .email-option-button {
@@ -843,12 +847,14 @@ body.admin-dashboard {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 175px;
+  width: 125px;
   margin: 10;
+  margin-left: 12px;
+  margin-right: 12px;
   padding: 12px;
   font-size: 18px;
   background-color: #694F5D;
-  margin-bottom: -5px;
+  margin-bottom: 5px;
 }
 
 .admin-dashboard .email-all-parents-title {
@@ -873,6 +879,10 @@ body.admin-dashboard {
   margin-bottom: 10px;
   margin-top: 15px;
   font-size: 17px;
+}
+
+.admin-dashboard .email-list {
+  margin-left: -20px;
 }
 
 #send-email-subject-label {
@@ -974,7 +984,7 @@ body.admin-dashboard {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0px;
+  padding: 10px;
   height: 30%;
 }
 

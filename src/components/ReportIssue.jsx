@@ -3,6 +3,7 @@ import { httpsCallable } from "firebase/functions";
 import { functions } from "../firebaseConfig";
 import { useHistory, useLocation } from "react-router-dom";
 import '../styles/reportissue.css';
+import { Helmet } from 'react-helmet';
 
 const ReportIssue = () => {
   const [issue, setIssue] = useState("");
@@ -51,40 +52,50 @@ const ReportIssue = () => {
   };
 
   return (
-    <div className="outer-container">
-      <div className="main-container">
-        <div className="report-issue-container">
-          {submitted ? (
-            <p className="thank-you-message">
-              Thank you for reporting your issue. It will be resolved as soon as possible.
-            </p>
-          ) : (
-            <>
-              <h1 className="report-title">Report an Issue</h1>
-              <form onSubmit={handleSubmit}>
-                <textarea
-                  className="report-issue-textarea"
-                  placeholder="Please describe the issue you're facing..."
-                  value={issue}
-                  onChange={(e) => setIssue(e.target.value)}
-                />
-                <button className="report-submit-button" type="submit" disabled={loading}>
-                  {loading ? "Submitting..." : "Submit"}
-                </button>
-              </form>
-            </>
-          )}
-
-          <button
-            className="report-back-button"
-            onClick={() => history.push(from)}
-          >
-            Back
-          </button>
-        </div>
-      </div>
-    </div>
+    <>
+      <Helmet>
+        <title>Report an Issue - KBT</title>
+      </Helmet>
+      <body>
+        <header>
+          <h1>KBT Reading Support</h1>
+          <nav>
+            <button className="contact-us-button">Contact Us</button>
+            <button className="contact-us-button">About Us</button>
+          </nav>
+        </header>
+        <main>
+          <div className="main-container">
+            <h2>Report an Issue</h2>
+            <div className="report-issue-container">
+              {submitted ? (
+                <p className="thank-you-message">Thank you for reporting your issue. It will be resolved as soon as possible.</p>
+              ) : (
+                <>
+                  <form onSubmit={handleSubmit}>
+                    <textarea
+                      className="report-issue-textarea"
+                      placeholder="Please describe the issue you're facing..."
+                      value={issue}
+                      onChange={(e) => setIssue(e.target.value)}
+                    />
+                    <button className="report-submit-button" type="submit" disabled={loading}>
+                      {loading ? "Submitting..." : "Submit Issue"}
+                    </button>
+                  </form>
+                </>
+              )}
+              <button className="report-back-button" onClick={() => history.push(from)}>Back</button>
+            </div>
+          </div>
+        </main>
+        <footer>
+          <p>Proudly empowering young readers around the globe, one word at a time.</p>
+        </footer>
+      </body>
+    </>
   );
+
 };
 
 export default ReportIssue;
