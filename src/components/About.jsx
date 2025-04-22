@@ -47,8 +47,8 @@ const AboutUs = () => {
 
       <main>
         <div className="main-container">
-          <div className="container">
             <h2>About KBT Reading Support LLC.</h2>
+          <div className="container">
             {/* <img src="/logo.jpg" alt="KBT Logo" className="contact-logo" /> */}
             <p className="first-about-text">
               KBT Reading support (Est. 2019) was founded and is run entirely by  

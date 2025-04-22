@@ -83,9 +83,11 @@ body.about-us {
     /* min-height: calc(100vh - 100px); */
 }
 
-.about-us .container h2 {
+.about-us .main-container h2 {
     font-size: 26px;
-    margin-bottom: 25px;
+    margin-top: 50px;
+    color: rgb(246, 227, 227);
+    margin-bottom: -10px;
 }
 
 .about-us .container p {
@@ -170,4 +172,8 @@ body.about-us {
 
 .about-us .contact-link:hover {
     transform: scale(1.1);
+}
+
+.about-us .container .first-about-text {
+    margin-top: 20px;
 }
