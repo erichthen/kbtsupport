@@ -74,6 +74,7 @@ const Contact = () => {
 
         <main>
           <div className="main-container">
+            <h2>Reach out to us!</h2>
             <div className="container">
 
               {/** Initial view */}
@@ -152,6 +153,7 @@ const Contact = () => {
                   </fieldset>
 
                   {hasChild === 'yes' && (
+                    <>
                     <label className="child-age-label">
                       Child Age:
                       <input
@@ -162,6 +164,12 @@ const Contact = () => {
                         required
                       />
                     </label>
+
+                    <label className="child-needs-label"> 
+                        Briefly describe your childs needs:
+                        <textarea className="child-needs-text"></textarea>
+                    </label>
+                    </>
                   )}
 
                   {hasChild === 'no' && (

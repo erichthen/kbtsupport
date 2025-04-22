@@ -82,6 +82,11 @@ body.contact-us {
     min-height: calc(100vh - 100px);
 }
 
+.contact-us .main-container h2 {
+    color: rgb(246, 227, 227);
+    margin-bottom: -10px;
+}
+
 .contact-us .container {
     background-color: rgb(246, 227, 227);
     padding: 10px;
@@ -95,7 +100,7 @@ body.contact-us {
 
 .contact-us .container .contact-logo {
     display: block;
-    margin: 0 auto 20px;
+    margin: 15px auto 20px;
     max-width: 100px;
     height: auto;
 }
@@ -197,9 +202,13 @@ body.contact-us {
     transition: transform 0.3s ease;
   }
 
-  /* .contact-us .show-form-button {
-    padding: 6;
-  } */
+  .contact-us .show-form-button {
+    margin-bottom: 25px;
+  }
+
+  .contact-us .container p {
+    margin-bottom: -5px;
+  }
 
   .contact-us-form .close-form-button {
     background-color: rgb(246, 227, 227);
@@ -219,7 +228,7 @@ body.contact-us {
 
   .contact-us .return-login-button {
     display: block;
-    margin: 10px auto 0;
+    margin: 10px auto 10px;
     background-color: rgb(246, 227, 227);
     color: rgb(83, 52, 73);
     text-decoration: underline;

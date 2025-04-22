@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { sendSignInLink, logoutUser } from '../services/auth';
 import DatePicker from 'react-datepicker';
-import { deleteSessionsNotRaffaele } from '../services/sessions';
+// import { deleteSessionsNotRaffaele } from '../services/sessions';
 import { getSessions, deleteSessionsByDate, deleteSessionById, addSession } from '../services/sessions';
 import { getParentEmailById, getParentByDocumentId, updateInvoiceStatus, getParents, getAllParentEmails, getAllParentNames } from '../services/firestore';
 import { functions } from '../firebaseConfig';

@@ -510,6 +510,10 @@ body.admin-dashboard {
   background: none;
 }
 
+.admin-dashboard .close-modal-button {
+  margin-bottom: -20px;
+}
+
 .admin-dashboard .session-container {
   padding: 0px;
 }
@@ -988,13 +992,14 @@ body.admin-dashboard {
   justify-content: center;
   padding: 10px;
   height: 30%;
+  border: 9px solid #a7817c;
 }
 
 .admin-dashboard #recipients-title {
   color: rgb(83, 52, 72);
   font-size: 22px;
   margin-bottom: 15px;
-  margin-top: -10px;
+  margin-top: -20px;
 }
 
 .admin-dashboard .modal-content ul {
