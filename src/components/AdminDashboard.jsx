@@ -158,7 +158,7 @@ const AdminDashboard = () => {
       setLoading(true);
       await sendSignInLink(email, actionCodeSettings);
       setSuccessMessage('Registration email sent successfully.');
-      setEmail('');
+      setEmail('');ƒ
     } catch (error) {
       setError(error);
       console.error('Error sending sign-in link:', error);
@@ -686,7 +686,7 @@ const AdminDashboard = () => {
       </Helmet>
       <body>
         <header>
-          <h1>Blah blah blah</h1>
+          <h1>KBT Reading Support</h1>
           <nav>
             <button
               className="nav-button"
@@ -905,7 +905,7 @@ const AdminDashboard = () => {
               ) : showSendEmail ? (
                 <div className="send-emails">
                     {!showEmailParentForm && !showEmailAllParentsForm && (
-                      <h2 className="send-email-title">Send an email to</h2>
+                      <h2 className="send-email-title">Send an email to...</h2>
                     )}
                     {!showEmailParentForm && !showEmailAllParentsForm && (
                       <>
