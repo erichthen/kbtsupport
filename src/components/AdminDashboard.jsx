@@ -149,8 +149,8 @@ const AdminDashboard = () => {
 
     // link to form
     const actionCodeSettings = {
-      // url: 'https://kbt-reading-support.web.app/register',
-      url: 'http://localhost:3000/register',
+      url: 'https://kbt-reading-support.web.app/register',
+      // url: 'http://localhost:3000/register',
       handleCodeInApp: true,
     };
     
@@ -686,7 +686,7 @@ const AdminDashboard = () => {
       </Helmet>
       <body>
         <header>
-          <h1>KBT Reading Support</h1>
+          <h1>Blah blah blah</h1>
           <nav>
             <button
               className="nav-button"
@@ -905,7 +905,7 @@ const AdminDashboard = () => {
               ) : showSendEmail ? (
                 <div className="send-emails">
                     {!showEmailParentForm && !showEmailAllParentsForm && (
-                      <h2 className="send-email-title">Send an email to...</h2>
+                      <h2 className="send-email-title">Send an email to</h2>
                     )}
                     {!showEmailParentForm && !showEmailAllParentsForm && (
                       <>
