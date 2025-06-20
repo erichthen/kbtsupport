@@ -235,9 +235,13 @@ body.sign-in {
   background-color: rgb(246, 227, 227);
   color: rgb(83, 52, 73);
   margin-bottom: 0px;
+  transition: transform 0.3s ease;
 }
 
-.sign-in .forgot-back-button:hover
+.sign-in .forgot-back-button:hover {
+  background-color: transparent;
+  transform: scale(1.1);
+}
 
 .sign-in .emailforreset {
   margin-top: 20px;

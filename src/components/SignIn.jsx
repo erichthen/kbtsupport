@@ -100,8 +100,7 @@ const SignIn = () => {
             ) : (
               <>
                 <h4 className="welcome-message-1">Welcome!</h4>
-                <h4 className="welcome-message-2">Please enter the credentials you set up while registering. <br /><br /> Note to peer reviewers: check the email I sent</h4>
-                {/* <h4 className="welcome-message-2">Please enter the credentials you set up while registering</h4> */}
+                <h4 className="welcome-message-2">Please enter the credentials you set up while registering.</h4>
               </>
             )}
   

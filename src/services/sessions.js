@@ -169,26 +169,26 @@ export const deleteSessionById = async (sessionId) => {
   }
 };
 
-export const deleteSessionsNotRaffaele = async () => {
-  try {
-    const batch = writeBatch(db);
-    const sessionsRef = collection(db, 'sessions');
+// export const deleteSessionsNotRaffaele = async () => {
+//   try {
+//     const batch = writeBatch(db);
+//     const sessionsRef = collection(db, 'sessions');
 
-    const q = query(sessionsRef, where('child_name', '!=', 'Raffaele'));
-    const querySnapshot = await getDocs(q);
+//     const q = query(sessionsRef, where('child_name', '!=', 'Raffaele'));
+//     const querySnapshot = await getDocs(q);
 
-    if (querySnapshot.empty) {
-      console.log('No sessions found with a child name other than Raffaele.');
-      return;
-    }
+//     if (querySnapshot.empty) {
+//       console.log('No sessions found with a child name other than Raffaele.');
+//       return;
+//     }
 
-    querySnapshot.forEach((doc) => {
-      batch.delete(doc.ref);
-    });
+//     querySnapshot.forEach((doc) => {
+//       batch.delete(doc.ref);
+//     });
 
-    await batch.commit();
-    console.log('Sessions not belonging to Raffaele deleted successfully');
-  } catch (error) {
-    console.error('Error deleting sessions:', error);
-  }
-};
+//     await batch.commit();
+//     console.log('Sessions not belonging to Raffaele deleted successfully');
+//   } catch (error) {
+//     console.error('Error deleting sessions:', error);
+//   }
+// };

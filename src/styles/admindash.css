@@ -75,7 +75,7 @@ body.admin-dashboard {
 }
 
 .admin-dashboard .greeting {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgb(246, 227, 227);
   text-align: center;
   font-size: 27px;
   margin-top: 50px;

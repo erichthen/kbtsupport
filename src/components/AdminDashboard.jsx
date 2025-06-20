@@ -158,7 +158,7 @@ const AdminDashboard = () => {
       setLoading(true);
       await sendSignInLink(email, actionCodeSettings);
       setSuccessMessage('Registration email sent successfully.');
-      setEmail('');ƒ
+      setEmail('');
     } catch (error) {
       setError(error);
       console.error('Error sending sign-in link:', error);
