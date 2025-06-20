@@ -23,6 +23,7 @@ const DashBoard = () => {
   const [showReschedule, setShowReschedule] = useState(false);
   const [selectedDayToCancel, setSelectedDayToCancel] = useState(null); 
   const [selectedDayToRescheduleTo, setSelectedDayToRescheduleTo] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(null); 
   const [filteredSlots, setFilteredSlots] = useState([]); 
   const [showCancel, setShowCancel] = useState(false); 
   const [cancelReason, setCancelReason] = useState('');
@@ -168,6 +169,7 @@ const DashBoard = () => {
 
   const showRescheduleSession = () => {
     setShowReschedule(true); 
+    setShowOptions(false);
   };
 
   const handleClosePopup = () => {
@@ -251,6 +253,22 @@ const DashBoard = () => {
       new Date(session.session_time).toDateString() === date.toDateString()
     );
     setSelectedSessions(sessionsForDay);
+  };
+
+  const handleDaySelect = (event) => {
+    const selected = new Date(event.target.value);
+    setSelectedDay(selected); 
+  
+    const filteredSessionsForDay = sessions.filter(session => {
+      const sessionDate = new Date(session.session_time);
+      return (
+        sessionDate.getFullYear() === selected.getFullYear() &&
+        sessionDate.getMonth() === selected.getMonth() &&
+        sessionDate.getDate() === selected.getDate()
+      );
+    });
+  
+    setSelectedSessions(filteredSessionsForDay); 
   };
 
   const handleShowRescheduleAllForm = () => {
@@ -697,7 +715,68 @@ const DashBoard = () => {
               {/*** Reschedule Single ***/}
               {showReschedule && (
                 <div className="reschedule-container">
-                  {/* ... your existing reschedule form markup ... */}
+                  <h2 className="reschedule-title">Reschedule a Session</h2>
+  
+                  <select className="reschedule-dropdown" onChange={handleDaySelect}>
+                    <option value="">Select day of session</option>
+                    {sortedSessions.map((session, index) => (
+                      <option key={index} value={session.session_time}>
+                        {new Date(session.session_time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+                      </option>
+                    ))}
+                  </select>
+                  
+                  <select className="reschedule-dropdown" onChange={(e) => setSelectedSession(e.target.value)}>
+                    {selectedSessions.length > 0 ? (
+                      selectedSessions.map((session, index) => (
+                        <option key={index} value={session.id}>
+                          {`${session.child_name} at ${session.session_time.toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true,
+                          })}`}
+                        </option>
+                      ))
+                    ) : (
+                      <option>No sessions available</option>
+                    )}
+                  </select>
+                  
+                  <select className="reschedule-dropdown" onChange={handleDayToRescheduleToSelect}>
+                    <option value="">Select new day</option>
+                    {getAllDaysForThreeMonths().map((day, index) => (
+                      <option key={index} value={day.toISOString()}>
+                        {getFormattedDate(new Date(day))}
+                      </option>
+                    ))}
+                  </select>
+                  
+                  <select className="reschedule-dropdown" onChange={(e) => setSelectedTimeSlot(e.target.value)}>
+                    <option value="">Select new time</option>
+                    {filteredSlots.length > 0 ? (
+                      filteredSlots.map((slot, index) => (
+                        <option key={index} value={slot.time} disabled={slot.status === 'unavailable'}>
+                          {`${slot.time} EST`} {slot.status === 'unavailable' ? '(Unavailable)' : ''}
+                        </option>
+                      ))
+                    ) : (
+                      <option>No available slots</option>
+                    )}
+                  </select>
+                        <button
+      className="reschedule-button"
+      onClick={handleRescheduleSession}
+      disabled={
+        loading ||
+        !selectedDay ||
+        !selectedDayToRescheduleTo ||
+        !selectedTimeSlot
+      }
+    >
+      {loading ? 'Rescheduling...' : 'Reschedule Session'}
+    </button>
+                  <button className="reschedule-back-button" onClick={() => {
+                    setShowReschedule(false); setShowOptions(true);}}>Back</button>
                 </div>
               )}
   
@@ -726,7 +805,7 @@ const DashBoard = () => {
                       </option>
                     ))}
                   </select>     
-                  <label htmlFor="cancel-reason-textbox">Please briefly explain why you are canceling the session</label>
+                  <label id="cancel-reason-label" htmlFor="cancel-reason-textbox">Please briefly explain why you are canceling the session</label>
                   <textarea
                     id="cancel-reason-textbox"
                     className="cancel-reason-textbox"
@@ -748,7 +827,7 @@ const DashBoard = () => {
                   >
                     {loading ? 'Canceling...' : 'Cancel Session'}
                   </button>
-                  <button className="back-button" onClick={() => { setShowCancel(false); setShowOptions(true); }}>
+                  <button className="cancel-back-button" onClick={() => { setShowCancel(false); setShowOptions(true); }}>
                     Back
                   </button>
                 </div>

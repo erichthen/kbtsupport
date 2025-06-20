@@ -78,12 +78,18 @@ body.user-dashboard {
 
 .user-dashboard .main-container {
   border: 9px solid #a7817c;
-  margin-top: 250px;
+  margin-top: 222px;
+  margin-bottom: 200px;
   max-width: 400px;
   padding: 13px;
   border-radius: 27px;;
   text-align: center;
   background-color: rgb(246, 227, 227);
+}
+
+.user-dashboard #cancel-reason-label {
+  margin-bottom: -30px;
+  width: 80%;
 }
 
 .user-dashboard p {
@@ -118,26 +124,27 @@ body.user-dashboard {
   gap: 20px; 
 }
 
+
 .user-dashboard .reschedule-title {
   font-size: 27px;
   font-weight: bold;
   color: rgb(83, 52, 73);
-  margin-bottom: -15px;
+  margin-bottom: 0px;
   margin-top: -5px;
   text-decoration: underline;
 }
 
-.user-dashboard .select-date-title,
-.user-dashboard .select-session,
-.user-dashboard .select-new-date,
-.user-dashboard .select-new-time {
-  margin-bottom: -10px;
+.user-dashboard .reschedule-dropdown {
+  padding: 10px;
+  width: 250px;
+  text-align: center;
 }
 
 .user-dashboard .session-dropdown {
-  margin-bottom: -10px; 
+  margin-bottom: 30px; 
   padding: 10px;
   width: 250px; 
+  text-align: center;
 }
 
 .user-dashboard .cancel-container {
@@ -153,10 +160,11 @@ body.user-dashboard {
   color: white;
   border: none;
   border-radius: 5px;
+  padding: 10px;
   cursor: pointer;
   margin-top: 20px;
-  margin-bottom: 5px;
-  width: 80%; 
+  margin-bottom: 15px;
+  width: 42%; 
   font-size: 16px;
 }
 
@@ -166,9 +174,15 @@ body.user-dashboard {
   opacity: 0.6; 
 }
 
+.user-dashboard .reschedule-button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+  opacity: 0.6; 
+}
+
 .user-dashboard .cancel-reason-textbox {
-  width: 100%;
-  height: 100px;
+  width: 70%;
+  height: 70px;
   padding: 10px;
   margin-top: 40px;
   border-radius: 5px;
@@ -177,16 +191,43 @@ body.user-dashboard {
 }
 
 .user-dashboard .reschedule-back-button {
-  margin-top: 20px; 
-  padding: 10px 20px;
-  margin-bottom: 0px;
+  display: flex;
+  justify-content: center;
   background-color: rgb(83, 52, 73);
+  align-items: center;  
+  padding: 5px 10px;
+  width: 80px;
+  font-size: 16px;
+  cursor: pointer;
   color: white;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  text-align: center; 
+}
+
+.user-dashboard .reschedule-back-button:hover {
+  background-color: #997d8b;
+}
+
+.user-dashboard .cancel-back-button {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(83, 52, 73);
+  align-items: center;  
+  padding: 5px 10px;
+  width: 80px;
   font-size: 16px;
-  align-self: center;
+  cursor: pointer;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  text-align: center; 
+}
+
+.user-dashboard .cancel-back-button:hover {
+  background-color: #997d8b;
 }
 
 .user-dashboard .reschedule-all-back-button {
@@ -414,9 +455,20 @@ body.user-dashboard {
 }
 
 .user-dashboard .reschedule-button {
-  width: 80%;
-  margin-bottom: -20px;
-  margin-top: -10px;
+  background-color: #4d0a40; 
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  width: 50%; 
+  font-size: 16px;
+}
+
+.user-dashboard .reschedule-button:hover {
+  background-color: #997d8b;
 }
 
 .user-dashboard .do-you-want {
