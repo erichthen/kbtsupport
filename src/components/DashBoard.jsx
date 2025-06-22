@@ -32,6 +32,9 @@ const DashBoard = () => {
   // eslint-disable-next-line
   const [selectedSession, setSelectedSession] = useState(null);
   const [showCancelAllPopup, setShowCancelAllPopup] = useState(false); 
+  const [showCancelPopup, setShowCancelPopup] = useState(false);
+  const [showReschedulePopup, setShowReschedulePopup] = useState(false);
+  const [showRescheduleAllPopup, setShowRescheduleAllPopup] = useState(false);
   const [showRescheduleAllForm, setShowRescheduleAllForm] = useState(false);
   const [selectedDayForAll, setSelectedDayForAll] = useState(null);
   const [selectedTimeSlotForAll, setSelectedTimeSlotForAll] = useState(null); 
@@ -182,6 +185,29 @@ const DashBoard = () => {
     setShowOptions(true);
   }
 
+  const handleGoBackFromReschedule = () => {
+    setShowReschedule(false);
+    setShowOptions(true);
+    setSelectedDay(null);
+    setSelectedSessions([]);
+    setSelectedDayToRescheduleTo(null);
+    setFilteredSlots([]);
+    setSelectedTimeSlot(null);
+    setFormattedDate('');
+  }
+
+  const handleGoBackFromCancel = () => {
+    setShowCancel(false);
+    setShowOptions(true);
+    setSelectedDay(null);
+    setSelectedSessions([]);
+    setSelectedDayToRescheduleTo(null);
+    setFilteredSlots([]);
+    setSelectedTimeSlot(null);
+    setFormattedDate('');
+    setCancelReason('');
+  }
+
   const getFormattedDate = (date) => {
     const options = { month: 'long', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
@@ -236,7 +262,9 @@ const DashBoard = () => {
   };
 
   const handleDayToCancelSelect = (event) => {
+
     const date = new Date(event.target.value);
+    console.log(date);
     setSelectedDayToCancel(date);
 
     // format the date for the message that will pop up 
@@ -318,6 +346,7 @@ const DashBoard = () => {
       console.error("Error canceling session:", error);
       alert("Error canceling session. Please try again, and report an issue if it persists.");
     } finally {
+      setShowCancelPopup(false);
       setLoading(false);
     }
   };
@@ -420,14 +449,6 @@ const DashBoard = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const openCancelAllPopup = () => {
-    setShowCancelAllPopup(true); 
-  };
-  
-  const closeCancelAllPopup = () => {
-    setShowCancelAllPopup(false);
   };
 
   const cancelAllSessions = async () => {
@@ -679,15 +700,11 @@ const DashBoard = () => {
                   <h2 className="do-you-want">Do you want to...</h2>
                   <div className="options-outer-container">
                     <div className="inner-container1">
-                      <button className="option-button" onClick={navigateToCancelForm}>
-                        Cancel a session
-                      </button>
-                      <button className="option-button" onClick={showRescheduleSession}>
-                        Reschedule a session
-                      </button>
+                      <button className="option-button" onClick={navigateToCancelForm}>Cancel a session</button>
+                      <button className="option-button" onClick={showRescheduleSession}>Reschedule a session</button>
                     </div>
                     <div className="inner-container2">
-                      <button className="option-button" onClick={openCancelAllPopup}>
+                      <button className="option-button" onClick={() => setShowCancelAllPopup(true)}>
                         Cancel all sessions
                       </button>
                       <button className="option-button" onClick={handleShowRescheduleAllForm}>
@@ -695,7 +712,7 @@ const DashBoard = () => {
                       </button>
                     </div>
                   </div>
-                  <button className="options-back-button" onClick={handleGoBack}>Back</button>
+                  <button className="options-back-button" onClick={handleGoBack}>Go back</button>
                 </div>
               )}
   
@@ -703,11 +720,12 @@ const DashBoard = () => {
               {showCancelAllPopup && (
                 <div className="cancel-all-popup">
                   <div className="popup-content">
-                    <p><b>Are you sure you want to cancel all sessions?<br /><u>This action cannot be undone!</u></b></p>
+                    <p className="cancel-confirm" id="cancel-confirm-1">Are you sure you want to cancel all of your sessions?</p>
+                    <p className="cancel-confirm" id="cancel-confirm-2">This action cannot be undone, and you will need to register again to schedule sessions!</p>
+                    <button className="no-button" onClick={() => setShowCancelAllPopup(false)}>No</button>
                     <button className="yes-button" onClick={cancelAllSessions} disabled={loading}>
-                      {loading ? "Processing..." : "Yes"}
+                      {loading ? "Canceling..." : "Yes"}
                     </button>
-                    <button className="no-button" onClick={closeCancelAllPopup}>No</button>
                   </div>
                 </div>
               )}
@@ -763,28 +781,96 @@ const DashBoard = () => {
                       <option>No available slots</option>
                     )}
                   </select>
-                        <button
-      className="reschedule-button"
-      onClick={handleRescheduleSession}
-      disabled={
-        loading ||
-        !selectedDay ||
-        !selectedDayToRescheduleTo ||
-        !selectedTimeSlot
-      }
-    >
-      {loading ? 'Rescheduling...' : 'Reschedule Session'}
-    </button>
-                  <button className="reschedule-back-button" onClick={() => {
-                    setShowReschedule(false); setShowOptions(true);}}>Back</button>
+                    <button 
+                      className="reschedule-button" 
+                      onClick={() => setShowReschedulePopup(true)} 
+                      disabled={
+                        !selectedDay ||
+                        !selectedDayToRescheduleTo ||
+                        !selectedTimeSlot
+                      }
+                    > 
+                      Reschedule Session
+                    </button>
+                    <button className="reschedule-back-button" onClick={handleGoBackFromReschedule}>Go back</button>
+                </div>
+              )}
+
+              {showReschedulePopup && (
+                <div className="cancel-all-popup">
+                  <div className="popup-content">
+                    <p id="reschedule-message">
+                      Are you sure you want to reschedule this session? Please go back and 
+                      confirm your selections before you click 'Yes'.
+                    </p>
+                    <button className="no-button" onClick={() => setShowReschedulePopup(false)}>No</button>
+                    <button className="yes-button" onClick={handleRescheduleSession} disabled={loading}>
+                      {loading ? "Loading" : "Yes"}
+                    </button>
+                  </div>
                 </div>
               )}
   
               {/*** Reschedule All ***/}
               {showRescheduleAllForm && (
                 <form onSubmit={handleRescheduleAllSubmit} className="reschedule-all-container">
-                  {/* ... your existing reschedule-all form markup ... */}
+                  <h2 className="reschedule-all-title">Reschedule All Sessions</h2>
+                  <p id="reschedule-all-instructions">Please select the day of the week and time you want 
+                    all of your sessions to be rescheduled to.
+                  </p>
+                  <select
+                    className="session-dropdown"
+                    id="new-day-selection"
+                    onChange={(e) => {
+                      const selectedDayName = e.target.value;
+                      const selectedDayNumber = daysOfWeek[selectedDayName];
+                      const selectedDate = getNextDayOfWeek(selectedDayNumber);
+                      setSelectedDayForAll(selectedDate);
+                    }}
+                    required
+                  >
+                    <option value="">Select day</option>
+                    {Object.keys(daysOfWeek).map((dayName) => (
+                      <option key={dayName} value={dayName}>
+                        {dayName}
+                      </option>
+                    ))}
+                  </select>
+                  
+                  <select className="res-session-dropdown" onChange={(e) => setSelectedTimeSlotForAll(e.target.value)} required>
+                    <option value="">Select the new time</option>
+                    {availableSlots.map((slot, index) => (
+                      <option key={index} value={slot.time} disabled={slot.status === 'unavailable'}>
+                        {`${slot.time} EST`} {slot.status === 'unavailable' ? '(Unavailable)' : ''}
+                      </option>
+                    ))}
+                  </select>
+                  
+                  <button 
+                    type="submit" 
+                    className="reschedule-all-button" 
+                    disabled={!selectedDayForAll || !selectedTimeSlotForAll}
+                    onClick={() => setShowRescheduleAllPopup(true)}
+                  >
+                    Reschedule Sessions
+                  </button>
+                  <button type="button" className="reschedule-all-back-button" onClick={handleCloseRescheduleAll}>Go back</button>
                 </form>
+              )}
+
+              {showRescheduleAllPopup && (
+                <div className="cancel-all-popup">
+                  <div className="popup-content">
+                    <p id="reschedule-message">
+                      Are you sure you want to reschedule all of your sessions? Please go back and 
+                      confirm your new day and time before you click 'Yes'.
+                    </p>
+                    <button className="no-button" onClick={() => setShowRescheduleAllPopup(false)}>No</button>
+                    <button className="yes-button" onClick={handleRescheduleAllSubmit} disabled={loading}>
+                      {loading ? "Loading" : "Yes"}
+                    </button>
+                  </div>
+                </div>
               )}
   
               {/*** Cancel Single ***/}
@@ -795,7 +881,7 @@ const DashBoard = () => {
                     className="session-dropdown" 
                     onChange={handleDayToCancelSelect} 
                   >
-                    <option value="">-- Select a Day --</option>
+                    <option value="">-- Select Day of Session --</option>
                     {upcomingSessions.map((session, index) => (
                       <option key={index} value={session.session_time}>
                         {new Date(session.session_time).toLocaleDateString('en-US', {
@@ -805,31 +891,37 @@ const DashBoard = () => {
                       </option>
                     ))}
                   </select>     
-                  <label id="cancel-reason-label" htmlFor="cancel-reason-textbox">Please briefly explain why you are canceling the session</label>
+
                   <textarea
                     id="cancel-reason-textbox"
                     className="cancel-reason-textbox"
-                    placeholder="Reason..."
+                    placeholder="Briefly explain reason for cancelation..."
                     value={cancelReason}
                     onChange={e => setCancelReason(e.target.value)}
                   />
-                  {selectedDayToCancel && selectedSessions.length > 0 && (
-                    <p className="cancel-session-message">
-                      The session on <strong>{formattedDate}</strong> at <strong>
-                      {selectedSessions[0].session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </strong> will be cancelled, and an email will be sent to Kelli.
-                    </p>
-                  )}
                   <button
                     className="cancel-session-button"
-                    onClick={submitCancelSession}
-                    disabled={!selectedDayToCancel || !cancelReason || loading}
+                    onClick={() => setShowCancelPopup(true)}
+                    disabled={!selectedDayToCancel || !cancelReason}
                   >
-                    {loading ? 'Canceling...' : 'Cancel Session'}
+                    Cancel Session
                   </button>
-                  <button className="cancel-back-button" onClick={() => { setShowCancel(false); setShowOptions(true); }}>
-                    Back
-                  </button>
+                  <button className="cancel-back-button" onClick={handleGoBackFromCancel}>Go back</button>
+                </div>
+              )}
+
+              {showCancelPopup && (
+                <div className="cancel-all-popup">
+                  <div className="popup-content">
+                      <p className="cancel-session-message">
+                        Are you sure you want to cancel your session on <strong>{formattedDate}</strong> at <strong>
+                        {selectedSessions[0].session_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}?</strong>
+                      </p>
+                    <button className="no-button" onClick={() => setShowCancelPopup(false)}>No</button>
+                    <button className="yes-button" onClick={submitCancelSession} disabled={loading}>
+                        {loading ? "Loading" : "Yes"}
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -845,3 +937,14 @@ const DashBoard = () => {
 };
 
 export default DashBoard;
+
+
+/*
+TODO When you come back to work on this:
+
+  Make a use state for modal popup for reschedule all
+  replicate modal component
+  onclick reschedule open modal
+  onclick yes button handle reschedule all
+  margins on reschedule all
+*/
